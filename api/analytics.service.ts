@@ -53,7 +53,7 @@ export class AnalyticsService {
 
     /**
      * Export application logs as CSV
-     * Export application logs as CSV.  User must have the APPLICATION_LOG[READ] permission.
+     * Export application logs as CSV.  User must have the APPLICATION_LOG[READ] permission. 
      * @param applicationId Id of an application.
      * @param page The page number for pagination.
      * @param size The number of items per page for pagination.
@@ -102,6 +102,7 @@ export class AnalyticsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'text/plain',
@@ -127,7 +128,7 @@ export class AnalyticsService {
 
     /**
      * Get Application analytics
-     * Get the application analytics.  User must have the APPLICATION_ANALYTICS[READ] permission.
+     * Get the application analytics.  User must have the APPLICATION_ANALYTICS[READ] permission. 
      * @param applicationId Id of an application.
      * @param page The page number for pagination.
      * @param size The number of items per page for pagination.
@@ -136,10 +137,10 @@ export class AnalyticsService {
      * @param interval Interval for time search. Must be &gt;&#x3D; 1 000 and &lt;&#x3D; 1 000 000 000.
      * @param query Query used for filtering.
      * @param field Field used for filtering. **required** when type is **GROUP_BY**.
-     * @param type Type of analytics that is expected :   - GROUP_BY :       Used to group total hits by a specific field (Application, Status, Path, ...).\\       Query params :       - from       - to       - interval       - query       - field       - order       - ranges   - DATE_HISTO :        Used to retrieve total hits per range of time, on a specific time interval.\\       Query params :       - from       - to       - interval       - query       - aggs   - COUNT :        Used to retrieve total hits, on a specific time interval.\\       Query params :       - from       - to       - interval       - query
-     * @param range Used with GROUP_BY type only.  A semicolon separated list of \&quot;from:to\&quot; elements. **_/!\\\\ Different from *from* and *to* query params**
-     * @param aggs Used with DATE_HISTO type only.  A semicolon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ Type can be **FIELD**, **AVG**, **MIN**, **MAX**
-     * @param order Used with GROUP_BY type only.   A colon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ By default, sort is ASC. If *type* starts with \&#39;-\&#39;, the order sort is DESC.\\ Currently, only **AVG** is supported.
+     * @param type Type of analytics that is expected :   - GROUP_BY :       Used to group total hits by a specific field (Application, Status, Path, ...).\\       Query params :       - from       - to       - interval       - query       - field       - order       - ranges   - DATE_HISTO :        Used to retrieve total hits per range of time, on a specific time interval.\\       Query params :       - from       - to       - interval       - query       - aggs   - COUNT :        Used to retrieve total hits, on a specific time interval.\\       Query params :       - from       - to       - interval       - query 
+     * @param range Used with GROUP_BY type only.  A semicolon separated list of \&quot;from:to\&quot; elements. **_/!\\\\ Different from *from* and *to* query params** 
+     * @param aggs Used with DATE_HISTO type only.  A semicolon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ Type can be **FIELD**, **AVG**, **MIN**, **MAX** 
+     * @param order Used with GROUP_BY type only.   A colon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ By default, sort is ASC. If *type* starts with \&#39;-\&#39;, the order sort is DESC.\\ Currently, only **AVG** is supported. 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -192,6 +193,7 @@ export class AnalyticsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -215,7 +217,7 @@ export class AnalyticsService {
 
     /**
      * Get a specific log of an application
-     * Get a specific log of an application.  User must have the APPLICATION_LOG[READ] permission.
+     * Get a specific log of an application.  User must have the APPLICATION_LOG[READ] permission. 
      * @param applicationId Id of an application.
      * @param logId Id of a log.
      * @param timestamp Used to select the right index
@@ -244,6 +246,7 @@ export class AnalyticsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -267,7 +270,7 @@ export class AnalyticsService {
 
     /**
      * Get Application logs
-     * Get the application logs.  User must have the APPLICATION_LOG[READ] permission.
+     * Get the application logs.  User must have the APPLICATION_LOG[READ] permission. 
      * @param applicationId Id of an application.
      * @param page The page number for pagination.
      * @param size The number of items per page for pagination.
@@ -316,6 +319,7 @@ export class AnalyticsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'

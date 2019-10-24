@@ -79,6 +79,7 @@ export class APIService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'

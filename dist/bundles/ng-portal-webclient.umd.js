@@ -323,6 +323,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -630,6 +631,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'text/plain',
@@ -692,6 +694,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -726,6 +729,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -775,6 +779,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -831,6 +836,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -865,6 +871,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -899,6 +906,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -933,6 +941,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -962,6 +971,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -991,6 +1001,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1039,6 +1050,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'text/plain',
@@ -1101,6 +1113,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1128,6 +1141,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1161,6 +1175,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1210,6 +1225,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1240,6 +1256,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1266,6 +1283,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'image/_*',
@@ -1298,6 +1316,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1332,6 +1351,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1359,6 +1379,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1385,6 +1406,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1411,6 +1433,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1445,6 +1468,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1482,6 +1506,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1519,6 +1544,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1553,6 +1579,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1652,6 +1679,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1675,6 +1703,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -1946,6 +1975,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2104,6 +2134,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2127,6 +2158,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2167,6 +2199,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2204,6 +2237,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2231,6 +2265,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2268,6 +2303,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2323,6 +2359,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2349,6 +2386,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2372,6 +2410,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2395,6 +2434,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'image/_*',
@@ -2427,6 +2467,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2451,6 +2492,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2521,6 +2563,7 @@
             if (this.configuration.username || this.configuration.password) {
                 headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
             }
+            // authentication (CookieAuth) required
             // to determine the Accept header
             var httpHeaderAccepts = [
                 'application/json'
@@ -2594,6 +2637,24 @@
         PUT: 'PUT',
         TRACE: 'TRACE',
         OTHER: 'OTHER'
+    };
+
+    /**
+     * Gravitee.io Portal Rest API
+     * API dedicated to the devportal part of Gravitee
+     *
+     * The version of the OpenAPI document: 3.0.0
+     * Contact: contact@graviteesource.com
+     *
+     * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+     * https://openapi-generator.tech
+     * Do not edit the class manually.
+     */
+    var IdentityProviderType = {
+        GOOGLE: 'GOOGLE',
+        GITHUB: 'GITHUB',
+        GRAVITEEIOAM: 'GRAVITEEIO_AM',
+        OIDC: 'OIDC'
     };
 
 
@@ -2715,6 +2776,7 @@
     exports.Configuration = Configuration;
     exports.DocumentationService = DocumentationService;
     exports.HttpMethod = HttpMethod;
+    exports.IdentityProviderType = IdentityProviderType;
     exports.PortalService = PortalService;
     exports.SubscriptionService = SubscriptionService;
     exports.UserService = UserService;

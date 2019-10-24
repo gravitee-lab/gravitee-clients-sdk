@@ -6,7 +6,7 @@
 npm install @openapitools/openapi-generator-cli -g
 
 npx openapi-generator generate \
--i ../../gravitee-management-rest-api/gravitee-rest-api-portal/gravitee-rest-api-portal-rest/src/main/resources/openapi.yaml \
+-i ../gravitee-management-rest-api/gravitee-rest-api-portal/gravitee-rest-api-portal-rest/src/main/resources/openapi.yaml \
 -g typescript-angular -c ng-portal-webclient.yaml
 ```
 
@@ -25,6 +25,9 @@ npm run build
 
 ### Publishing
 
+```
+Just commit all files with dist folder
+```
 
 ### Consuming
 
@@ -33,7 +36,7 @@ Navigate to the folder of your consuming project and run one of next commands.
 _published:_
 
 ```
-npm install @gravitee/portal-api-client@3.0.0 --save
+npm install gravitee-io/gravitee-clients-sdk --save
 ```
 
 _without publishing (not recommended):_
@@ -53,7 +56,7 @@ npm link
 
 In your project:
 ```
-npm link @gravitee/ng-portal-webclient
+npm link ng-portal-webclient
 ```
 
 __Note for Windows users:__ The Angular CLI has troubles to use linked npm packages.
@@ -68,7 +71,7 @@ In your Angular project:
 
 ```
 // without configuring providers
-import { ApiModule } from '@gravitee/portal-api-client';
+import { ApiModule } from 'ng-portal-webclient/dist';
 import { HttpClientModule } from '@angular/common/http';
 
 
@@ -88,7 +91,7 @@ export class AppModule {}
 
 ```
 // configuring providers
-import { ApiModule, Configuration, ConfigurationParameters } from '@gravitee/portal-api-client';
+import { ApiModule, Configuration, ConfigurationParameters } from 'ng-portal-webclient/dist';
 
 export function apiConfigFactory (): Configuration => {
   const params: ConfigurationParameters = {
@@ -107,7 +110,7 @@ export class AppModule {}
 ```
 
 ```
-import { DefaultApi } from '@gravitee/portal-api-client';
+import { DefaultApi } from 'ng-portal-webclient/dist';
 
 export class AppComponent {
 	 constructor(private apiGateway: DefaultApi) { }
@@ -146,7 +149,7 @@ export class AppModule {
 If different than the generated base path, during app bootstrap, you can provide the base path to your service. 
 
 ```
-import { BASE_PATH } from '@gravitee/portal-api-client';
+import { BASE_PATH } from 'ng-portal-webclient/dist';
 
 bootstrap(AppComponent, [
     { provide: BASE_PATH, useValue: 'https://your-web-service.com' },
@@ -155,7 +158,7 @@ bootstrap(AppComponent, [
 or
 
 ```
-import { BASE_PATH } from '@gravitee/portal-api-client';
+import { BASE_PATH } from 'ng-portal-webclient/dist';
 
 @NgModule({
     imports: [],
@@ -179,7 +182,7 @@ export const environment = {
 
 In the src/app/app.module.ts:
 ```
-import { BASE_PATH } from '@gravitee/portal-api-client';
+import { BASE_PATH } from 'ng-portal-webclient/dist';
 import { environment } from '../environments/environment';
 
 @NgModule({

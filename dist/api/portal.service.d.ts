@@ -11,6 +11,9 @@
  */
 import { HttpClient, HttpHeaders, HttpResponse, HttpEvent, HttpParameterCodec } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ConfigurationIdentitiesResponse } from '../model/configurationIdentitiesResponse';
+import { ConfigurationResponse } from '../model/configurationResponse';
+import { Info } from '../model/info';
 import { TicketInput } from '../model/ticketInput';
 import { View } from '../model/view';
 import { ViewsResponse } from '../model/viewsResponse';
@@ -28,18 +31,18 @@ export declare class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    configurationGet(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    configurationGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    configurationGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    configurationGet(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationResponse>;
+    configurationGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationResponse>>;
+    configurationGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationResponse>>;
     /**
      * Get the identity provider list.
      * Get all the identity providers that can used in the portal.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    configurationIdentitiesGet(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    configurationIdentitiesGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    configurationIdentitiesGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    configurationIdentitiesGet(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationIdentitiesResponse>;
+    configurationIdentitiesGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationIdentitiesResponse>>;
+    configurationIdentitiesGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationIdentitiesResponse>>;
     /**
      * Create a ticket.
      * Create a ticket. This ticket can aim :   * a specific application   * a specific API   * the gravitee portal  User must be authenticated to use this service.
@@ -87,7 +90,7 @@ export declare class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    infoGet(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    infoGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    infoGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    infoGet(observe?: 'body', reportProgress?: boolean): Observable<Info>;
+    infoGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Info>>;
+    infoGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Info>>;
 }

@@ -63,7 +63,7 @@ export class ApplicationsService {
 
     /**
      * Create an application
-     * Create an application.  User must have MANAGEMENT_APPLICATION[CREATE] permission.
+     * Create an application.  User must have MANAGEMENT_APPLICATION[CREATE] permission. 
      * @param applicationInput Use to create an application.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -79,6 +79,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -111,7 +112,7 @@ export class ApplicationsService {
 
     /**
      * Create an application member
-     * Create an application member.  User must have the APPLICATION_MEMBER[CREATE] permission.
+     * Create an application member.  User must have the APPLICATION_MEMBER[CREATE] permission. 
      * @param applicationId Id of an application.
      * @param memberInput Use to create a member.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -131,6 +132,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -163,7 +165,7 @@ export class ApplicationsService {
 
     /**
      * Create notification settings.
-     * Create notification settings.  User must have APPLICATION_NOTIFICATION[READ] permission to create a **portal** notification.  User must have APPLICATION_NOTIFICATION[CREATE] permission to create a **generic** notification.
+     * Create notification settings.  User must have APPLICATION_NOTIFICATION[READ] permission to create a **portal** notification.  User must have APPLICATION_NOTIFICATION[CREATE] permission to create a **generic** notification. 
      * @param applicationId Id of an application.
      * @param genericNotificationConfig Use to create an notification
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -183,6 +185,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -215,7 +218,7 @@ export class ApplicationsService {
 
     /**
      * Delete an application
-     * Delete an application.  User must have the APPLICATION_DEFINITION[DELETE] permission.
+     * Delete an application.  User must have the APPLICATION_DEFINITION[DELETE] permission. 
      * @param applicationId Id of an application.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -234,6 +237,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -256,7 +260,7 @@ export class ApplicationsService {
 
     /**
      * Remove an application member
-     * Remove an application member.  User must have the APPLICATION_MEMBER[DELETE] permission.
+     * Remove an application member.  User must have the APPLICATION_MEMBER[DELETE] permission. 
      * @param applicationId Id of an application.
      * @param memberId Id of a member.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -279,6 +283,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -301,7 +306,7 @@ export class ApplicationsService {
 
     /**
      * Delete a notification
-     * Delete a notification.  User must have APPLICATION_NOTIFICATION[DELETE] permission to delete a **generic** notification.
+     * Delete a notification.  User must have APPLICATION_NOTIFICATION[DELETE] permission to delete a **generic** notification. 
      * @param applicationId Id of an application.
      * @param notificationId Id of a notification.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -324,6 +329,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -346,7 +352,7 @@ export class ApplicationsService {
 
     /**
      * Export application logs as CSV
-     * Export application logs as CSV.  User must have the APPLICATION_LOG[READ] permission.
+     * Export application logs as CSV.  User must have the APPLICATION_LOG[READ] permission. 
      * @param applicationId Id of an application.
      * @param page The page number for pagination.
      * @param size The number of items per page for pagination.
@@ -395,6 +401,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'text/plain',
@@ -420,7 +427,7 @@ export class ApplicationsService {
 
     /**
      * Get Application analytics
-     * Get the application analytics.  User must have the APPLICATION_ANALYTICS[READ] permission.
+     * Get the application analytics.  User must have the APPLICATION_ANALYTICS[READ] permission. 
      * @param applicationId Id of an application.
      * @param page The page number for pagination.
      * @param size The number of items per page for pagination.
@@ -429,10 +436,10 @@ export class ApplicationsService {
      * @param interval Interval for time search. Must be &gt;&#x3D; 1 000 and &lt;&#x3D; 1 000 000 000.
      * @param query Query used for filtering.
      * @param field Field used for filtering. **required** when type is **GROUP_BY**.
-     * @param type Type of analytics that is expected :   - GROUP_BY :       Used to group total hits by a specific field (Application, Status, Path, ...).\\       Query params :       - from       - to       - interval       - query       - field       - order       - ranges   - DATE_HISTO :        Used to retrieve total hits per range of time, on a specific time interval.\\       Query params :       - from       - to       - interval       - query       - aggs   - COUNT :        Used to retrieve total hits, on a specific time interval.\\       Query params :       - from       - to       - interval       - query
-     * @param range Used with GROUP_BY type only.  A semicolon separated list of \&quot;from:to\&quot; elements. **_/!\\\\ Different from *from* and *to* query params**
-     * @param aggs Used with DATE_HISTO type only.  A semicolon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ Type can be **FIELD**, **AVG**, **MIN**, **MAX**
-     * @param order Used with GROUP_BY type only.   A colon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ By default, sort is ASC. If *type* starts with \&#39;-\&#39;, the order sort is DESC.\\ Currently, only **AVG** is supported.
+     * @param type Type of analytics that is expected :   - GROUP_BY :       Used to group total hits by a specific field (Application, Status, Path, ...).\\       Query params :       - from       - to       - interval       - query       - field       - order       - ranges   - DATE_HISTO :        Used to retrieve total hits per range of time, on a specific time interval.\\       Query params :       - from       - to       - interval       - query       - aggs   - COUNT :        Used to retrieve total hits, on a specific time interval.\\       Query params :       - from       - to       - interval       - query 
+     * @param range Used with GROUP_BY type only.  A semicolon separated list of \&quot;from:to\&quot; elements. **_/!\\\\ Different from *from* and *to* query params** 
+     * @param aggs Used with DATE_HISTO type only.  A semicolon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ Type can be **FIELD**, **AVG**, **MIN**, **MAX** 
+     * @param order Used with GROUP_BY type only.   A colon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ By default, sort is ASC. If *type* starts with \&#39;-\&#39;, the order sort is DESC.\\ Currently, only **AVG** is supported. 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -485,6 +492,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -508,7 +516,7 @@ export class ApplicationsService {
 
     /**
      * Get an application.
-     * Get an application.  User must have the APPLICATION_DEFINITION[READ] permission.
+     * Get an application.  User must have the APPLICATION_DEFINITION[READ] permission. 
      * @param applicationId Id of an application.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -527,6 +535,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -549,7 +558,7 @@ export class ApplicationsService {
 
     /**
      * Get a specific log of an application
-     * Get a specific log of an application.  User must have the APPLICATION_LOG[READ] permission.
+     * Get a specific log of an application.  User must have the APPLICATION_LOG[READ] permission. 
      * @param applicationId Id of an application.
      * @param logId Id of a log.
      * @param timestamp Used to select the right index
@@ -578,6 +587,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -601,7 +611,7 @@ export class ApplicationsService {
 
     /**
      * Get Application logs
-     * Get the application logs.  User must have the APPLICATION_LOG[READ] permission.
+     * Get the application logs.  User must have the APPLICATION_LOG[READ] permission. 
      * @param applicationId Id of an application.
      * @param page The page number for pagination.
      * @param size The number of items per page for pagination.
@@ -650,6 +660,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -673,7 +684,7 @@ export class ApplicationsService {
 
     /**
      * Get an application member
-     * Get an application member.  User must have the APPLICATION_MEMBER[READ] permission.
+     * Get an application member.  User must have the APPLICATION_MEMBER[READ] permission. 
      * @param applicationId Id of an application.
      * @param memberId Id of a member.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -696,6 +707,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -718,7 +730,7 @@ export class ApplicationsService {
 
     /**
      * Get the application\&#39;s picture
-     * Get the application\&#39;s picture.  User must have APPLICATION_DEFINITION[READ] permission.
+     * Get the application\&#39;s picture.  User must have APPLICATION_DEFINITION[READ] permission. 
      * @param applicationId Id of an application.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -737,6 +749,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'image/_*',
@@ -761,7 +774,7 @@ export class ApplicationsService {
 
     /**
      * List all the applications accessible to authenticated user.
-     * List all the applications accessible to authenticated user.  User must have MANAGEMENT_APPLICATION[READ] and PORTAL_APPLICATION[READ] permission.
+     * List all the applications accessible to authenticated user.  User must have MANAGEMENT_APPLICATION[READ] and PORTAL_APPLICATION[READ] permission. 
      * @param page The page number for pagination.
      * @param size The number of items per page for pagination.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -786,6 +799,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -809,7 +823,7 @@ export class ApplicationsService {
 
     /**
      * List application members
-     * List application members.  User must have the APPLICATION_MEMBER[READ] permission.
+     * List application members.  User must have the APPLICATION_MEMBER[READ] permission. 
      * @param applicationId Id of an application.
      * @param page The page number for pagination.
      * @param size The number of items per page for pagination.
@@ -838,6 +852,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -861,7 +876,7 @@ export class ApplicationsService {
 
     /**
      * Get application notifications settings
-     * Get application notifications settings.  User must **at least** have APPLICATION_NOTIFICATION[READ] permission to get **portal** notification settings.  User must **also** have APPLICATION_NOTIFICATION[CREATE | UPDATE | DELETE] permission to get **generic** notification settings.
+     * Get application notifications settings.  User must **at least** have APPLICATION_NOTIFICATION[READ] permission to get **portal** notification settings.  User must **also** have APPLICATION_NOTIFICATION[CREATE | UPDATE | DELETE] permission to get **generic** notification settings. 
      * @param applicationId Id of an application.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -880,6 +895,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -902,7 +918,7 @@ export class ApplicationsService {
 
     /**
      * Renew the client secret for an OAuth2 application
-     * Renew the client secret for an OAuth2 application.  User must have the APPLICATION_DEFINITION[UPDATE] permission.
+     * Renew the client secret for an OAuth2 application.  User must have the APPLICATION_DEFINITION[UPDATE] permission. 
      * @param applicationId Id of an application.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -921,6 +937,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -944,7 +961,7 @@ export class ApplicationsService {
 
     /**
      * Transfer the ownership of the application
-     * Transfer the ownership of the application.  User must have the APPLICATION_MEMBER[UPDATE] permission.
+     * Transfer the ownership of the application.  User must have the APPLICATION_MEMBER[UPDATE] permission. 
      * @param applicationId Id of an application.
      * @param transferOwnershipInput Use to transfer ownership of an application.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -964,6 +981,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -996,7 +1014,7 @@ export class ApplicationsService {
 
     /**
      * Update an application.
-     * Update an application.  User must have APPLICATION_DEFINITION[UPDATE] permission.
+     * Update an application.  User must have APPLICATION_DEFINITION[UPDATE] permission. 
      * @param applicationId Id of an application.
      * @param application Use to update an application.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -1016,6 +1034,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -1048,7 +1067,7 @@ export class ApplicationsService {
 
     /**
      * Update an application member.
-     * Update an application member.  User must have the APPLICATION_MEMBER[UPDATE] permission.
+     * Update an application member.  User must have the APPLICATION_MEMBER[UPDATE] permission. 
      * @param applicationId Id of an application.
      * @param memberId Id of a member.
      * @param memberInput Use to update a member.
@@ -1072,6 +1091,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -1104,7 +1124,7 @@ export class ApplicationsService {
 
     /**
      * Update a generic notification for an application.
-     * Update a generic notification for an application.  User must have APPLICATION_NOTIFICATION[UPDATE] permission to update a **generic** notification.
+     * Update a generic notification for an application.  User must have APPLICATION_NOTIFICATION[UPDATE] permission to update a **generic** notification. 
      * @param applicationId Id of an application.
      * @param notificationId Id of a notification.
      * @param genericNotificationConfig Use to update a generic notification.
@@ -1128,6 +1148,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'
@@ -1160,7 +1181,7 @@ export class ApplicationsService {
 
     /**
      * Update a portal notification for an application.
-     * Update a portal notification for an application.  User must have APPLICATION_NOTIFICATION[READ] permission to update a **portal** notification.
+     * Update a portal notification for an application.  User must have APPLICATION_NOTIFICATION[READ] permission to update a **portal** notification. 
      * @param applicationId Id of an application.
      * @param portalNotificationConfig Use to update a portal notification config.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -1180,6 +1201,7 @@ export class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/json'

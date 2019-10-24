@@ -115,6 +115,7 @@ let APIService = class APIService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -405,6 +406,7 @@ let AnalyticsService = class AnalyticsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'text/plain',
@@ -465,6 +467,7 @@ let AnalyticsService = class AnalyticsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -497,6 +500,7 @@ let AnalyticsService = class AnalyticsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -544,6 +548,7 @@ let AnalyticsService = class AnalyticsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -597,6 +602,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -629,6 +635,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -661,6 +668,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -693,6 +701,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -720,6 +729,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -747,6 +757,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -793,6 +804,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'text/plain',
@@ -853,6 +865,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -878,6 +891,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -909,6 +923,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -956,6 +971,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -984,6 +1000,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1008,6 +1025,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'image/_*',
@@ -1038,6 +1056,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1070,6 +1089,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1095,6 +1115,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1119,6 +1140,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1143,6 +1165,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1175,6 +1198,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1210,6 +1234,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1245,6 +1270,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1277,6 +1303,7 @@ let ApplicationsService = class ApplicationsService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1371,6 +1398,7 @@ let AuthenticationService = class AuthenticationService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1392,6 +1420,7 @@ let AuthenticationService = class AuthenticationService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1645,6 +1674,7 @@ let PortalService = class PortalService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1792,6 +1822,7 @@ let SubscriptionService = class SubscriptionService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1813,6 +1844,7 @@ let SubscriptionService = class SubscriptionService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1851,6 +1883,7 @@ let SubscriptionService = class SubscriptionService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1886,6 +1919,7 @@ let SubscriptionService = class SubscriptionService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1911,6 +1945,7 @@ let SubscriptionService = class SubscriptionService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1946,6 +1981,7 @@ let SubscriptionService = class SubscriptionService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -1998,6 +2034,7 @@ let UserService = class UserService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -2022,6 +2059,7 @@ let UserService = class UserService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -2043,6 +2081,7 @@ let UserService = class UserService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -2064,6 +2103,7 @@ let UserService = class UserService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'image/_*',
@@ -2094,6 +2134,7 @@ let UserService = class UserService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -2116,6 +2157,7 @@ let UserService = class UserService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -2183,6 +2225,7 @@ let UsersService = class UsersService {
         if (this.configuration.username || this.configuration.password) {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
+        // authentication (CookieAuth) required
         // to determine the Accept header
         const httpHeaderAccepts = [
             'application/json'
@@ -2255,6 +2298,24 @@ const HttpMethod = {
     PUT: 'PUT',
     TRACE: 'TRACE',
     OTHER: 'OTHER'
+};
+
+/**
+ * Gravitee.io Portal Rest API
+ * API dedicated to the devportal part of Gravitee
+ *
+ * The version of the OpenAPI document: 3.0.0
+ * Contact: contact@graviteesource.com
+ *
+ * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech).
+ * https://openapi-generator.tech
+ * Do not edit the class manually.
+ */
+const IdentityProviderType = {
+    GOOGLE: 'GOOGLE',
+    GITHUB: 'GITHUB',
+    GRAVITEEIOAM: 'GRAVITEEIO_AM',
+    OIDC: 'OIDC'
 };
 
 var Page;
@@ -2366,5 +2427,5 @@ ApiModule = ApiModule_1 = __decorate([
  * Generated bundle index. Do not edit.
  */
 
-export { APIS, APIService, AnalyticsService, ApiModule, ApplicationsService, AuthenticationService, BASE_PATH, COLLECTION_FORMATS, CategoryApiQuery, Configuration, DocumentationService, HttpMethod, Page, Plan, PortalService, Subscription, SubscriptionService, Token, UserService, UsersService };
+export { APIS, APIService, AnalyticsService, ApiModule, ApplicationsService, AuthenticationService, BASE_PATH, COLLECTION_FORMATS, CategoryApiQuery, Configuration, DocumentationService, HttpMethod, IdentityProviderType, Page, Plan, PortalService, Subscription, SubscriptionService, Token, UserService, UsersService };
 //# sourceMappingURL=ng-portal-webclient.js.map

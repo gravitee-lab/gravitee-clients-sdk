@@ -55,82 +55,16 @@ export class PortalService {
 
 
     /**
-     * Get portal configuration.
-     * Get all the portal configuration from the platform settings. 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public configurationGet(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationResponse>;
-    public configurationGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationResponse>>;
-    public configurationGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationResponse>>;
-    public configurationGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        return this.httpClient.get<ConfigurationResponse>(`${this.configuration.basePath}/configuration`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get the identity provider list.
-     * Get all the identity providers that can used in the portal. 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public configurationIdentitiesGet(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationIdentitiesResponse>;
-    public configurationIdentitiesGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationIdentitiesResponse>>;
-    public configurationIdentitiesGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationIdentitiesResponse>>;
-    public configurationIdentitiesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        return this.httpClient.get<ConfigurationIdentitiesResponse>(`${this.configuration.basePath}/configuration/identities`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * Create a ticket.
      * Create a ticket. This ticket can aim :   * a specific application   * a specific API   * the gravitee portal  User must be authenticated to use this service. 
-     * @param ticketInput a new ticket to create
+     * @param TicketInput a new ticket to create
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createTicket(ticketInput?: TicketInput, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public createTicket(ticketInput?: TicketInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public createTicket(ticketInput?: TicketInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public createTicket(ticketInput?: TicketInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createTicket(TicketInput?: TicketInput, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public createTicket(TicketInput?: TicketInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public createTicket(TicketInput?: TicketInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public createTicket(TicketInput?: TicketInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -159,7 +93,7 @@ export class PortalService {
         }
 
         return this.httpClient.post<any>(`${this.configuration.basePath}/tickets`,
-            ticketInput,
+            TicketInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -200,6 +134,105 @@ export class PortalService {
         return this.httpClient.get(`${this.configuration.basePath}/views/${encodeURIComponent(String(viewId))}/picture`,
             {
                 responseType: "blob",
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get portal configuration.
+     * Get all the portal configuration from the platform settings. 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPortalConfiguration(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationResponse>;
+    public getPortalConfiguration(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationResponse>>;
+    public getPortalConfiguration(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationResponse>>;
+    public getPortalConfiguration(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<ConfigurationResponse>(`${this.configuration.basePath}/configuration`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the identity provider list.
+     * Get all the identity providers that can used in the portal. 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPortalIdentityProviders(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationIdentitiesResponse>;
+    public getPortalIdentityProviders(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationIdentitiesResponse>>;
+    public getPortalIdentityProviders(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationIdentitiesResponse>>;
+    public getPortalIdentityProviders(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<ConfigurationIdentitiesResponse>(`${this.configuration.basePath}/configuration/identities`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get portal information.
+     * Get some information about the portal (version, ...). 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPortalInformation(observe?: 'body', reportProgress?: boolean): Observable<Info>;
+    public getPortalInformation(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Info>>;
+    public getPortalInformation(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Info>>;
+    public getPortalInformation(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<Info>(`${this.configuration.basePath}/info`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -281,39 +314,6 @@ export class PortalService {
         return this.httpClient.get<ViewsResponse>(`${this.configuration.basePath}/views`,
             {
                 params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get portal information.
-     * Get some information about the portal (version, ...). 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public infoGet(observe?: 'body', reportProgress?: boolean): Observable<Info>;
-    public infoGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Info>>;
-    public infoGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Info>>;
-    public infoGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        return this.httpClient.get<Info>(`${this.configuration.basePath}/info`,
-            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

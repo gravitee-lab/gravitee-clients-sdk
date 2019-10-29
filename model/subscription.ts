@@ -36,19 +36,19 @@ export interface Subscription {
     /**
      * Creation date and time of the subscription.
      */
-    createdAt?: Date;
+    created_at?: Date;
     /**
      * Date and time when the subscription request was processed.
      */
-    processedAt?: Date;
+    processed_at?: Date;
     /**
      * Start date and time of the subscription.
      */
-    startAt?: Date;
+    start_at?: Date;
     /**
      * Expiration date and time of the subscription.
      */
-    endAt?: Date;
+    end_at?: Date;
     /**
      * Status of the subscription.
      */

@@ -11,6 +11,9 @@
  */
 import { HttpClient, HttpHeaders, HttpResponse, HttpEvent, HttpParameterCodec } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { FinalizeRegistrationInput } from '../model/finalizeRegistrationInput';
+import { RegisterUserInput } from '../model/registerUserInput';
+import { User } from '../model/user';
 import { UsersResponse } from '../model/usersResponse';
 import { Configuration } from '../configuration';
 export declare class UsersService {
@@ -20,6 +23,16 @@ export declare class UsersService {
     configuration: Configuration;
     encoder: HttpParameterCodec;
     constructor(httpClient: HttpClient, basePath: string, configuration: Configuration);
+    /**
+     * Finalize user registration.
+     * Create a new user for the portal.  User registration must be enabled.
+     * @param FinalizeRegistrationInput Used to finalize a user registration.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    finalizeUserRegistration(FinalizeRegistrationInput?: FinalizeRegistrationInput, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    finalizeUserRegistration(FinalizeRegistrationInput?: FinalizeRegistrationInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    finalizeUserRegistration(FinalizeRegistrationInput?: FinalizeRegistrationInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
     /**
      * List platform users.
      * List platform users.  User must have the MANAGEMENT_USERS[READ] permission.
@@ -31,4 +44,14 @@ export declare class UsersService {
     getUsers(page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<UsersResponse>;
     getUsers(page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UsersResponse>>;
     getUsers(page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UsersResponse>>;
+    /**
+     * Register a new user.
+     * Register a new user for the portal. As a result, an email is sent with an activation link.  User registration must be enabled.\\ A SMTP server must have been configured.
+     * @param RegisterUserInput Used to register a new User.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    registerNewUser(RegisterUserInput?: RegisterUserInput, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    registerNewUser(RegisterUserInput?: RegisterUserInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    registerNewUser(RegisterUserInput?: RegisterUserInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
 }

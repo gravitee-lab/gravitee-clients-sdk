@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 export interface Token {
-    tokenType?: Token.TokenTypeEnum;
+    token_type?: Token.TokenTypeEnum;
     token?: string;
 }
 export declare namespace Token {

@@ -106,7 +106,7 @@ let APIService = class APIService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    createApiRatingForApi(apiId, ratingInput, observe = 'body', reportProgress = false) {
+    createApiRatingForApi(apiId, RatingInput, observe = 'body', reportProgress = false) {
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling createApiRatingForApi.');
         }
@@ -132,7 +132,7 @@ let APIService = class APIService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings`, ratingInput, {
+        return this.httpClient.post(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings`, RatingInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -222,7 +222,7 @@ let APIService = class APIService {
             reportProgress: reportProgress
         });
     }
-    getApis(page, size, contextPath, label, version, name, view, cat, observe = 'body', reportProgress = false) {
+    getApis(page, size, context_path, label, version, name, view, cat, observe = 'body', reportProgress = false) {
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -230,8 +230,8 @@ let APIService = class APIService {
         if (size !== undefined && size !== null) {
             queryParameters = queryParameters.set('size', size);
         }
-        if (contextPath !== undefined && contextPath !== null) {
-            queryParameters = queryParameters.set('context-path', contextPath);
+        if (context_path !== undefined && context_path !== null) {
+            queryParameters = queryParameters.set('context-path', context_path);
         }
         if (label !== undefined && label !== null) {
             queryParameters = queryParameters.set('label', label);
@@ -596,7 +596,7 @@ let ApplicationsService = class ApplicationsService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    createApplication(applicationInput, observe = 'body', reportProgress = false) {
+    createApplication(ApplicationInput, observe = 'body', reportProgress = false) {
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -619,14 +619,14 @@ let ApplicationsService = class ApplicationsService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(`${this.configuration.basePath}/applications`, applicationInput, {
+        return this.httpClient.post(`${this.configuration.basePath}/applications`, ApplicationInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     }
-    createApplicationMember(applicationId, memberInput, observe = 'body', reportProgress = false) {
+    createApplicationMember(applicationId, MemberInput, observe = 'body', reportProgress = false) {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling createApplicationMember.');
         }
@@ -652,14 +652,14 @@ let ApplicationsService = class ApplicationsService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members`, memberInput, {
+        return this.httpClient.post(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members`, MemberInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     }
-    createApplicationNotification(applicationId, genericNotificationConfig, observe = 'body', reportProgress = false) {
+    createApplicationNotification(applicationId, GenericNotificationConfig, observe = 'body', reportProgress = false) {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling createApplicationNotification.');
         }
@@ -685,7 +685,7 @@ let ApplicationsService = class ApplicationsService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`, genericNotificationConfig, {
+        return this.httpClient.post(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`, GenericNotificationConfig, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1156,7 +1156,7 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    transferMemberOwnership(applicationId, transferOwnershipInput, observe = 'body', reportProgress = false) {
+    transferMemberOwnership(applicationId, TransferOwnershipInput, observe = 'body', reportProgress = false) {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling transferMemberOwnership.');
         }
@@ -1182,14 +1182,14 @@ let ApplicationsService = class ApplicationsService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/_transfer_ownership`, transferOwnershipInput, {
+        return this.httpClient.post(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/_transfer_ownership`, TransferOwnershipInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     }
-    updateApplicationByApplicationId(applicationId, application, observe = 'body', reportProgress = false) {
+    updateApplicationByApplicationId(applicationId, Application, observe = 'body', reportProgress = false) {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationByApplicationId.');
         }
@@ -1215,14 +1215,14 @@ let ApplicationsService = class ApplicationsService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.put(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}`, application, {
+        return this.httpClient.put(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}`, Application, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     }
-    updateApplicationMemberByApplicationIdAndMemberId(applicationId, memberId, memberInput, observe = 'body', reportProgress = false) {
+    updateApplicationMemberByApplicationIdAndMemberId(applicationId, memberId, MemberInput, observe = 'body', reportProgress = false) {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationMemberByApplicationIdAndMemberId.');
         }
@@ -1251,14 +1251,14 @@ let ApplicationsService = class ApplicationsService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.put(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/${encodeURIComponent(String(memberId))}`, memberInput, {
+        return this.httpClient.put(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/${encodeURIComponent(String(memberId))}`, MemberInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     }
-    updateGenericApplicationNotification(applicationId, notificationId, genericNotificationConfig, observe = 'body', reportProgress = false) {
+    updateGenericApplicationNotification(applicationId, notificationId, GenericNotificationConfig, observe = 'body', reportProgress = false) {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateGenericApplicationNotification.');
         }
@@ -1287,14 +1287,14 @@ let ApplicationsService = class ApplicationsService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.put(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications/${encodeURIComponent(String(notificationId))}`, genericNotificationConfig, {
+        return this.httpClient.put(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications/${encodeURIComponent(String(notificationId))}`, GenericNotificationConfig, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     }
-    updatePortalApplicationNotification(applicationId, portalNotificationConfig, observe = 'body', reportProgress = false) {
+    updatePortalApplicationNotification(applicationId, PortalNotificationConfig, observe = 'body', reportProgress = false) {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updatePortalApplicationNotification.');
         }
@@ -1320,7 +1320,7 @@ let ApplicationsService = class ApplicationsService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.put(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`, portalNotificationConfig, {
+        return this.httpClient.put(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`, PortalNotificationConfig, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1358,7 +1358,7 @@ let AuthenticationService = class AuthenticationService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    exchangeAuthorizationCode(identity, payloadInput, observe = 'body', reportProgress = false) {
+    exchangeAuthorizationCode(identity, PayloadInput, observe = 'body', reportProgress = false) {
         if (identity === null || identity === undefined) {
             throw new Error('Required parameter identity was null or undefined when calling exchangeAuthorizationCode.');
         }
@@ -1379,20 +1379,20 @@ let AuthenticationService = class AuthenticationService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(`${this.configuration.basePath}/auth/oauth2/${encodeURIComponent(String(identity))}`, payloadInput, {
+        return this.httpClient.post(`${this.configuration.basePath}/auth/oauth2/${encodeURIComponent(String(identity))}`, PayloadInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     }
-    login(authorization, observe = 'body', reportProgress = false) {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling login.');
+    login(Authorization, observe = 'body', reportProgress = false) {
+        if (Authorization === null || Authorization === undefined) {
+            throw new Error('Required parameter Authorization was null or undefined when calling login.');
         }
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
+        if (Authorization !== undefined && Authorization !== null) {
+            headers = headers.set('Authorization', String(Authorization));
         }
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1634,41 +1634,7 @@ let PortalService = class PortalService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    configurationGet(observe = 'body', reportProgress = false) {
-        let headers = this.defaultHeaders;
-        // to determine the Accept header
-        const httpHeaderAccepts = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(`${this.configuration.basePath}/configuration`, {
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    }
-    configurationIdentitiesGet(observe = 'body', reportProgress = false) {
-        let headers = this.defaultHeaders;
-        // to determine the Accept header
-        const httpHeaderAccepts = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(`${this.configuration.basePath}/configuration/identities`, {
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    }
-    createTicket(ticketInput, observe = 'body', reportProgress = false) {
+    createTicket(TicketInput, observe = 'body', reportProgress = false) {
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1691,7 +1657,7 @@ let PortalService = class PortalService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(`${this.configuration.basePath}/tickets`, ticketInput, {
+        return this.httpClient.post(`${this.configuration.basePath}/tickets`, TicketInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1714,6 +1680,57 @@ let PortalService = class PortalService {
         }
         return this.httpClient.get(`${this.configuration.basePath}/views/${encodeURIComponent(String(viewId))}/picture`, {
             responseType: "blob",
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+    getPortalConfiguration(observe = 'body', reportProgress = false) {
+        let headers = this.defaultHeaders;
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(`${this.configuration.basePath}/configuration`, {
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+    getPortalIdentityProviders(observe = 'body', reportProgress = false) {
+        let headers = this.defaultHeaders;
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(`${this.configuration.basePath}/configuration/identities`, {
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+    getPortalInformation(observe = 'body', reportProgress = false) {
+        let headers = this.defaultHeaders;
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(`${this.configuration.basePath}/info`, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1759,23 +1776,6 @@ let PortalService = class PortalService {
         }
         return this.httpClient.get(`${this.configuration.basePath}/views`, {
             params: queryParameters,
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    }
-    infoGet(observe = 'body', reportProgress = false) {
-        let headers = this.defaultHeaders;
-        // to determine the Accept header
-        const httpHeaderAccepts = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(`${this.configuration.basePath}/info`, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1838,7 +1838,7 @@ let SubscriptionService = class SubscriptionService {
             reportProgress: reportProgress
         });
     }
-    createSubscription(subscriptionInput, observe = 'body', reportProgress = false) {
+    createSubscription(SubscriptionInput, observe = 'body', reportProgress = false) {
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1861,7 +1861,7 @@ let SubscriptionService = class SubscriptionService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(`${this.configuration.basePath}/subscriptions`, subscriptionInput, {
+        return this.httpClient.post(`${this.configuration.basePath}/subscriptions`, SubscriptionInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1936,7 +1936,7 @@ let SubscriptionService = class SubscriptionService {
             reportProgress: reportProgress
         });
     }
-    renewKeySubscription(subscriptionId, requestBody, observe = 'body', reportProgress = false) {
+    renewKeySubscription(subscriptionId, request_body, observe = 'body', reportProgress = false) {
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling renewKeySubscription.');
         }
@@ -1962,7 +1962,7 @@ let SubscriptionService = class SubscriptionService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(`${this.configuration.basePath}/subscriptions/${encodeURIComponent(String(subscriptionId))}/keys/_renew`, requestBody, {
+        return this.httpClient.post(`${this.configuration.basePath}/subscriptions/${encodeURIComponent(String(subscriptionId))}/keys/_renew`, request_body, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -2151,7 +2151,7 @@ let UserService = class UserService {
             reportProgress: reportProgress
         });
     }
-    updateCurrentUser(user, observe = 'body', reportProgress = false) {
+    updateCurrentUser(User, observe = 'body', reportProgress = false) {
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -2174,7 +2174,7 @@ let UserService = class UserService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.put(`${this.configuration.basePath}/user`, user, {
+        return this.httpClient.put(`${this.configuration.basePath}/user`, User, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -2212,6 +2212,36 @@ let UsersService = class UsersService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
+    finalizeUserRegistration(FinalizeRegistrationInput, observe = 'body', reportProgress = false) {
+        let headers = this.defaultHeaders;
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        // to determine the Content-Type header
+        const consumes = [
+            'application/json'
+        ];
+        const httpContentTypeSelected = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+        return this.httpClient.post(`${this.configuration.basePath}/users/registration/_finalize`, FinalizeRegistrationInput, {
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
     getUsers(page, size, observe = 'body', reportProgress = false) {
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
@@ -2236,6 +2266,36 @@ let UsersService = class UsersService {
         }
         return this.httpClient.get(`${this.configuration.basePath}/users`, {
             params: queryParameters,
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+    registerNewUser(RegisterUserInput, observe = 'body', reportProgress = false) {
+        let headers = this.defaultHeaders;
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        // to determine the Content-Type header
+        const consumes = [
+            'application/json'
+        ];
+        const httpContentTypeSelected = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+        return this.httpClient.post(`${this.configuration.basePath}/users/registration`, RegisterUserInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,

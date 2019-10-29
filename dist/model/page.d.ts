@@ -35,7 +35,7 @@ export interface Page {
     /**
      * Last update date and time.
      */
-    updatedAt?: Date;
+    updated_at?: Date;
     /**
      * Raw content of the page.
      */

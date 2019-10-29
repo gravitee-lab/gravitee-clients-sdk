@@ -72,11 +72,11 @@ export declare class UserService {
     /**
      * Modify current user information.
      * Modify current user information.  Only the current user can modify his/her information.
-     * @param user Use to update a user.
+     * @param User Use to update a user.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    updateCurrentUser(user?: User, observe?: 'body', reportProgress?: boolean): Observable<User>;
-    updateCurrentUser(user?: User, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
-    updateCurrentUser(user?: User, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    updateCurrentUser(User?: User, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    updateCurrentUser(User?: User, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    updateCurrentUser(User?: User, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
 }

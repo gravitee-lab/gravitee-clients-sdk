@@ -53,8 +53,8 @@ export interface Api {
      * List of views this API belongs to.
      */
     views?: Array<string>;
-    ratingSummary?: RatingSummary;
-    links?: ApiLinks;
+    rating_summary?: RatingSummary;
+    _links?: ApiLinks;
     /**
      * Only returned with *_/apis/{apiId}*. Need *include* query param to contain \'pages\'.  The documentation pages of this API. Same as *_/apis/{apiId}/pages*. 
      */

@@ -29,5 +29,5 @@ export interface TicketInput {
     /**
      * True if the author of the ticket wants to receive a copy of the ticket.
      */
-    copyToSender?: boolean;
+    copy_to_sender?: boolean;
 }

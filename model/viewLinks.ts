@@ -13,7 +13,7 @@
 
 export interface ViewLinks { 
     self?: string;
-    highlightedApi?: string;
+    highlighted_api?: string;
     picture?: string;
 }
 

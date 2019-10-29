@@ -13,9 +13,9 @@ export interface TransferOwnershipInput {
     /**
      * User identifier of the new Primary Owner of the application.
      */
-    newPrimaryOwner?: string;
+    new_primary_owner?: string;
     /**
      * New role to be affected to the current PrimaryOwner.
      */
-    primaryOwnerNewrole?: string;
+    primary_owner_newrole?: string;
 }

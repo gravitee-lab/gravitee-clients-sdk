@@ -36,13 +36,13 @@ export declare class SubscriptionService {
     /**
      * Create a subscription.
      * Create a new subscription.  User must have APPLICATION_SUBSCRIPTION[CREATE] permission.
-     * @param subscriptionInput Use to create a subscription.
+     * @param SubscriptionInput Use to create a subscription.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    createSubscription(subscriptionInput?: SubscriptionInput, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
-    createSubscription(subscriptionInput?: SubscriptionInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
-    createSubscription(subscriptionInput?: SubscriptionInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
+    createSubscription(SubscriptionInput?: SubscriptionInput, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
+    createSubscription(SubscriptionInput?: SubscriptionInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
+    createSubscription(SubscriptionInput?: SubscriptionInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
     /**
      * Get a subscription.
      * Get a subscription.  User must have API_SUBSCRIPTION[CREATE] or APPLICATION_SUBSCRIPTION[CREATE] permission.
@@ -70,13 +70,13 @@ export declare class SubscriptionService {
      * Renew a key subscription.
      * Renew a key subscription.  User must have API_SUBSCRIPTION[UPDATE] or APPLICATION_SUBSCRIPTION[UPDATE] permission.
      * @param subscriptionId Id of a subscription.
-     * @param requestBody Use to renew keys of a subscription.
+     * @param request_body Use to renew keys of a subscription.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    renewKeySubscription(subscriptionId: string, requestBody?: Array<string>, observe?: 'body', reportProgress?: boolean): Observable<Key>;
-    renewKeySubscription(subscriptionId: string, requestBody?: Array<string>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Key>>;
-    renewKeySubscription(subscriptionId: string, requestBody?: Array<string>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Key>>;
+    renewKeySubscription(subscriptionId: string, request_body?: Array<string>, observe?: 'body', reportProgress?: boolean): Observable<Key>;
+    renewKeySubscription(subscriptionId: string, request_body?: Array<string>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Key>>;
+    renewKeySubscription(subscriptionId: string, request_body?: Array<string>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Key>>;
     /**
      * Revoke a key subscription.
      * Revoke a key subscription.  User must have API_SUBSCRIPTION[UPDATE] or APPLICATION_SUBSCRIPTION[UPDATE] permission.

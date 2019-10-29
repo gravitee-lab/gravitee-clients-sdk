@@ -26,11 +26,11 @@ export interface IdentityProvider {
     /**
      * ClientId of the identity provider.
      */
-    clientId?: string;
+    client_id?: string;
     /**
      * true, if an email is required for this identity provider.
      */
-    emailRequired?: boolean;
+    email_required?: boolean;
     type?: IdentityProviderType;
     /**
      * Authorization endpoint of the provider.

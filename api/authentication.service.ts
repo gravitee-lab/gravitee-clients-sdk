@@ -53,14 +53,14 @@ export class AuthenticationService {
     /**
      * Used to get a gravitee token from an Authorization code (PayloadInput.code). Portal API authenticates the user with the specified IDP ({identity} path param). 
      * @param identity 
-     * @param payloadInput OAuth2 payload for authentication.
+     * @param PayloadInput OAuth2 payload for authentication.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public exchangeAuthorizationCode(identity: string, payloadInput?: PayloadInput, observe?: 'body', reportProgress?: boolean): Observable<Token>;
-    public exchangeAuthorizationCode(identity: string, payloadInput?: PayloadInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
-    public exchangeAuthorizationCode(identity: string, payloadInput?: PayloadInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
-    public exchangeAuthorizationCode(identity: string, payloadInput?: PayloadInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'body', reportProgress?: boolean): Observable<Token>;
+    public exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
+    public exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
+    public exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (identity === null || identity === undefined) {
             throw new Error('Required parameter identity was null or undefined when calling exchangeAuthorizationCode.');
         }
@@ -87,7 +87,7 @@ export class AuthenticationService {
         }
 
         return this.httpClient.post<Token>(`${this.configuration.basePath}/auth/oauth2/${encodeURIComponent(String(identity))}`,
-            payloadInput,
+            PayloadInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -99,21 +99,21 @@ export class AuthenticationService {
 
     /**
      * Used to get a Gravitee token. This token is mandatory for all the secured resources of the Portal API. 
-     * @param authorization Basic authentication.
+     * @param Authorization Basic authentication.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public login(authorization: string, observe?: 'body', reportProgress?: boolean): Observable<Token>;
-    public login(authorization: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
-    public login(authorization: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
-    public login(authorization: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling login.');
+    public login(Authorization: string, observe?: 'body', reportProgress?: boolean): Observable<Token>;
+    public login(Authorization: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
+    public login(Authorization: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
+    public login(Authorization: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (Authorization === null || Authorization === undefined) {
+            throw new Error('Required parameter Authorization was null or undefined when calling login.');
         }
 
         let headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
+        if (Authorization !== undefined && Authorization !== null) {
+            headers = headers.set('Authorization', String(Authorization));
         }
 
         // authentication (BasicAuth) required

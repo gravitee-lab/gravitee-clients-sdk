@@ -24,22 +24,22 @@ export declare class AuthenticationService {
     /**
      * Used to get a gravitee token from an Authorization code (PayloadInput.code). Portal API authenticates the user with the specified IDP ({identity} path param).
      * @param identity
-     * @param payloadInput OAuth2 payload for authentication.
+     * @param PayloadInput OAuth2 payload for authentication.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    exchangeAuthorizationCode(identity: string, payloadInput?: PayloadInput, observe?: 'body', reportProgress?: boolean): Observable<Token>;
-    exchangeAuthorizationCode(identity: string, payloadInput?: PayloadInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
-    exchangeAuthorizationCode(identity: string, payloadInput?: PayloadInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
+    exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'body', reportProgress?: boolean): Observable<Token>;
+    exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
+    exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
     /**
      * Used to get a Gravitee token. This token is mandatory for all the secured resources of the Portal API.
-     * @param authorization Basic authentication.
+     * @param Authorization Basic authentication.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    login(authorization: string, observe?: 'body', reportProgress?: boolean): Observable<Token>;
-    login(authorization: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
-    login(authorization: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
+    login(Authorization: string, observe?: 'body', reportProgress?: boolean): Observable<Token>;
+    login(Authorization: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
+    login(Authorization: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
     /**
      * User need to be authenticated to logout.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

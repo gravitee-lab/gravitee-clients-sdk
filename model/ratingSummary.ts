@@ -14,10 +14,10 @@
 export interface RatingSummary { 
     average?: number;
     count?: number;
-    oneStar?: number;
-    twoStar?: number;
-    threeStar?: number;
-    fourStar?: number;
-    fiveStar?: number;
+    one_star?: number;
+    two_star?: number;
+    three_star?: number;
+    four_star?: number;
+    five_star?: number;
 }
 

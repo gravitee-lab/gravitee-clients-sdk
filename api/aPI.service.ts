@@ -61,14 +61,14 @@ export class APIService {
      * Create a rating for an API
      * Create a rating for an API.  This API has to be accessible by the current user, otherwise a 404 will be returned.  The current must have API_RATING[CREATE] permission to create a rating. 
      * @param apiId Id of an API.
-     * @param ratingInput Use to add a rating to an api
+     * @param RatingInput Use to add a rating to an api
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApiRatingForApi(apiId: string, ratingInput?: RatingInput, observe?: 'body', reportProgress?: boolean): Observable<Rating>;
-    public createApiRatingForApi(apiId: string, ratingInput?: RatingInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Rating>>;
-    public createApiRatingForApi(apiId: string, ratingInput?: RatingInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Rating>>;
-    public createApiRatingForApi(apiId: string, ratingInput?: RatingInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createApiRatingForApi(apiId: string, RatingInput?: RatingInput, observe?: 'body', reportProgress?: boolean): Observable<Rating>;
+    public createApiRatingForApi(apiId: string, RatingInput?: RatingInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Rating>>;
+    public createApiRatingForApi(apiId: string, RatingInput?: RatingInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Rating>>;
+    public createApiRatingForApi(apiId: string, RatingInput?: RatingInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling createApiRatingForApi.');
         }
@@ -100,7 +100,7 @@ export class APIService {
         }
 
         return this.httpClient.post<Rating>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings`,
-            ratingInput,
+            RatingInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -257,7 +257,7 @@ export class APIService {
      * List public APIs for anonymous requests. List all the APIs the current user is allowed to view for authenticated requests.  The list can be filtered according to query parameters.  By default the list is sorted by alphabetic order. If a **cat** query param is sent, a specific sorting can be applied. Please refer to **cat** description for detail. 
      * @param page The page number for pagination.
      * @param size The number of items per page for pagination.
-     * @param contextPath The context-path of an API.
+     * @param context_path The context-path of an API.
      * @param label One of the labels of an API.
      * @param version The version of an API.
      * @param name The name of an API.
@@ -266,10 +266,10 @@ export class APIService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApis(page?: number, size?: number, contextPath?: string, label?: string, version?: string, name?: string, view?: string, cat?: CategoryApiQuery, observe?: 'body', reportProgress?: boolean): Observable<ApisResponse>;
-    public getApis(page?: number, size?: number, contextPath?: string, label?: string, version?: string, name?: string, view?: string, cat?: CategoryApiQuery, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApisResponse>>;
-    public getApis(page?: number, size?: number, contextPath?: string, label?: string, version?: string, name?: string, view?: string, cat?: CategoryApiQuery, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApisResponse>>;
-    public getApis(page?: number, size?: number, contextPath?: string, label?: string, version?: string, name?: string, view?: string, cat?: CategoryApiQuery, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApis(page?: number, size?: number, context_path?: string, label?: string, version?: string, name?: string, view?: string, cat?: CategoryApiQuery, observe?: 'body', reportProgress?: boolean): Observable<ApisResponse>;
+    public getApis(page?: number, size?: number, context_path?: string, label?: string, version?: string, name?: string, view?: string, cat?: CategoryApiQuery, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApisResponse>>;
+    public getApis(page?: number, size?: number, context_path?: string, label?: string, version?: string, name?: string, view?: string, cat?: CategoryApiQuery, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApisResponse>>;
+    public getApis(page?: number, size?: number, context_path?: string, label?: string, version?: string, name?: string, view?: string, cat?: CategoryApiQuery, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -278,8 +278,8 @@ export class APIService {
         if (size !== undefined && size !== null) {
             queryParameters = queryParameters.set('size', <any>size);
         }
-        if (contextPath !== undefined && contextPath !== null) {
-            queryParameters = queryParameters.set('context-path', <any>contextPath);
+        if (context_path !== undefined && context_path !== null) {
+            queryParameters = queryParameters.set('context-path', <any>context_path);
         }
         if (label !== undefined && label !== null) {
             queryParameters = queryParameters.set('label', <any>label);

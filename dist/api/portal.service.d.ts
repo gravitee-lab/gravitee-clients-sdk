@@ -26,33 +26,15 @@ export declare class PortalService {
     encoder: HttpParameterCodec;
     constructor(httpClient: HttpClient, basePath: string, configuration: Configuration);
     /**
-     * Get portal configuration.
-     * Get all the portal configuration from the platform settings.
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    configurationGet(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationResponse>;
-    configurationGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationResponse>>;
-    configurationGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationResponse>>;
-    /**
-     * Get the identity provider list.
-     * Get all the identity providers that can used in the portal.
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    configurationIdentitiesGet(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationIdentitiesResponse>;
-    configurationIdentitiesGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationIdentitiesResponse>>;
-    configurationIdentitiesGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationIdentitiesResponse>>;
-    /**
      * Create a ticket.
      * Create a ticket. This ticket can aim :   * a specific application   * a specific API   * the gravitee portal  User must be authenticated to use this service.
-     * @param ticketInput a new ticket to create
+     * @param TicketInput a new ticket to create
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    createTicket(ticketInput?: TicketInput, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    createTicket(ticketInput?: TicketInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    createTicket(ticketInput?: TicketInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    createTicket(TicketInput?: TicketInput, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    createTicket(TicketInput?: TicketInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    createTicket(TicketInput?: TicketInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
     /**
      * Get picture of a View
      * Get the picture of a view.
@@ -63,6 +45,33 @@ export declare class PortalService {
     getPictureByViewId(viewId: string, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
     getPictureByViewId(viewId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
     getPictureByViewId(viewId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    /**
+     * Get portal configuration.
+     * Get all the portal configuration from the platform settings.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    getPortalConfiguration(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationResponse>;
+    getPortalConfiguration(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationResponse>>;
+    getPortalConfiguration(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationResponse>>;
+    /**
+     * Get the identity provider list.
+     * Get all the identity providers that can used in the portal.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    getPortalIdentityProviders(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationIdentitiesResponse>;
+    getPortalIdentityProviders(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationIdentitiesResponse>>;
+    getPortalIdentityProviders(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationIdentitiesResponse>>;
+    /**
+     * Get portal information.
+     * Get some information about the portal (version, ...).
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    getPortalInformation(observe?: 'body', reportProgress?: boolean): Observable<Info>;
+    getPortalInformation(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Info>>;
+    getPortalInformation(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Info>>;
     /**
      * Get a View
      * Get a specific view.
@@ -84,13 +93,4 @@ export declare class PortalService {
     getViews(page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<ViewsResponse>;
     getViews(page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ViewsResponse>>;
     getViews(page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ViewsResponse>>;
-    /**
-     * Get portal information.
-     * Get some information about the portal (version, ...).
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    infoGet(observe?: 'body', reportProgress?: boolean): Observable<Info>;
-    infoGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Info>>;
-    infoGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Info>>;
 }

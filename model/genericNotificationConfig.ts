@@ -29,6 +29,6 @@ export interface GenericNotificationConfig extends NotificationConfig {
     /**
      * True if the notifier should use system proxy.
      */
-    useSystemProxy?: boolean;
+    use_system_proxy?: boolean;
 }
 

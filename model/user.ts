@@ -17,14 +17,14 @@ export interface User {
      * Unique identifier of a user.
      */
     id?: string;
-    firstName?: string;
-    lastName?: string;
-    displayName?: string;
+    first_name?: string;
+    last_name?: string;
+    display_name?: string;
     email?: string;
     /**
      * Avatar of the user. Used only for update.
      */
     avatar?: string;
-    links?: UserLinks;
+    _links?: UserLinks;
 }
 

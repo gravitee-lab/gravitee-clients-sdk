@@ -98,14 +98,14 @@ export class SubscriptionService {
     /**
      * Create a subscription.
      * Create a new subscription.  User must have APPLICATION_SUBSCRIPTION[CREATE] permission. 
-     * @param subscriptionInput Use to create a subscription.
+     * @param SubscriptionInput Use to create a subscription.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createSubscription(subscriptionInput?: SubscriptionInput, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
-    public createSubscription(subscriptionInput?: SubscriptionInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
-    public createSubscription(subscriptionInput?: SubscriptionInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
-    public createSubscription(subscriptionInput?: SubscriptionInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createSubscription(SubscriptionInput?: SubscriptionInput, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
+    public createSubscription(SubscriptionInput?: SubscriptionInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
+    public createSubscription(SubscriptionInput?: SubscriptionInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
+    public createSubscription(SubscriptionInput?: SubscriptionInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -134,7 +134,7 @@ export class SubscriptionService {
         }
 
         return this.httpClient.post<Subscription>(`${this.configuration.basePath}/subscriptions`,
-            subscriptionInput,
+            SubscriptionInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -255,14 +255,14 @@ export class SubscriptionService {
      * Renew a key subscription.
      * Renew a key subscription.  User must have API_SUBSCRIPTION[UPDATE] or APPLICATION_SUBSCRIPTION[UPDATE] permission. 
      * @param subscriptionId Id of a subscription.
-     * @param requestBody Use to renew keys of a subscription.
+     * @param request_body Use to renew keys of a subscription.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public renewKeySubscription(subscriptionId: string, requestBody?: Array<string>, observe?: 'body', reportProgress?: boolean): Observable<Key>;
-    public renewKeySubscription(subscriptionId: string, requestBody?: Array<string>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Key>>;
-    public renewKeySubscription(subscriptionId: string, requestBody?: Array<string>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Key>>;
-    public renewKeySubscription(subscriptionId: string, requestBody?: Array<string>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public renewKeySubscription(subscriptionId: string, request_body?: Array<string>, observe?: 'body', reportProgress?: boolean): Observable<Key>;
+    public renewKeySubscription(subscriptionId: string, request_body?: Array<string>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Key>>;
+    public renewKeySubscription(subscriptionId: string, request_body?: Array<string>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Key>>;
+    public renewKeySubscription(subscriptionId: string, request_body?: Array<string>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling renewKeySubscription.');
         }
@@ -294,7 +294,7 @@ export class SubscriptionService {
         }
 
         return this.httpClient.post<Key>(`${this.configuration.basePath}/subscriptions/${encodeURIComponent(String(subscriptionId))}/keys/_renew`,
-            requestBody,
+            request_body,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

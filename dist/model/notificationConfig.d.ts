@@ -24,11 +24,11 @@ export interface NotificationConfig {
     /**
      * Type of the subject of the notification configuration. For this API, it\'s always APPLICATION.
      */
-    referenceType?: string;
+    reference_type?: string;
     /**
      * Id of the subject of the notification configuration aka application identifier.
      */
-    referenceId?: string;
+    reference_id?: string;
     /**
      * List of event that can be notified.
      */

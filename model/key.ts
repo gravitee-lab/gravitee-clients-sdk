@@ -21,7 +21,7 @@ export interface Key {
     plan?: string;
     paused?: boolean;
     revoked?: boolean;
-    createdAt?: Date;
-    revokedAt?: Date;
+    created_at?: Date;
+    revoked_at?: Date;
 }
 

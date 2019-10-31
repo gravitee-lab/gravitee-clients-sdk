@@ -12,14 +12,14 @@
 
 
 export interface OAuthClientSettings { 
-    clientSecret?: string;
-    clientId?: string;
-    redirectUris?: Array<string>;
-    clientUri?: string;
-    logoUri?: string;
-    responseTypes?: Array<string>;
-    grantTypes?: Array<string>;
-    applicationType?: string;
-    renewClientSecretSupported?: boolean;
+    client_secret?: string;
+    client_id?: string;
+    redirect_uris?: Array<string>;
+    client_uri?: string;
+    logo_uri?: string;
+    response_types?: Array<string>;
+    grant_types?: Array<string>;
+    application_type?: string;
+    renew_client_secret_supported?: boolean;
 }
 

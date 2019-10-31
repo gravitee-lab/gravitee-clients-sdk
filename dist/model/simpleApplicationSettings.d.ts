@@ -11,5 +11,5 @@
  */
 export interface SimpleApplicationSettings {
     type?: string;
-    clientId?: string;
+    client_id?: string;
 }

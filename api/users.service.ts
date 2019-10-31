@@ -18,6 +18,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ErrorResponse } from '../model/errorResponse';
+import { FinalizeRegistrationInput } from '../model/finalizeRegistrationInput';
+import { RegisterUserInput } from '../model/registerUserInput';
+import { User } from '../model/user';
 import { UsersResponse } from '../model/usersResponse';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -48,6 +51,55 @@ export class UsersService {
     }
 
 
+
+    /**
+     * Finalize user registration.
+     * Create a new user for the portal.  User registration must be enabled. 
+     * @param FinalizeRegistrationInput Used to finalize a user registration.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public finalizeUserRegistration(FinalizeRegistrationInput?: FinalizeRegistrationInput, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public finalizeUserRegistration(FinalizeRegistrationInput?: FinalizeRegistrationInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public finalizeUserRegistration(FinalizeRegistrationInput?: FinalizeRegistrationInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public finalizeUserRegistration(FinalizeRegistrationInput?: FinalizeRegistrationInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.post<User>(`${this.configuration.basePath}/users/registration/_finalize`,
+            FinalizeRegistrationInput,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      * List platform users.
@@ -90,6 +142,55 @@ export class UsersService {
         return this.httpClient.get<UsersResponse>(`${this.configuration.basePath}/users`,
             {
                 params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Register a new user.
+     * Register a new user for the portal. As a result, an email is sent with an activation link.  User registration must be enabled.\\ A SMTP server must have been configured. 
+     * @param RegisterUserInput Used to register a new User.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public registerNewUser(RegisterUserInput?: RegisterUserInput, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public registerNewUser(RegisterUserInput?: RegisterUserInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public registerNewUser(RegisterUserInput?: RegisterUserInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public registerNewUser(RegisterUserInput?: RegisterUserInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.post<User>(`${this.configuration.basePath}/users/registration`,
+            RegisterUserInput,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

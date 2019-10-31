@@ -17,8 +17,8 @@ export interface View {
     id?: string;
     name?: string;
     description?: string;
-    defaultView?: boolean;
+    default_view?: boolean;
     order?: number;
-    totalApis?: number;
-    links?: ViewLinks;
+    total_apis?: number;
+    _links?: ViewLinks;
 }

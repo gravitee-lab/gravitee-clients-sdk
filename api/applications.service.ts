@@ -64,14 +64,14 @@ export class ApplicationsService {
     /**
      * Create an application
      * Create an application.  User must have MANAGEMENT_APPLICATION[CREATE] permission. 
-     * @param applicationInput Use to create an application.
+     * @param ApplicationInput Use to create an application.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApplication(applicationInput?: ApplicationInput, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    public createApplication(applicationInput?: ApplicationInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    public createApplication(applicationInput?: ApplicationInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
-    public createApplication(applicationInput?: ApplicationInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createApplication(ApplicationInput?: ApplicationInput, observe?: 'body', reportProgress?: boolean): Observable<Application>;
+    public createApplication(ApplicationInput?: ApplicationInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
+    public createApplication(ApplicationInput?: ApplicationInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
+    public createApplication(ApplicationInput?: ApplicationInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -100,7 +100,7 @@ export class ApplicationsService {
         }
 
         return this.httpClient.post<Application>(`${this.configuration.basePath}/applications`,
-            applicationInput,
+            ApplicationInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -114,14 +114,14 @@ export class ApplicationsService {
      * Create an application member
      * Create an application member.  User must have the APPLICATION_MEMBER[CREATE] permission. 
      * @param applicationId Id of an application.
-     * @param memberInput Use to create a member.
+     * @param MemberInput Use to create a member.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApplicationMember(applicationId: string, memberInput?: MemberInput, observe?: 'body', reportProgress?: boolean): Observable<Member>;
-    public createApplicationMember(applicationId: string, memberInput?: MemberInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
-    public createApplicationMember(applicationId: string, memberInput?: MemberInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
-    public createApplicationMember(applicationId: string, memberInput?: MemberInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createApplicationMember(applicationId: string, MemberInput?: MemberInput, observe?: 'body', reportProgress?: boolean): Observable<Member>;
+    public createApplicationMember(applicationId: string, MemberInput?: MemberInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
+    public createApplicationMember(applicationId: string, MemberInput?: MemberInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
+    public createApplicationMember(applicationId: string, MemberInput?: MemberInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling createApplicationMember.');
         }
@@ -153,7 +153,7 @@ export class ApplicationsService {
         }
 
         return this.httpClient.post<Member>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members`,
-            memberInput,
+            MemberInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -167,14 +167,14 @@ export class ApplicationsService {
      * Create notification settings.
      * Create notification settings.  User must have APPLICATION_NOTIFICATION[READ] permission to create a **portal** notification.  User must have APPLICATION_NOTIFICATION[CREATE] permission to create a **generic** notification. 
      * @param applicationId Id of an application.
-     * @param genericNotificationConfig Use to create an notification
+     * @param GenericNotificationConfig Use to create an notification
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApplicationNotification(applicationId: string, genericNotificationConfig?: GenericNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig | GenericNotificationConfig>;
-    public createApplicationNotification(applicationId: string, genericNotificationConfig?: GenericNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig | GenericNotificationConfig>>;
-    public createApplicationNotification(applicationId: string, genericNotificationConfig?: GenericNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig | GenericNotificationConfig>>;
-    public createApplicationNotification(applicationId: string, genericNotificationConfig?: GenericNotificationConfig, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createApplicationNotification(applicationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig | GenericNotificationConfig>;
+    public createApplicationNotification(applicationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig | GenericNotificationConfig>>;
+    public createApplicationNotification(applicationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig | GenericNotificationConfig>>;
+    public createApplicationNotification(applicationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling createApplicationNotification.');
         }
@@ -206,7 +206,7 @@ export class ApplicationsService {
         }
 
         return this.httpClient.post<PortalNotificationConfig | GenericNotificationConfig>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`,
-            genericNotificationConfig,
+            GenericNotificationConfig,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -963,14 +963,14 @@ export class ApplicationsService {
      * Transfer the ownership of the application
      * Transfer the ownership of the application.  User must have the APPLICATION_MEMBER[UPDATE] permission. 
      * @param applicationId Id of an application.
-     * @param transferOwnershipInput Use to transfer ownership of an application.
+     * @param TransferOwnershipInput Use to transfer ownership of an application.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public transferMemberOwnership(applicationId: string, transferOwnershipInput?: TransferOwnershipInput, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public transferMemberOwnership(applicationId: string, transferOwnershipInput?: TransferOwnershipInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public transferMemberOwnership(applicationId: string, transferOwnershipInput?: TransferOwnershipInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public transferMemberOwnership(applicationId: string, transferOwnershipInput?: TransferOwnershipInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public transferMemberOwnership(applicationId: string, TransferOwnershipInput?: TransferOwnershipInput, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public transferMemberOwnership(applicationId: string, TransferOwnershipInput?: TransferOwnershipInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public transferMemberOwnership(applicationId: string, TransferOwnershipInput?: TransferOwnershipInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public transferMemberOwnership(applicationId: string, TransferOwnershipInput?: TransferOwnershipInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling transferMemberOwnership.');
         }
@@ -1002,7 +1002,7 @@ export class ApplicationsService {
         }
 
         return this.httpClient.post<any>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/_transfer_ownership`,
-            transferOwnershipInput,
+            TransferOwnershipInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -1016,14 +1016,14 @@ export class ApplicationsService {
      * Update an application.
      * Update an application.  User must have APPLICATION_DEFINITION[UPDATE] permission. 
      * @param applicationId Id of an application.
-     * @param application Use to update an application.
+     * @param Application Use to update an application.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateApplicationByApplicationId(applicationId: string, application?: Application, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    public updateApplicationByApplicationId(applicationId: string, application?: Application, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    public updateApplicationByApplicationId(applicationId: string, application?: Application, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
-    public updateApplicationByApplicationId(applicationId: string, application?: Application, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateApplicationByApplicationId(applicationId: string, Application?: Application, observe?: 'body', reportProgress?: boolean): Observable<Application>;
+    public updateApplicationByApplicationId(applicationId: string, Application?: Application, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
+    public updateApplicationByApplicationId(applicationId: string, Application?: Application, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
+    public updateApplicationByApplicationId(applicationId: string, Application?: Application, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationByApplicationId.');
         }
@@ -1055,7 +1055,7 @@ export class ApplicationsService {
         }
 
         return this.httpClient.put<Application>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}`,
-            application,
+            Application,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -1070,14 +1070,14 @@ export class ApplicationsService {
      * Update an application member.  User must have the APPLICATION_MEMBER[UPDATE] permission. 
      * @param applicationId Id of an application.
      * @param memberId Id of a member.
-     * @param memberInput Use to update a member.
+     * @param MemberInput Use to update a member.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, memberInput?: MemberInput, observe?: 'body', reportProgress?: boolean): Observable<Member>;
-    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, memberInput?: MemberInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
-    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, memberInput?: MemberInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
-    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, memberInput?: MemberInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, MemberInput?: MemberInput, observe?: 'body', reportProgress?: boolean): Observable<Member>;
+    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, MemberInput?: MemberInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
+    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, MemberInput?: MemberInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
+    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, MemberInput?: MemberInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationMemberByApplicationIdAndMemberId.');
         }
@@ -1112,7 +1112,7 @@ export class ApplicationsService {
         }
 
         return this.httpClient.put<Member>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/${encodeURIComponent(String(memberId))}`,
-            memberInput,
+            MemberInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -1127,14 +1127,14 @@ export class ApplicationsService {
      * Update a generic notification for an application.  User must have APPLICATION_NOTIFICATION[UPDATE] permission to update a **generic** notification. 
      * @param applicationId Id of an application.
      * @param notificationId Id of a notification.
-     * @param genericNotificationConfig Use to update a generic notification.
+     * @param GenericNotificationConfig Use to update a generic notification.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateGenericApplicationNotification(applicationId: string, notificationId: string, genericNotificationConfig?: GenericNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<GenericNotificationConfig>;
-    public updateGenericApplicationNotification(applicationId: string, notificationId: string, genericNotificationConfig?: GenericNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GenericNotificationConfig>>;
-    public updateGenericApplicationNotification(applicationId: string, notificationId: string, genericNotificationConfig?: GenericNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GenericNotificationConfig>>;
-    public updateGenericApplicationNotification(applicationId: string, notificationId: string, genericNotificationConfig?: GenericNotificationConfig, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateGenericApplicationNotification(applicationId: string, notificationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<GenericNotificationConfig>;
+    public updateGenericApplicationNotification(applicationId: string, notificationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GenericNotificationConfig>>;
+    public updateGenericApplicationNotification(applicationId: string, notificationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GenericNotificationConfig>>;
+    public updateGenericApplicationNotification(applicationId: string, notificationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateGenericApplicationNotification.');
         }
@@ -1169,7 +1169,7 @@ export class ApplicationsService {
         }
 
         return this.httpClient.put<GenericNotificationConfig>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications/${encodeURIComponent(String(notificationId))}`,
-            genericNotificationConfig,
+            GenericNotificationConfig,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -1183,14 +1183,14 @@ export class ApplicationsService {
      * Update a portal notification for an application.
      * Update a portal notification for an application.  User must have APPLICATION_NOTIFICATION[READ] permission to update a **portal** notification. 
      * @param applicationId Id of an application.
-     * @param portalNotificationConfig Use to update a portal notification config.
+     * @param PortalNotificationConfig Use to update a portal notification config.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updatePortalApplicationNotification(applicationId: string, portalNotificationConfig?: PortalNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig>;
-    public updatePortalApplicationNotification(applicationId: string, portalNotificationConfig?: PortalNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig>>;
-    public updatePortalApplicationNotification(applicationId: string, portalNotificationConfig?: PortalNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig>>;
-    public updatePortalApplicationNotification(applicationId: string, portalNotificationConfig?: PortalNotificationConfig, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updatePortalApplicationNotification(applicationId: string, PortalNotificationConfig?: PortalNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig>;
+    public updatePortalApplicationNotification(applicationId: string, PortalNotificationConfig?: PortalNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig>>;
+    public updatePortalApplicationNotification(applicationId: string, PortalNotificationConfig?: PortalNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig>>;
+    public updatePortalApplicationNotification(applicationId: string, PortalNotificationConfig?: PortalNotificationConfig, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updatePortalApplicationNotification.');
         }
@@ -1222,7 +1222,7 @@ export class ApplicationsService {
         }
 
         return this.httpClient.put<PortalNotificationConfig>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`,
-            portalNotificationConfig,
+            PortalNotificationConfig,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

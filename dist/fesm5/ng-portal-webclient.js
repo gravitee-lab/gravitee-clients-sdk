@@ -113,7 +113,7 @@ var APIService = /** @class */ (function () {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    APIService.prototype.createApiRatingForApi = function (apiId, ratingInput, observe, reportProgress) {
+    APIService.prototype.createApiRatingForApi = function (apiId, RatingInput, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         if (apiId === null || apiId === undefined) {
@@ -141,7 +141,7 @@ var APIService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/ratings", ratingInput, {
+        return this.httpClient.post(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/ratings", RatingInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -237,7 +237,7 @@ var APIService = /** @class */ (function () {
             reportProgress: reportProgress
         });
     };
-    APIService.prototype.getApis = function (page, size, contextPath, label, version, name, view, cat, observe, reportProgress) {
+    APIService.prototype.getApis = function (page, size, context_path, label, version, name, view, cat, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         var queryParameters = new HttpParams({ encoder: this.encoder });
@@ -247,8 +247,8 @@ var APIService = /** @class */ (function () {
         if (size !== undefined && size !== null) {
             queryParameters = queryParameters.set('size', size);
         }
-        if (contextPath !== undefined && contextPath !== null) {
-            queryParameters = queryParameters.set('context-path', contextPath);
+        if (context_path !== undefined && context_path !== null) {
+            queryParameters = queryParameters.set('context-path', context_path);
         }
         if (label !== undefined && label !== null) {
             queryParameters = queryParameters.set('label', label);
@@ -629,7 +629,7 @@ var ApplicationsService = /** @class */ (function () {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    ApplicationsService.prototype.createApplication = function (applicationInput, observe, reportProgress) {
+    ApplicationsService.prototype.createApplication = function (ApplicationInput, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         var headers = this.defaultHeaders;
@@ -654,14 +654,14 @@ var ApplicationsService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(this.configuration.basePath + "/applications", applicationInput, {
+        return this.httpClient.post(this.configuration.basePath + "/applications", ApplicationInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     };
-    ApplicationsService.prototype.createApplicationMember = function (applicationId, memberInput, observe, reportProgress) {
+    ApplicationsService.prototype.createApplicationMember = function (applicationId, MemberInput, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         if (applicationId === null || applicationId === undefined) {
@@ -689,14 +689,14 @@ var ApplicationsService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/members", memberInput, {
+        return this.httpClient.post(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/members", MemberInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     };
-    ApplicationsService.prototype.createApplicationNotification = function (applicationId, genericNotificationConfig, observe, reportProgress) {
+    ApplicationsService.prototype.createApplicationNotification = function (applicationId, GenericNotificationConfig, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         if (applicationId === null || applicationId === undefined) {
@@ -724,7 +724,7 @@ var ApplicationsService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/notifications", genericNotificationConfig, {
+        return this.httpClient.post(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/notifications", GenericNotificationConfig, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1223,7 +1223,7 @@ var ApplicationsService = /** @class */ (function () {
             reportProgress: reportProgress
         });
     };
-    ApplicationsService.prototype.transferMemberOwnership = function (applicationId, transferOwnershipInput, observe, reportProgress) {
+    ApplicationsService.prototype.transferMemberOwnership = function (applicationId, TransferOwnershipInput, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         if (applicationId === null || applicationId === undefined) {
@@ -1251,14 +1251,14 @@ var ApplicationsService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/members/_transfer_ownership", transferOwnershipInput, {
+        return this.httpClient.post(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/members/_transfer_ownership", TransferOwnershipInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     };
-    ApplicationsService.prototype.updateApplicationByApplicationId = function (applicationId, application, observe, reportProgress) {
+    ApplicationsService.prototype.updateApplicationByApplicationId = function (applicationId, Application, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         if (applicationId === null || applicationId === undefined) {
@@ -1286,14 +1286,14 @@ var ApplicationsService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.put(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)), application, {
+        return this.httpClient.put(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)), Application, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     };
-    ApplicationsService.prototype.updateApplicationMemberByApplicationIdAndMemberId = function (applicationId, memberId, memberInput, observe, reportProgress) {
+    ApplicationsService.prototype.updateApplicationMemberByApplicationIdAndMemberId = function (applicationId, memberId, MemberInput, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         if (applicationId === null || applicationId === undefined) {
@@ -1324,14 +1324,14 @@ var ApplicationsService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.put(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/members/" + encodeURIComponent(String(memberId)), memberInput, {
+        return this.httpClient.put(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/members/" + encodeURIComponent(String(memberId)), MemberInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     };
-    ApplicationsService.prototype.updateGenericApplicationNotification = function (applicationId, notificationId, genericNotificationConfig, observe, reportProgress) {
+    ApplicationsService.prototype.updateGenericApplicationNotification = function (applicationId, notificationId, GenericNotificationConfig, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         if (applicationId === null || applicationId === undefined) {
@@ -1362,14 +1362,14 @@ var ApplicationsService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.put(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/notifications/" + encodeURIComponent(String(notificationId)), genericNotificationConfig, {
+        return this.httpClient.put(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/notifications/" + encodeURIComponent(String(notificationId)), GenericNotificationConfig, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     };
-    ApplicationsService.prototype.updatePortalApplicationNotification = function (applicationId, portalNotificationConfig, observe, reportProgress) {
+    ApplicationsService.prototype.updatePortalApplicationNotification = function (applicationId, PortalNotificationConfig, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         if (applicationId === null || applicationId === undefined) {
@@ -1397,7 +1397,7 @@ var ApplicationsService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.put(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/notifications", portalNotificationConfig, {
+        return this.httpClient.put(this.configuration.basePath + "/applications/" + encodeURIComponent(String(applicationId)) + "/notifications", PortalNotificationConfig, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1436,7 +1436,7 @@ var AuthenticationService = /** @class */ (function () {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    AuthenticationService.prototype.exchangeAuthorizationCode = function (identity, payloadInput, observe, reportProgress) {
+    AuthenticationService.prototype.exchangeAuthorizationCode = function (identity, PayloadInput, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         if (identity === null || identity === undefined) {
@@ -1459,22 +1459,22 @@ var AuthenticationService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(this.configuration.basePath + "/auth/oauth2/" + encodeURIComponent(String(identity)), payloadInput, {
+        return this.httpClient.post(this.configuration.basePath + "/auth/oauth2/" + encodeURIComponent(String(identity)), PayloadInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
             reportProgress: reportProgress
         });
     };
-    AuthenticationService.prototype.login = function (authorization, observe, reportProgress) {
+    AuthenticationService.prototype.login = function (Authorization, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
-        if (authorization === null || authorization === undefined) {
-            throw new Error('Required parameter authorization was null or undefined when calling login.');
+        if (Authorization === null || Authorization === undefined) {
+            throw new Error('Required parameter Authorization was null or undefined when calling login.');
         }
         var headers = this.defaultHeaders;
-        if (authorization !== undefined && authorization !== null) {
-            headers = headers.set('Authorization', String(authorization));
+        if (Authorization !== undefined && Authorization !== null) {
+            headers = headers.set('Authorization', String(Authorization));
         }
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1730,45 +1730,7 @@ var PortalService = /** @class */ (function () {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    PortalService.prototype.configurationGet = function (observe, reportProgress) {
-        if (observe === void 0) { observe = 'body'; }
-        if (reportProgress === void 0) { reportProgress = false; }
-        var headers = this.defaultHeaders;
-        // to determine the Accept header
-        var httpHeaderAccepts = [
-            'application/json'
-        ];
-        var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(this.configuration.basePath + "/configuration", {
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    };
-    PortalService.prototype.configurationIdentitiesGet = function (observe, reportProgress) {
-        if (observe === void 0) { observe = 'body'; }
-        if (reportProgress === void 0) { reportProgress = false; }
-        var headers = this.defaultHeaders;
-        // to determine the Accept header
-        var httpHeaderAccepts = [
-            'application/json'
-        ];
-        var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(this.configuration.basePath + "/configuration/identities", {
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    };
-    PortalService.prototype.createTicket = function (ticketInput, observe, reportProgress) {
+    PortalService.prototype.createTicket = function (TicketInput, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         var headers = this.defaultHeaders;
@@ -1793,7 +1755,7 @@ var PortalService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(this.configuration.basePath + "/tickets", ticketInput, {
+        return this.httpClient.post(this.configuration.basePath + "/tickets", TicketInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1818,6 +1780,63 @@ var PortalService = /** @class */ (function () {
         }
         return this.httpClient.get(this.configuration.basePath + "/views/" + encodeURIComponent(String(viewId)) + "/picture", {
             responseType: "blob",
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    };
+    PortalService.prototype.getPortalConfiguration = function (observe, reportProgress) {
+        if (observe === void 0) { observe = 'body'; }
+        if (reportProgress === void 0) { reportProgress = false; }
+        var headers = this.defaultHeaders;
+        // to determine the Accept header
+        var httpHeaderAccepts = [
+            'application/json'
+        ];
+        var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(this.configuration.basePath + "/configuration", {
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    };
+    PortalService.prototype.getPortalIdentityProviders = function (observe, reportProgress) {
+        if (observe === void 0) { observe = 'body'; }
+        if (reportProgress === void 0) { reportProgress = false; }
+        var headers = this.defaultHeaders;
+        // to determine the Accept header
+        var httpHeaderAccepts = [
+            'application/json'
+        ];
+        var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(this.configuration.basePath + "/configuration/identities", {
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    };
+    PortalService.prototype.getPortalInformation = function (observe, reportProgress) {
+        if (observe === void 0) { observe = 'body'; }
+        if (reportProgress === void 0) { reportProgress = false; }
+        var headers = this.defaultHeaders;
+        // to determine the Accept header
+        var httpHeaderAccepts = [
+            'application/json'
+        ];
+        var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(this.configuration.basePath + "/info", {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1867,25 +1886,6 @@ var PortalService = /** @class */ (function () {
         }
         return this.httpClient.get(this.configuration.basePath + "/views", {
             params: queryParameters,
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    };
-    PortalService.prototype.infoGet = function (observe, reportProgress) {
-        if (observe === void 0) { observe = 'body'; }
-        if (reportProgress === void 0) { reportProgress = false; }
-        var headers = this.defaultHeaders;
-        // to determine the Accept header
-        var httpHeaderAccepts = [
-            'application/json'
-        ];
-        var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(this.configuration.basePath + "/info", {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -1951,7 +1951,7 @@ var SubscriptionService = /** @class */ (function () {
             reportProgress: reportProgress
         });
     };
-    SubscriptionService.prototype.createSubscription = function (subscriptionInput, observe, reportProgress) {
+    SubscriptionService.prototype.createSubscription = function (SubscriptionInput, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         var headers = this.defaultHeaders;
@@ -1976,7 +1976,7 @@ var SubscriptionService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(this.configuration.basePath + "/subscriptions", subscriptionInput, {
+        return this.httpClient.post(this.configuration.basePath + "/subscriptions", SubscriptionInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -2055,7 +2055,7 @@ var SubscriptionService = /** @class */ (function () {
             reportProgress: reportProgress
         });
     };
-    SubscriptionService.prototype.renewKeySubscription = function (subscriptionId, requestBody, observe, reportProgress) {
+    SubscriptionService.prototype.renewKeySubscription = function (subscriptionId, request_body, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         if (subscriptionId === null || subscriptionId === undefined) {
@@ -2083,7 +2083,7 @@ var SubscriptionService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.post(this.configuration.basePath + "/subscriptions/" + encodeURIComponent(String(subscriptionId)) + "/keys/_renew", requestBody, {
+        return this.httpClient.post(this.configuration.basePath + "/subscriptions/" + encodeURIComponent(String(subscriptionId)) + "/keys/_renew", request_body, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -2285,7 +2285,7 @@ var UserService = /** @class */ (function () {
             reportProgress: reportProgress
         });
     };
-    UserService.prototype.updateCurrentUser = function (user, observe, reportProgress) {
+    UserService.prototype.updateCurrentUser = function (User, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
         var headers = this.defaultHeaders;
@@ -2310,7 +2310,7 @@ var UserService = /** @class */ (function () {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        return this.httpClient.put(this.configuration.basePath + "/user", user, {
+        return this.httpClient.put(this.configuration.basePath + "/user", User, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,
@@ -2349,6 +2349,38 @@ var UsersService = /** @class */ (function () {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
+    UsersService.prototype.finalizeUserRegistration = function (FinalizeRegistrationInput, observe, reportProgress) {
+        if (observe === void 0) { observe = 'body'; }
+        if (reportProgress === void 0) { reportProgress = false; }
+        var headers = this.defaultHeaders;
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        var httpHeaderAccepts = [
+            'application/json'
+        ];
+        var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        // to determine the Content-Type header
+        var consumes = [
+            'application/json'
+        ];
+        var httpContentTypeSelected = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+        return this.httpClient.post(this.configuration.basePath + "/users/registration/_finalize", FinalizeRegistrationInput, {
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    };
     UsersService.prototype.getUsers = function (page, size, observe, reportProgress) {
         if (observe === void 0) { observe = 'body'; }
         if (reportProgress === void 0) { reportProgress = false; }
@@ -2375,6 +2407,38 @@ var UsersService = /** @class */ (function () {
         }
         return this.httpClient.get(this.configuration.basePath + "/users", {
             params: queryParameters,
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    };
+    UsersService.prototype.registerNewUser = function (RegisterUserInput, observe, reportProgress) {
+        if (observe === void 0) { observe = 'body'; }
+        if (reportProgress === void 0) { reportProgress = false; }
+        var headers = this.defaultHeaders;
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        var httpHeaderAccepts = [
+            'application/json'
+        ];
+        var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        // to determine the Content-Type header
+        var consumes = [
+            'application/json'
+        ];
+        var httpContentTypeSelected = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+        return this.httpClient.post(this.configuration.basePath + "/users/registration", RegisterUserInput, {
             withCredentials: this.configuration.withCredentials,
             headers: headers,
             observe: observe,

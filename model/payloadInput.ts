@@ -12,8 +12,8 @@
 
 
 export interface PayloadInput { 
-    clientId?: string;
-    redirectUri?: string;
+    client_id?: string;
+    redirect_uri?: string;
     code?: string;
     state?: string;
 }

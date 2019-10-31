@@ -33,11 +33,11 @@ export interface Application {
     /**
      * Creation date and time of the application.
      */
-    createdAt?: Date;
+    created_at?: Date;
     /**
      * Last update date and time of the application.
      */
-    updatedAt?: Date;
+    updated_at?: Date;
     /**
      * Array of groups associated to the application.
      */
@@ -47,5 +47,5 @@ export interface Application {
      */
     picture?: string;
     settings?: ApplicationSettings;
-    links?: ApplicationLinks;
+    _links?: ApplicationLinks;
 }

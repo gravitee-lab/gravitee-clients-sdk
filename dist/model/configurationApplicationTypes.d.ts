@@ -15,5 +15,5 @@ export interface ConfigurationApplicationTypes {
     browser?: Enabled;
     web?: Enabled;
     _native?: Enabled;
-    backendToBackend?: Enabled;
+    backend_to_backend?: Enabled;
 }

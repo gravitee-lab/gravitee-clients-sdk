@@ -7,7 +7,7 @@ npm install @openapitools/openapi-generator-cli -g
 
 npx openapi-generator generate \
 -i ../gravitee-management-rest-api/gravitee-rest-api-portal/gravitee-rest-api-portal-rest/src/main/resources/openapi.yaml \
--g typescript-angular -c ng-portal-webclient.yaml
+-g typescript-angular -c ng-portal-webclient.yaml -pmodelPropertyNaming=original
 ```
 
 Fix generation [BUG](https://github.com/OpenAPITools/openapi-generator/issues/2154) for files

@@ -12,7 +12,7 @@
 
 
 export interface Token { 
-    tokenType?: Token.TokenTypeEnum;
+    token_type?: Token.TokenTypeEnum;
     token?: string;
 }
 export namespace Token {

@@ -47,11 +47,11 @@ export interface Plan {
     /**
      * True if a comment is required when a subscription is created.
      */
-    commentRequired: boolean;
+    comment_required: boolean;
     /**
      * Content of the message sent to a user creating a subscription.
      */
-    commentQuestion?: string;
+    comment_question?: string;
 }
 export namespace Plan {
     export type SecurityEnum = 'API_KEY' | 'KEY_LESS' | 'JWT' | 'OAUTH2';

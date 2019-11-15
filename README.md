@@ -3,17 +3,17 @@
 ### Generating
 
 ```
-npm install @openapitools/openapi-generator-cli -g
+npm install @openapitools/openapi-generator-cli@4.2.1 -g
 
 npx openapi-generator generate \
 -i ../gravitee-management-rest-api/gravitee-rest-api-portal/gravitee-rest-api-portal-rest/src/main/resources/openapi.yaml \
--g typescript-angular -c ng-portal-webclient.yaml -pmodelPropertyNaming=original
+-g typescript-angular -c ng-portal-webclient.yaml -pmodelPropertyNaming=original -puseSingleRequestParameter=true
 ```
 
 Fix generation [BUG](https://github.com/OpenAPITools/openapi-generator/issues/2154) for files
- - `api/analytics.service.ts``
+ - `api/analytics.service.ts`
  - `api/applications.service.ts`
- 
+ - `api/api.ts`
  
 ### Building
 

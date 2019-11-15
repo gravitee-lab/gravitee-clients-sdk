@@ -25,6 +25,20 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 
 
+export interface DeleteCurrentUserNotificationByNotificationIdRequestParams {
+    notificationId: string;
+}
+
+export interface GetCurrentUserNotificationsRequestParams {
+    page?: number;
+    size?: number;
+}
+
+export interface UpdateCurrentUserRequestParams {
+    User?: User;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -91,14 +105,15 @@ export class UserService {
     /**
      * Delete a specific notification of the current user
      * Delete a specific notification of the current user. 
-     * @param notificationId Id of a notification.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteCurrentUserNotificationByNotificationId(notificationId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteCurrentUserNotificationByNotificationId(notificationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteCurrentUserNotificationByNotificationId(notificationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteCurrentUserNotificationByNotificationId(notificationId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteCurrentUserNotificationByNotificationId(requestParameters: DeleteCurrentUserNotificationByNotificationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteCurrentUserNotificationByNotificationId(requestParameters: DeleteCurrentUserNotificationByNotificationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteCurrentUserNotificationByNotificationId(requestParameters: DeleteCurrentUserNotificationByNotificationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteCurrentUserNotificationByNotificationId(requestParameters: DeleteCurrentUserNotificationByNotificationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const notificationId = requestParameters.notificationId;
         if (notificationId === null || notificationId === undefined) {
             throw new Error('Required parameter notificationId was null or undefined when calling deleteCurrentUserNotificationByNotificationId.');
         }
@@ -211,15 +226,16 @@ export class UserService {
     /**
      * Retrieve user\&#39;s notifications
      * Retrieve current user\&#39;s notifications. 
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getCurrentUserNotifications(page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationsResponse>;
-    public getCurrentUserNotifications(page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationsResponse>>;
-    public getCurrentUserNotifications(page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationsResponse>>;
-    public getCurrentUserNotifications(page?: number, size?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getCurrentUserNotifications(requestParameters: GetCurrentUserNotificationsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationsResponse>;
+    public getCurrentUserNotifications(requestParameters: GetCurrentUserNotificationsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationsResponse>>;
+    public getCurrentUserNotifications(requestParameters: GetCurrentUserNotificationsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationsResponse>>;
+    public getCurrentUserNotifications(requestParameters: GetCurrentUserNotificationsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -260,14 +276,15 @@ export class UserService {
     /**
      * Modify current user information.
      * Modify current user information.  Only the current user can modify his/her information. 
-     * @param User Use to update a user.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateCurrentUser(User?: User, observe?: 'body', reportProgress?: boolean): Observable<User>;
-    public updateCurrentUser(User?: User, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
-    public updateCurrentUser(User?: User, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
-    public updateCurrentUser(User?: User, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateCurrentUser(requestParameters: UpdateCurrentUserRequestParams, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public updateCurrentUser(requestParameters: UpdateCurrentUserRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public updateCurrentUser(requestParameters: UpdateCurrentUserRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public updateCurrentUser(requestParameters: UpdateCurrentUserRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const User = requestParameters.User;
 
         let headers = this.defaultHeaders;
 

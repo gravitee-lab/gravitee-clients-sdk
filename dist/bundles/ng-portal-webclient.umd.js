@@ -295,292 +295,6 @@
         return Configuration;
     }());
 
-    var APIService = /** @class */ (function () {
-        function APIService(httpClient, basePath, configuration) {
-            this.httpClient = httpClient;
-            this.basePath = 'http://demo.gravitee.io/portal/DEFAULT';
-            this.defaultHeaders = new http.HttpHeaders();
-            this.configuration = new Configuration();
-            if (configuration) {
-                this.configuration = configuration;
-            }
-            if (typeof this.configuration.basePath !== 'string') {
-                if (typeof basePath !== 'string') {
-                    basePath = this.basePath;
-                }
-                this.configuration.basePath = basePath;
-            }
-            this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
-        }
-        APIService.prototype.createApiRatingForApi = function (apiId, RatingInput, observe, reportProgress) {
-            if (observe === void 0) { observe = 'body'; }
-            if (reportProgress === void 0) { reportProgress = false; }
-            if (apiId === null || apiId === undefined) {
-                throw new Error('Required parameter apiId was null or undefined when calling createApiRatingForApi.');
-            }
-            var headers = this.defaultHeaders;
-            // authentication (BasicAuth) required
-            if (this.configuration.username || this.configuration.password) {
-                headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-            }
-            // authentication (CookieAuth) required
-            // to determine the Accept header
-            var httpHeaderAccepts = [
-                'application/json'
-            ];
-            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-            if (httpHeaderAcceptSelected !== undefined) {
-                headers = headers.set('Accept', httpHeaderAcceptSelected);
-            }
-            // to determine the Content-Type header
-            var consumes = [
-                'application/json'
-            ];
-            var httpContentTypeSelected = this.configuration.selectHeaderContentType(consumes);
-            if (httpContentTypeSelected !== undefined) {
-                headers = headers.set('Content-Type', httpContentTypeSelected);
-            }
-            return this.httpClient.post(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/ratings", RatingInput, {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            });
-        };
-        APIService.prototype.getApiByApiId = function (apiId, include, observe, reportProgress) {
-            if (observe === void 0) { observe = 'body'; }
-            if (reportProgress === void 0) { reportProgress = false; }
-            if (apiId === null || apiId === undefined) {
-                throw new Error('Required parameter apiId was null or undefined when calling getApiByApiId.');
-            }
-            var queryParameters = new http.HttpParams({ encoder: this.encoder });
-            if (include) {
-                include.forEach(function (element) {
-                    queryParameters = queryParameters.append('include', element);
-                });
-            }
-            var headers = this.defaultHeaders;
-            // to determine the Accept header
-            var httpHeaderAccepts = [
-                'application/json'
-            ];
-            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-            if (httpHeaderAcceptSelected !== undefined) {
-                headers = headers.set('Accept', httpHeaderAcceptSelected);
-            }
-            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)), {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            });
-        };
-        APIService.prototype.getApiPlansByApiId = function (apiId, page, size, observe, reportProgress) {
-            if (observe === void 0) { observe = 'body'; }
-            if (reportProgress === void 0) { reportProgress = false; }
-            if (apiId === null || apiId === undefined) {
-                throw new Error('Required parameter apiId was null or undefined when calling getApiPlansByApiId.');
-            }
-            var queryParameters = new http.HttpParams({ encoder: this.encoder });
-            if (page !== undefined && page !== null) {
-                queryParameters = queryParameters.set('page', page);
-            }
-            if (size !== undefined && size !== null) {
-                queryParameters = queryParameters.set('size', size);
-            }
-            var headers = this.defaultHeaders;
-            // to determine the Accept header
-            var httpHeaderAccepts = [
-                'application/json'
-            ];
-            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-            if (httpHeaderAcceptSelected !== undefined) {
-                headers = headers.set('Accept', httpHeaderAcceptSelected);
-            }
-            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/plans", {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            });
-        };
-        APIService.prototype.getApiRatingsByApiId = function (apiId, page, size, observe, reportProgress) {
-            if (observe === void 0) { observe = 'body'; }
-            if (reportProgress === void 0) { reportProgress = false; }
-            if (apiId === null || apiId === undefined) {
-                throw new Error('Required parameter apiId was null or undefined when calling getApiRatingsByApiId.');
-            }
-            var queryParameters = new http.HttpParams({ encoder: this.encoder });
-            if (page !== undefined && page !== null) {
-                queryParameters = queryParameters.set('page', page);
-            }
-            if (size !== undefined && size !== null) {
-                queryParameters = queryParameters.set('size', size);
-            }
-            var headers = this.defaultHeaders;
-            // to determine the Accept header
-            var httpHeaderAccepts = [
-                'application/json'
-            ];
-            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-            if (httpHeaderAcceptSelected !== undefined) {
-                headers = headers.set('Accept', httpHeaderAcceptSelected);
-            }
-            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/ratings", {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            });
-        };
-        APIService.prototype.getApis = function (page, size, context_path, label, version, name, view, cat, observe, reportProgress) {
-            if (observe === void 0) { observe = 'body'; }
-            if (reportProgress === void 0) { reportProgress = false; }
-            var queryParameters = new http.HttpParams({ encoder: this.encoder });
-            if (page !== undefined && page !== null) {
-                queryParameters = queryParameters.set('page', page);
-            }
-            if (size !== undefined && size !== null) {
-                queryParameters = queryParameters.set('size', size);
-            }
-            if (context_path !== undefined && context_path !== null) {
-                queryParameters = queryParameters.set('context-path', context_path);
-            }
-            if (label !== undefined && label !== null) {
-                queryParameters = queryParameters.set('label', label);
-            }
-            if (version !== undefined && version !== null) {
-                queryParameters = queryParameters.set('version', version);
-            }
-            if (name !== undefined && name !== null) {
-                queryParameters = queryParameters.set('name', name);
-            }
-            if (view !== undefined && view !== null) {
-                queryParameters = queryParameters.set('view', view);
-            }
-            if (cat !== undefined && cat !== null) {
-                queryParameters = queryParameters.set('cat', cat);
-            }
-            var headers = this.defaultHeaders;
-            // to determine the Accept header
-            var httpHeaderAccepts = [
-                'application/json'
-            ];
-            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-            if (httpHeaderAcceptSelected !== undefined) {
-                headers = headers.set('Accept', httpHeaderAcceptSelected);
-            }
-            return this.httpClient.get(this.configuration.basePath + "/apis", {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            });
-        };
-        APIService.prototype.getPageByApiIdAndPageId = function (apiId, pageId, observe, reportProgress) {
-            if (observe === void 0) { observe = 'body'; }
-            if (reportProgress === void 0) { reportProgress = false; }
-            if (apiId === null || apiId === undefined) {
-                throw new Error('Required parameter apiId was null or undefined when calling getPageByApiIdAndPageId.');
-            }
-            if (pageId === null || pageId === undefined) {
-                throw new Error('Required parameter pageId was null or undefined when calling getPageByApiIdAndPageId.');
-            }
-            var headers = this.defaultHeaders;
-            // to determine the Accept header
-            var httpHeaderAccepts = [
-                'application/json'
-            ];
-            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-            if (httpHeaderAcceptSelected !== undefined) {
-                headers = headers.set('Accept', httpHeaderAcceptSelected);
-            }
-            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/pages/" + encodeURIComponent(String(pageId)), {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            });
-        };
-        APIService.prototype.getPagesByApiId = function (apiId, page, size, homepage, parent, observe, reportProgress) {
-            if (observe === void 0) { observe = 'body'; }
-            if (reportProgress === void 0) { reportProgress = false; }
-            if (apiId === null || apiId === undefined) {
-                throw new Error('Required parameter apiId was null or undefined when calling getPagesByApiId.');
-            }
-            var queryParameters = new http.HttpParams({ encoder: this.encoder });
-            if (page !== undefined && page !== null) {
-                queryParameters = queryParameters.set('page', page);
-            }
-            if (size !== undefined && size !== null) {
-                queryParameters = queryParameters.set('size', size);
-            }
-            if (homepage !== undefined && homepage !== null) {
-                queryParameters = queryParameters.set('homepage', homepage);
-            }
-            if (parent !== undefined && parent !== null) {
-                queryParameters = queryParameters.set('parent', parent);
-            }
-            var headers = this.defaultHeaders;
-            // to determine the Accept header
-            var httpHeaderAccepts = [
-                'application/json'
-            ];
-            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-            if (httpHeaderAcceptSelected !== undefined) {
-                headers = headers.set('Accept', httpHeaderAcceptSelected);
-            }
-            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/pages", {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            });
-        };
-        APIService.prototype.getPictureByApiId = function (apiId, observe, reportProgress) {
-            if (observe === void 0) { observe = 'body'; }
-            if (reportProgress === void 0) { reportProgress = false; }
-            if (apiId === null || apiId === undefined) {
-                throw new Error('Required parameter apiId was null or undefined when calling getPictureByApiId.');
-            }
-            var headers = this.defaultHeaders;
-            // to determine the Accept header
-            var httpHeaderAccepts = [
-                'image/_*',
-                'application/json'
-            ];
-            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-            if (httpHeaderAcceptSelected !== undefined) {
-                headers = headers.set('Accept', httpHeaderAcceptSelected);
-            }
-            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/picture", {
-                responseType: "blob",
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            });
-        };
-        APIService.ctorParameters = function () { return [
-            { type: http.HttpClient },
-            { type: String, decorators: [{ type: core.Optional }, { type: core.Inject, args: [BASE_PATH,] }] },
-            { type: Configuration, decorators: [{ type: core.Optional }] }
-        ]; };
-        APIService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function APIService_Factory() { return new APIService(core.ɵɵinject(http.HttpClient), core.ɵɵinject(BASE_PATH, 8), core.ɵɵinject(Configuration, 8)); }, token: APIService, providedIn: "root" });
-        APIService = __decorate([
-            core.Injectable({
-                providedIn: 'root'
-            }),
-            __param(1, core.Optional()), __param(1, core.Inject(BASE_PATH)), __param(2, core.Optional())
-        ], APIService);
-        return APIService;
-    }());
-
     var AnalyticsService = /** @class */ (function () {
         function AnalyticsService(httpClient, basePath, configuration) {
             this.httpClient = httpClient;
@@ -598,12 +312,20 @@
             }
             this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
         }
-        AnalyticsService.prototype.exportApplicationLogsByApplicationId = function (applicationId, page, size, from, to, query, field, order, observe, reportProgress) {
+        AnalyticsService.prototype.exportApplicationLogsByApplicationId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling exportApplicationLogsByApplicationId.');
             }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var from = requestParameters.from;
+            var to = requestParameters.to;
+            var query = requestParameters.query;
+            var field = requestParameters.field;
+            var order = requestParameters.order;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -649,12 +371,24 @@
                 reportProgress: reportProgress
             });
         };
-        AnalyticsService.prototype.getApplicationAnalytics = function (applicationId, page, size, from, to, interval, query, field, type, range, aggs, order, observe, reportProgress) {
+        AnalyticsService.prototype.getApplicationAnalytics = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling getApplicationAnalytics.');
             }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var from = requestParameters.from;
+            var to = requestParameters.to;
+            var interval = requestParameters.interval;
+            var query = requestParameters.query;
+            var field = requestParameters.field;
+            var type = requestParameters.type;
+            var range = requestParameters.range;
+            var aggs = requestParameters.aggs;
+            var order = requestParameters.order;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -711,15 +445,18 @@
                 reportProgress: reportProgress
             });
         };
-        AnalyticsService.prototype.getApplicationLogByApplicationIdAndLogId = function (applicationId, logId, timestamp, observe, reportProgress) {
+        AnalyticsService.prototype.getApplicationLogByApplicationIdAndLogId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
             }
+            var logId = requestParameters.logId;
             if (logId === null || logId === undefined) {
                 throw new Error('Required parameter logId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
             }
+            var timestamp = requestParameters.timestamp;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (timestamp !== undefined && timestamp !== null) {
                 queryParameters = queryParameters.set('timestamp', timestamp);
@@ -746,12 +483,20 @@
                 reportProgress: reportProgress
             });
         };
-        AnalyticsService.prototype.getApplicationLogs = function (applicationId, page, size, from, to, query, field, order, observe, reportProgress) {
+        AnalyticsService.prototype.getApplicationLogs = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogs.');
             }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var from = requestParameters.from;
+            var to = requestParameters.to;
+            var query = requestParameters.query;
+            var field = requestParameters.field;
+            var order = requestParameters.order;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -811,6 +556,318 @@
         return AnalyticsService;
     }());
 
+    var ApiService = /** @class */ (function () {
+        function ApiService(httpClient, basePath, configuration) {
+            this.httpClient = httpClient;
+            this.basePath = 'http://demo.gravitee.io/portal/DEFAULT';
+            this.defaultHeaders = new http.HttpHeaders();
+            this.configuration = new Configuration();
+            if (configuration) {
+                this.configuration = configuration;
+            }
+            if (typeof this.configuration.basePath !== 'string') {
+                if (typeof basePath !== 'string') {
+                    basePath = this.basePath;
+                }
+                this.configuration.basePath = basePath;
+            }
+            this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
+        }
+        ApiService.prototype.createApiRatingForApi = function (requestParameters, observe, reportProgress) {
+            if (observe === void 0) { observe = 'body'; }
+            if (reportProgress === void 0) { reportProgress = false; }
+            var apiId = requestParameters.apiId;
+            if (apiId === null || apiId === undefined) {
+                throw new Error('Required parameter apiId was null or undefined when calling createApiRatingForApi.');
+            }
+            var RatingInput = requestParameters.RatingInput;
+            var headers = this.defaultHeaders;
+            // authentication (BasicAuth) required
+            if (this.configuration.username || this.configuration.password) {
+                headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+            }
+            // authentication (CookieAuth) required
+            // to determine the Accept header
+            var httpHeaderAccepts = [
+                'application/json'
+            ];
+            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            if (httpHeaderAcceptSelected !== undefined) {
+                headers = headers.set('Accept', httpHeaderAcceptSelected);
+            }
+            // to determine the Content-Type header
+            var consumes = [
+                'application/json'
+            ];
+            var httpContentTypeSelected = this.configuration.selectHeaderContentType(consumes);
+            if (httpContentTypeSelected !== undefined) {
+                headers = headers.set('Content-Type', httpContentTypeSelected);
+            }
+            return this.httpClient.post(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/ratings", RatingInput, {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            });
+        };
+        ApiService.prototype.getApiByApiId = function (requestParameters, observe, reportProgress) {
+            if (observe === void 0) { observe = 'body'; }
+            if (reportProgress === void 0) { reportProgress = false; }
+            var apiId = requestParameters.apiId;
+            if (apiId === null || apiId === undefined) {
+                throw new Error('Required parameter apiId was null or undefined when calling getApiByApiId.');
+            }
+            var include = requestParameters.include;
+            var queryParameters = new http.HttpParams({ encoder: this.encoder });
+            if (include) {
+                include.forEach(function (element) {
+                    queryParameters = queryParameters.append('include', element);
+                });
+            }
+            var headers = this.defaultHeaders;
+            // to determine the Accept header
+            var httpHeaderAccepts = [
+                'application/json'
+            ];
+            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            if (httpHeaderAcceptSelected !== undefined) {
+                headers = headers.set('Accept', httpHeaderAcceptSelected);
+            }
+            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)), {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            });
+        };
+        ApiService.prototype.getApiPlansByApiId = function (requestParameters, observe, reportProgress) {
+            if (observe === void 0) { observe = 'body'; }
+            if (reportProgress === void 0) { reportProgress = false; }
+            var apiId = requestParameters.apiId;
+            if (apiId === null || apiId === undefined) {
+                throw new Error('Required parameter apiId was null or undefined when calling getApiPlansByApiId.');
+            }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var queryParameters = new http.HttpParams({ encoder: this.encoder });
+            if (page !== undefined && page !== null) {
+                queryParameters = queryParameters.set('page', page);
+            }
+            if (size !== undefined && size !== null) {
+                queryParameters = queryParameters.set('size', size);
+            }
+            var headers = this.defaultHeaders;
+            // to determine the Accept header
+            var httpHeaderAccepts = [
+                'application/json'
+            ];
+            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            if (httpHeaderAcceptSelected !== undefined) {
+                headers = headers.set('Accept', httpHeaderAcceptSelected);
+            }
+            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/plans", {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            });
+        };
+        ApiService.prototype.getApiRatingsByApiId = function (requestParameters, observe, reportProgress) {
+            if (observe === void 0) { observe = 'body'; }
+            if (reportProgress === void 0) { reportProgress = false; }
+            var apiId = requestParameters.apiId;
+            if (apiId === null || apiId === undefined) {
+                throw new Error('Required parameter apiId was null or undefined when calling getApiRatingsByApiId.');
+            }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var queryParameters = new http.HttpParams({ encoder: this.encoder });
+            if (page !== undefined && page !== null) {
+                queryParameters = queryParameters.set('page', page);
+            }
+            if (size !== undefined && size !== null) {
+                queryParameters = queryParameters.set('size', size);
+            }
+            var headers = this.defaultHeaders;
+            // to determine the Accept header
+            var httpHeaderAccepts = [
+                'application/json'
+            ];
+            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            if (httpHeaderAcceptSelected !== undefined) {
+                headers = headers.set('Accept', httpHeaderAcceptSelected);
+            }
+            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/ratings", {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            });
+        };
+        ApiService.prototype.getApis = function (requestParameters, observe, reportProgress) {
+            if (observe === void 0) { observe = 'body'; }
+            if (reportProgress === void 0) { reportProgress = false; }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var context_path = requestParameters.context_path;
+            var label = requestParameters.label;
+            var version = requestParameters.version;
+            var name = requestParameters.name;
+            var view = requestParameters.view;
+            var cat = requestParameters.cat;
+            var queryParameters = new http.HttpParams({ encoder: this.encoder });
+            if (page !== undefined && page !== null) {
+                queryParameters = queryParameters.set('page', page);
+            }
+            if (size !== undefined && size !== null) {
+                queryParameters = queryParameters.set('size', size);
+            }
+            if (context_path !== undefined && context_path !== null) {
+                queryParameters = queryParameters.set('context-path', context_path);
+            }
+            if (label !== undefined && label !== null) {
+                queryParameters = queryParameters.set('label', label);
+            }
+            if (version !== undefined && version !== null) {
+                queryParameters = queryParameters.set('version', version);
+            }
+            if (name !== undefined && name !== null) {
+                queryParameters = queryParameters.set('name', name);
+            }
+            if (view !== undefined && view !== null) {
+                queryParameters = queryParameters.set('view', view);
+            }
+            if (cat !== undefined && cat !== null) {
+                queryParameters = queryParameters.set('cat', cat);
+            }
+            var headers = this.defaultHeaders;
+            // to determine the Accept header
+            var httpHeaderAccepts = [
+                'application/json'
+            ];
+            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            if (httpHeaderAcceptSelected !== undefined) {
+                headers = headers.set('Accept', httpHeaderAcceptSelected);
+            }
+            return this.httpClient.get(this.configuration.basePath + "/apis", {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            });
+        };
+        ApiService.prototype.getPageByApiIdAndPageId = function (requestParameters, observe, reportProgress) {
+            if (observe === void 0) { observe = 'body'; }
+            if (reportProgress === void 0) { reportProgress = false; }
+            var apiId = requestParameters.apiId;
+            if (apiId === null || apiId === undefined) {
+                throw new Error('Required parameter apiId was null or undefined when calling getPageByApiIdAndPageId.');
+            }
+            var pageId = requestParameters.pageId;
+            if (pageId === null || pageId === undefined) {
+                throw new Error('Required parameter pageId was null or undefined when calling getPageByApiIdAndPageId.');
+            }
+            var headers = this.defaultHeaders;
+            // to determine the Accept header
+            var httpHeaderAccepts = [
+                'application/json'
+            ];
+            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            if (httpHeaderAcceptSelected !== undefined) {
+                headers = headers.set('Accept', httpHeaderAcceptSelected);
+            }
+            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/pages/" + encodeURIComponent(String(pageId)), {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            });
+        };
+        ApiService.prototype.getPagesByApiId = function (requestParameters, observe, reportProgress) {
+            if (observe === void 0) { observe = 'body'; }
+            if (reportProgress === void 0) { reportProgress = false; }
+            var apiId = requestParameters.apiId;
+            if (apiId === null || apiId === undefined) {
+                throw new Error('Required parameter apiId was null or undefined when calling getPagesByApiId.');
+            }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var homepage = requestParameters.homepage;
+            var parent = requestParameters.parent;
+            var queryParameters = new http.HttpParams({ encoder: this.encoder });
+            if (page !== undefined && page !== null) {
+                queryParameters = queryParameters.set('page', page);
+            }
+            if (size !== undefined && size !== null) {
+                queryParameters = queryParameters.set('size', size);
+            }
+            if (homepage !== undefined && homepage !== null) {
+                queryParameters = queryParameters.set('homepage', homepage);
+            }
+            if (parent !== undefined && parent !== null) {
+                queryParameters = queryParameters.set('parent', parent);
+            }
+            var headers = this.defaultHeaders;
+            // to determine the Accept header
+            var httpHeaderAccepts = [
+                'application/json'
+            ];
+            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            if (httpHeaderAcceptSelected !== undefined) {
+                headers = headers.set('Accept', httpHeaderAcceptSelected);
+            }
+            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/pages", {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            });
+        };
+        ApiService.prototype.getPictureByApiId = function (requestParameters, observe, reportProgress) {
+            if (observe === void 0) { observe = 'body'; }
+            if (reportProgress === void 0) { reportProgress = false; }
+            var apiId = requestParameters.apiId;
+            if (apiId === null || apiId === undefined) {
+                throw new Error('Required parameter apiId was null or undefined when calling getPictureByApiId.');
+            }
+            var headers = this.defaultHeaders;
+            // to determine the Accept header
+            var httpHeaderAccepts = [
+                'image/_*',
+                'application/json'
+            ];
+            var httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+            if (httpHeaderAcceptSelected !== undefined) {
+                headers = headers.set('Accept', httpHeaderAcceptSelected);
+            }
+            return this.httpClient.get(this.configuration.basePath + "/apis/" + encodeURIComponent(String(apiId)) + "/picture", {
+                responseType: "blob",
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            });
+        };
+        ApiService.ctorParameters = function () { return [
+            { type: http.HttpClient },
+            { type: String, decorators: [{ type: core.Optional }, { type: core.Inject, args: [BASE_PATH,] }] },
+            { type: Configuration, decorators: [{ type: core.Optional }] }
+        ]; };
+        ApiService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function ApiService_Factory() { return new ApiService(core.ɵɵinject(http.HttpClient), core.ɵɵinject(BASE_PATH, 8), core.ɵɵinject(Configuration, 8)); }, token: ApiService, providedIn: "root" });
+        ApiService = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            }),
+            __param(1, core.Optional()), __param(1, core.Inject(BASE_PATH)), __param(2, core.Optional())
+        ], ApiService);
+        return ApiService;
+    }());
+
     var ApplicationsService = /** @class */ (function () {
         function ApplicationsService(httpClient, basePath, configuration) {
             this.httpClient = httpClient;
@@ -828,9 +885,10 @@
             }
             this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
         }
-        ApplicationsService.prototype.createApplication = function (ApplicationInput, observe, reportProgress) {
+        ApplicationsService.prototype.createApplication = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var ApplicationInput = requestParameters.ApplicationInput;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -860,12 +918,14 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.createApplicationMember = function (applicationId, MemberInput, observe, reportProgress) {
+        ApplicationsService.prototype.createApplicationMember = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling createApplicationMember.');
             }
+            var MemberInput = requestParameters.MemberInput;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -895,12 +955,14 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.createApplicationNotification = function (applicationId, GenericNotificationConfig, observe, reportProgress) {
+        ApplicationsService.prototype.createApplicationNotification = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling createApplicationNotification.');
             }
+            var GenericNotificationConfig = requestParameters.GenericNotificationConfig;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -930,9 +992,10 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.deleteApplicationByApplicationId = function (applicationId, observe, reportProgress) {
+        ApplicationsService.prototype.deleteApplicationByApplicationId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationByApplicationId.');
             }
@@ -957,12 +1020,14 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.deleteApplicationMember = function (applicationId, memberId, observe, reportProgress) {
+        ApplicationsService.prototype.deleteApplicationMember = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationMember.');
             }
+            var memberId = requestParameters.memberId;
             if (memberId === null || memberId === undefined) {
                 throw new Error('Required parameter memberId was null or undefined when calling deleteApplicationMember.');
             }
@@ -987,12 +1052,14 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.deleteApplicationNotificationByNotificationId = function (applicationId, notificationId, observe, reportProgress) {
+        ApplicationsService.prototype.deleteApplicationNotificationByNotificationId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationNotificationByNotificationId.');
             }
+            var notificationId = requestParameters.notificationId;
             if (notificationId === null || notificationId === undefined) {
                 throw new Error('Required parameter notificationId was null or undefined when calling deleteApplicationNotificationByNotificationId.');
             }
@@ -1017,12 +1084,20 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.exportApplicationLogsByApplicationId = function (applicationId, page, size, from, to, query, field, order, observe, reportProgress) {
+        ApplicationsService.prototype.exportApplicationLogsByApplicationId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling exportApplicationLogsByApplicationId.');
             }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var from = requestParameters.from;
+            var to = requestParameters.to;
+            var query = requestParameters.query;
+            var field = requestParameters.field;
+            var order = requestParameters.order;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -1068,12 +1143,24 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.getApplicationAnalytics = function (applicationId, page, size, from, to, interval, query, field, type, range, aggs, order, observe, reportProgress) {
+        ApplicationsService.prototype.getApplicationAnalytics = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling getApplicationAnalytics.');
             }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var from = requestParameters.from;
+            var to = requestParameters.to;
+            var interval = requestParameters.interval;
+            var query = requestParameters.query;
+            var field = requestParameters.field;
+            var type = requestParameters.type;
+            var range = requestParameters.range;
+            var aggs = requestParameters.aggs;
+            var order = requestParameters.order;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -1130,9 +1217,10 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.getApplicationByApplicationId = function (applicationId, observe, reportProgress) {
+        ApplicationsService.prototype.getApplicationByApplicationId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling getApplicationByApplicationId.');
             }
@@ -1157,15 +1245,18 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.getApplicationLogByApplicationIdAndLogId = function (applicationId, logId, timestamp, observe, reportProgress) {
+        ApplicationsService.prototype.getApplicationLogByApplicationIdAndLogId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
             }
+            var logId = requestParameters.logId;
             if (logId === null || logId === undefined) {
                 throw new Error('Required parameter logId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
             }
+            var timestamp = requestParameters.timestamp;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (timestamp !== undefined && timestamp !== null) {
                 queryParameters = queryParameters.set('timestamp', timestamp);
@@ -1192,12 +1283,20 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.getApplicationLogs = function (applicationId, page, size, from, to, query, field, order, observe, reportProgress) {
+        ApplicationsService.prototype.getApplicationLogs = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogs.');
             }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var from = requestParameters.from;
+            var to = requestParameters.to;
+            var query = requestParameters.query;
+            var field = requestParameters.field;
+            var order = requestParameters.order;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -1242,12 +1341,14 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.getApplicationMemberByApplicationIdAndMemberId = function (applicationId, memberId, observe, reportProgress) {
+        ApplicationsService.prototype.getApplicationMemberByApplicationIdAndMemberId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling getApplicationMemberByApplicationIdAndMemberId.');
             }
+            var memberId = requestParameters.memberId;
             if (memberId === null || memberId === undefined) {
                 throw new Error('Required parameter memberId was null or undefined when calling getApplicationMemberByApplicationIdAndMemberId.');
             }
@@ -1272,9 +1373,10 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.getApplicationPictureByApplicationId = function (applicationId, observe, reportProgress) {
+        ApplicationsService.prototype.getApplicationPictureByApplicationId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling getApplicationPictureByApplicationId.');
             }
@@ -1301,9 +1403,11 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.getApplications = function (page, size, observe, reportProgress) {
+        ApplicationsService.prototype.getApplications = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -1333,12 +1437,15 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.getMembersByApplicationId = function (applicationId, page, size, observe, reportProgress) {
+        ApplicationsService.prototype.getMembersByApplicationId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling getMembersByApplicationId.');
             }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -1368,9 +1475,10 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.getNotificationsByApplicationId = function (applicationId, observe, reportProgress) {
+        ApplicationsService.prototype.getNotificationsByApplicationId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling getNotificationsByApplicationId.');
             }
@@ -1395,9 +1503,10 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.renewApplicationSecret = function (applicationId, observe, reportProgress) {
+        ApplicationsService.prototype.renewApplicationSecret = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling renewApplicationSecret.');
             }
@@ -1422,12 +1531,14 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.transferMemberOwnership = function (applicationId, TransferOwnershipInput, observe, reportProgress) {
+        ApplicationsService.prototype.transferMemberOwnership = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling transferMemberOwnership.');
             }
+            var TransferOwnershipInput = requestParameters.TransferOwnershipInput;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -1457,12 +1568,14 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.updateApplicationByApplicationId = function (applicationId, Application, observe, reportProgress) {
+        ApplicationsService.prototype.updateApplicationByApplicationId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationByApplicationId.');
             }
+            var Application = requestParameters.Application;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -1492,15 +1605,18 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.updateApplicationMemberByApplicationIdAndMemberId = function (applicationId, memberId, MemberInput, observe, reportProgress) {
+        ApplicationsService.prototype.updateApplicationMemberByApplicationIdAndMemberId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationMemberByApplicationIdAndMemberId.');
             }
+            var memberId = requestParameters.memberId;
             if (memberId === null || memberId === undefined) {
                 throw new Error('Required parameter memberId was null or undefined when calling updateApplicationMemberByApplicationIdAndMemberId.');
             }
+            var MemberInput = requestParameters.MemberInput;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -1530,15 +1646,18 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.updateGenericApplicationNotification = function (applicationId, notificationId, GenericNotificationConfig, observe, reportProgress) {
+        ApplicationsService.prototype.updateGenericApplicationNotification = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling updateGenericApplicationNotification.');
             }
+            var notificationId = requestParameters.notificationId;
             if (notificationId === null || notificationId === undefined) {
                 throw new Error('Required parameter notificationId was null or undefined when calling updateGenericApplicationNotification.');
             }
+            var GenericNotificationConfig = requestParameters.GenericNotificationConfig;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -1568,12 +1687,14 @@
                 reportProgress: reportProgress
             });
         };
-        ApplicationsService.prototype.updatePortalApplicationNotification = function (applicationId, PortalNotificationConfig, observe, reportProgress) {
+        ApplicationsService.prototype.updatePortalApplicationNotification = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var applicationId = requestParameters.applicationId;
             if (applicationId === null || applicationId === undefined) {
                 throw new Error('Required parameter applicationId was null or undefined when calling updatePortalApplicationNotification.');
             }
+            var PortalNotificationConfig = requestParameters.PortalNotificationConfig;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -1635,12 +1756,14 @@
             }
             this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
         }
-        AuthenticationService.prototype.exchangeAuthorizationCode = function (identity, PayloadInput, observe, reportProgress) {
+        AuthenticationService.prototype.exchangeAuthorizationCode = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var identity = requestParameters.identity;
             if (identity === null || identity === undefined) {
                 throw new Error('Required parameter identity was null or undefined when calling exchangeAuthorizationCode.');
             }
+            var PayloadInput = requestParameters.PayloadInput;
             var headers = this.defaultHeaders;
             // to determine the Accept header
             var httpHeaderAccepts = [
@@ -1665,9 +1788,10 @@
                 reportProgress: reportProgress
             });
         };
-        AuthenticationService.prototype.login = function (Authorization, observe, reportProgress) {
+        AuthenticationService.prototype.login = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var Authorization = requestParameters.Authorization;
             if (Authorization === null || Authorization === undefined) {
                 throw new Error('Required parameter Authorization was null or undefined when calling login.');
             }
@@ -1719,12 +1843,14 @@
                 reportProgress: reportProgress
             });
         };
-        AuthenticationService.prototype.tokenExchange = function (identity, token, observe, reportProgress) {
+        AuthenticationService.prototype.tokenExchange = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var identity = requestParameters.identity;
             if (identity === null || identity === undefined) {
                 throw new Error('Required parameter identity was null or undefined when calling tokenExchange.');
             }
+            var token = requestParameters.token;
             if (token === null || token === undefined) {
                 throw new Error('Required parameter token was null or undefined when calling tokenExchange.');
             }
@@ -1781,12 +1907,14 @@
             }
             this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
         }
-        DocumentationService.prototype.getPageByApiIdAndPageId = function (apiId, pageId, observe, reportProgress) {
+        DocumentationService.prototype.getPageByApiIdAndPageId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var apiId = requestParameters.apiId;
             if (apiId === null || apiId === undefined) {
                 throw new Error('Required parameter apiId was null or undefined when calling getPageByApiIdAndPageId.');
             }
+            var pageId = requestParameters.pageId;
             if (pageId === null || pageId === undefined) {
                 throw new Error('Required parameter pageId was null or undefined when calling getPageByApiIdAndPageId.');
             }
@@ -1806,9 +1934,10 @@
                 reportProgress: reportProgress
             });
         };
-        DocumentationService.prototype.getPageByPageId = function (pageId, observe, reportProgress) {
+        DocumentationService.prototype.getPageByPageId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var pageId = requestParameters.pageId;
             if (pageId === null || pageId === undefined) {
                 throw new Error('Required parameter pageId was null or undefined when calling getPageByPageId.');
             }
@@ -1828,9 +1957,13 @@
                 reportProgress: reportProgress
             });
         };
-        DocumentationService.prototype.getPages = function (page, size, homepage, parent, observe, reportProgress) {
+        DocumentationService.prototype.getPages = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var homepage = requestParameters.homepage;
+            var parent = requestParameters.parent;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -1861,12 +1994,17 @@
                 reportProgress: reportProgress
             });
         };
-        DocumentationService.prototype.getPagesByApiId = function (apiId, page, size, homepage, parent, observe, reportProgress) {
+        DocumentationService.prototype.getPagesByApiId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var apiId = requestParameters.apiId;
             if (apiId === null || apiId === undefined) {
                 throw new Error('Required parameter apiId was null or undefined when calling getPagesByApiId.');
             }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
+            var homepage = requestParameters.homepage;
+            var parent = requestParameters.parent;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -1929,9 +2067,10 @@
             }
             this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
         }
-        PortalService.prototype.createTicket = function (TicketInput, observe, reportProgress) {
+        PortalService.prototype.createTicket = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var TicketInput = requestParameters.TicketInput;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -1961,9 +2100,10 @@
                 reportProgress: reportProgress
             });
         };
-        PortalService.prototype.getPictureByViewId = function (viewId, observe, reportProgress) {
+        PortalService.prototype.getPictureByViewId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var viewId = requestParameters.viewId;
             if (viewId === null || viewId === undefined) {
                 throw new Error('Required parameter viewId was null or undefined when calling getPictureByViewId.');
             }
@@ -2042,9 +2182,10 @@
                 reportProgress: reportProgress
             });
         };
-        PortalService.prototype.getViewByViewId = function (viewId, observe, reportProgress) {
+        PortalService.prototype.getViewByViewId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var viewId = requestParameters.viewId;
             if (viewId === null || viewId === undefined) {
                 throw new Error('Required parameter viewId was null or undefined when calling getViewByViewId.');
             }
@@ -2064,9 +2205,11 @@
                 reportProgress: reportProgress
             });
         };
-        PortalService.prototype.getViews = function (page, size, observe, reportProgress) {
+        PortalService.prototype.getViews = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -2123,9 +2266,10 @@
             }
             this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
         }
-        SubscriptionService.prototype.closeSubscription = function (subscriptionId, observe, reportProgress) {
+        SubscriptionService.prototype.closeSubscription = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var subscriptionId = requestParameters.subscriptionId;
             if (subscriptionId === null || subscriptionId === undefined) {
                 throw new Error('Required parameter subscriptionId was null or undefined when calling closeSubscription.');
             }
@@ -2150,9 +2294,10 @@
                 reportProgress: reportProgress
             });
         };
-        SubscriptionService.prototype.createSubscription = function (SubscriptionInput, observe, reportProgress) {
+        SubscriptionService.prototype.createSubscription = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var SubscriptionInput = requestParameters.SubscriptionInput;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -2182,12 +2327,14 @@
                 reportProgress: reportProgress
             });
         };
-        SubscriptionService.prototype.getSubscriptionBuySubscriptionId = function (subscriptionId, include, observe, reportProgress) {
+        SubscriptionService.prototype.getSubscriptionBuySubscriptionId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var subscriptionId = requestParameters.subscriptionId;
             if (subscriptionId === null || subscriptionId === undefined) {
                 throw new Error('Required parameter subscriptionId was null or undefined when calling getSubscriptionBuySubscriptionId.');
             }
+            var include = requestParameters.include;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (include) {
                 include.forEach(function (element) {
@@ -2216,9 +2363,13 @@
                 reportProgress: reportProgress
             });
         };
-        SubscriptionService.prototype.getSubscriptions = function (apiId, applicationId, page, size, observe, reportProgress) {
+        SubscriptionService.prototype.getSubscriptions = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var apiId = requestParameters.apiId;
+            var applicationId = requestParameters.applicationId;
+            var page = requestParameters.page;
+            var size = requestParameters.size;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (apiId !== undefined && apiId !== null) {
                 queryParameters = queryParameters.set('apiId', apiId);
@@ -2254,12 +2405,14 @@
                 reportProgress: reportProgress
             });
         };
-        SubscriptionService.prototype.renewKeySubscription = function (subscriptionId, request_body, observe, reportProgress) {
+        SubscriptionService.prototype.renewKeySubscription = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var subscriptionId = requestParameters.subscriptionId;
             if (subscriptionId === null || subscriptionId === undefined) {
                 throw new Error('Required parameter subscriptionId was null or undefined when calling renewKeySubscription.');
             }
+            var request_body = requestParameters.request_body;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -2289,12 +2442,14 @@
                 reportProgress: reportProgress
             });
         };
-        SubscriptionService.prototype.revokeKeySubscription = function (subscriptionId, keyId, observe, reportProgress) {
+        SubscriptionService.prototype.revokeKeySubscription = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var subscriptionId = requestParameters.subscriptionId;
             if (subscriptionId === null || subscriptionId === undefined) {
                 throw new Error('Required parameter subscriptionId was null or undefined when calling revokeKeySubscription.');
             }
+            var keyId = requestParameters.keyId;
             if (keyId === null || keyId === undefined) {
                 throw new Error('Required parameter keyId was null or undefined when calling revokeKeySubscription.');
             }
@@ -2375,9 +2530,10 @@
                 reportProgress: reportProgress
             });
         };
-        UserService.prototype.deleteCurrentUserNotificationByNotificationId = function (notificationId, observe, reportProgress) {
+        UserService.prototype.deleteCurrentUserNotificationByNotificationId = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var notificationId = requestParameters.notificationId;
             if (notificationId === null || notificationId === undefined) {
                 throw new Error('Required parameter notificationId was null or undefined when calling deleteCurrentUserNotificationByNotificationId.');
             }
@@ -2452,9 +2608,11 @@
                 reportProgress: reportProgress
             });
         };
-        UserService.prototype.getCurrentUserNotifications = function (page, size, observe, reportProgress) {
+        UserService.prototype.getCurrentUserNotifications = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -2484,9 +2642,10 @@
                 reportProgress: reportProgress
             });
         };
-        UserService.prototype.updateCurrentUser = function (User, observe, reportProgress) {
+        UserService.prototype.updateCurrentUser = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var User = requestParameters.User;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -2548,9 +2707,10 @@
             }
             this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
         }
-        UsersService.prototype.finalizeUserRegistration = function (FinalizeRegistrationInput, observe, reportProgress) {
+        UsersService.prototype.finalizeUserRegistration = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var FinalizeRegistrationInput = requestParameters.FinalizeRegistrationInput;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -2580,9 +2740,11 @@
                 reportProgress: reportProgress
             });
         };
-        UsersService.prototype.getUsers = function (page, size, observe, reportProgress) {
+        UsersService.prototype.getUsers = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var page = requestParameters.page;
+            var size = requestParameters.size;
             var queryParameters = new http.HttpParams({ encoder: this.encoder });
             if (page !== undefined && page !== null) {
                 queryParameters = queryParameters.set('page', page);
@@ -2612,9 +2774,10 @@
                 reportProgress: reportProgress
             });
         };
-        UsersService.prototype.registerNewUser = function (RegisterUserInput, observe, reportProgress) {
+        UsersService.prototype.registerNewUser = function (requestParameters, observe, reportProgress) {
             if (observe === void 0) { observe = 'body'; }
             if (reportProgress === void 0) { reportProgress = false; }
+            var RegisterUserInput = requestParameters.RegisterUserInput;
             var headers = this.defaultHeaders;
             // authentication (BasicAuth) required
             if (this.configuration.username || this.configuration.password) {
@@ -2659,7 +2822,7 @@
         return UsersService;
     }());
 
-    var APIS = [APIService, AnalyticsService, ApplicationsService, AuthenticationService, DocumentationService, PortalService, SubscriptionService, UserService, UsersService];
+    var APIS = [AnalyticsService, ApiService, ApplicationsService, AuthenticationService, DocumentationService, PortalService, SubscriptionService, UserService, UsersService];
 
     /**
      * Gravitee.io Portal Rest API
@@ -2811,8 +2974,8 @@
                 declarations: [],
                 exports: [],
                 providers: [
-                    APIService,
                     AnalyticsService,
+                    ApiService,
                     ApplicationsService,
                     AuthenticationService,
                     DocumentationService,
@@ -2829,22 +2992,22 @@
     }());
 
     exports.APIS = APIS;
-    exports.APIService = APIService;
     exports.AnalyticsService = AnalyticsService;
     exports.ApiModule = ApiModule;
-    exports.ApplicationsService = ApplicationsService;
+    exports.ApiService = ApiService;
     exports.AuthenticationService = AuthenticationService;
     exports.BASE_PATH = BASE_PATH;
     exports.COLLECTION_FORMATS = COLLECTION_FORMATS;
     exports.CategoryApiQuery = CategoryApiQuery;
     exports.Configuration = Configuration;
-    exports.DocumentationService = DocumentationService;
     exports.HttpMethod = HttpMethod;
     exports.IdentityProviderType = IdentityProviderType;
     exports.PortalService = PortalService;
     exports.SubscriptionService = SubscriptionService;
     exports.UserService = UserService;
     exports.UsersService = UsersService;
+    exports.ɵa = ApplicationsService;
+    exports.ɵb = DocumentationService;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

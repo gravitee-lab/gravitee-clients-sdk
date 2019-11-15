@@ -14,6 +14,26 @@ import { Observable } from 'rxjs';
 import { Page } from '../model/page';
 import { PagesResponse } from '../model/pagesResponse';
 import { Configuration } from '../configuration';
+export interface GetPageByApiIdAndPageIdRequestParams {
+    apiId: string;
+    pageId: string;
+}
+export interface GetPageByPageIdRequestParams {
+    pageId: string;
+}
+export interface GetPagesRequestParams {
+    page?: number;
+    size?: number;
+    homepage?: boolean;
+    parent?: string;
+}
+export interface GetPagesByApiIdRequestParams {
+    apiId: string;
+    page?: number;
+    size?: number;
+    homepage?: boolean;
+    parent?: string;
+}
 export declare class DocumentationService {
     protected httpClient: HttpClient;
     protected basePath: string;
@@ -24,49 +44,41 @@ export declare class DocumentationService {
     /**
      * Get an API page
      * Get an API page.  This API has to be accessible by the current user, otherwise a 404 will be returned.
-     * @param apiId Id of an API.
-     * @param pageId Id of a documentation page.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getPageByApiIdAndPageId(apiId: string, pageId: string, observe?: 'body', reportProgress?: boolean): Observable<Page>;
-    getPageByApiIdAndPageId(apiId: string, pageId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
-    getPageByApiIdAndPageId(apiId: string, pageId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
+    getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Page>;
+    getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
+    getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
     /**
      * Get a portal page
      * Get a specific portal documentation page.
-     * @param pageId Id of a documentation page.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getPageByPageId(pageId: string, observe?: 'body', reportProgress?: boolean): Observable<Page>;
-    getPageByPageId(pageId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
-    getPageByPageId(pageId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
+    getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Page>;
+    getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
+    getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
     /**
      * List portal pages
      * List all portal documentation pages
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param homepage If true, only the documentation homepage of the portal is returned.
-     * @param parent The name of the parent documentation page. If not null, only this page and its children are returned.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getPages(page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
-    getPages(page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
-    getPages(page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
+    getPages(requestParameters: GetPagesRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
+    getPages(requestParameters: GetPagesRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
+    getPages(requestParameters: GetPagesRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
     /**
      * List API pages
      * List all documentation pages of an API.  This API has to be accessible by the current user, otherwise a 404 will be returned.
-     * @param apiId Id of an API.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param homepage If true, only the documentation homepage of the portal is returned.
-     * @param parent The name of the parent documentation page. If not null, only this page and its children are returned.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getPagesByApiId(apiId: string, page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
-    getPagesByApiId(apiId: string, page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
-    getPagesByApiId(apiId: string, page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
+    getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
+    getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
+    getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
 }

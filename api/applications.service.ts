@@ -36,6 +36,137 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 
 
+export interface CreateApplicationRequestParams {
+    ApplicationInput?: ApplicationInput;
+}
+
+export interface CreateApplicationMemberRequestParams {
+    applicationId: string;
+    MemberInput?: MemberInput;
+}
+
+export interface CreateApplicationNotificationRequestParams {
+    applicationId: string;
+    GenericNotificationConfig?: GenericNotificationConfig;
+}
+
+export interface DeleteApplicationByApplicationIdRequestParams {
+    applicationId: string;
+}
+
+export interface DeleteApplicationMemberRequestParams {
+    applicationId: string;
+    memberId: string;
+}
+
+export interface DeleteApplicationNotificationByNotificationIdRequestParams {
+    applicationId: string;
+    notificationId: string;
+}
+
+export interface ExportApplicationLogsByApplicationIdRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+    from?: number;
+    to?: number;
+    query?: string;
+    field?: string;
+    order?: 'ASC' | 'DESC';
+}
+
+export interface GetApplicationAnalyticsRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+    from?: number;
+    to?: number;
+    interval?: number;
+    query?: string;
+    field?: string;
+    type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT';
+    range?: string;
+    aggs?: string;
+    order?: string;
+}
+
+export interface GetApplicationByApplicationIdRequestParams {
+    applicationId: string;
+}
+
+export interface GetApplicationLogByApplicationIdAndLogIdRequestParams {
+    applicationId: string;
+    logId: string;
+    timestamp?: number;
+}
+
+export interface GetApplicationLogsRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+    from?: number;
+    to?: number;
+    query?: string;
+    field?: string;
+    order?: 'ASC' | 'DESC';
+}
+
+export interface GetApplicationMemberByApplicationIdAndMemberIdRequestParams {
+    applicationId: string;
+    memberId: string;
+}
+
+export interface GetApplicationPictureByApplicationIdRequestParams {
+    applicationId: string;
+}
+
+export interface GetApplicationsRequestParams {
+    page?: number;
+    size?: number;
+}
+
+export interface GetMembersByApplicationIdRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+}
+
+export interface GetNotificationsByApplicationIdRequestParams {
+    applicationId: string;
+}
+
+export interface RenewApplicationSecretRequestParams {
+    applicationId: string;
+}
+
+export interface TransferMemberOwnershipRequestParams {
+    applicationId: string;
+    TransferOwnershipInput?: TransferOwnershipInput;
+}
+
+export interface UpdateApplicationByApplicationIdRequestParams {
+    applicationId: string;
+    Application?: Application;
+}
+
+export interface UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams {
+    applicationId: string;
+    memberId: string;
+    MemberInput?: MemberInput;
+}
+
+export interface UpdateGenericApplicationNotificationRequestParams {
+    applicationId: string;
+    notificationId: string;
+    GenericNotificationConfig?: GenericNotificationConfig;
+}
+
+export interface UpdatePortalApplicationNotificationRequestParams {
+    applicationId: string;
+    PortalNotificationConfig?: PortalNotificationConfig;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -63,15 +194,16 @@ export class ApplicationsService {
 
     /**
      * Create an application
-     * Create an application.  User must have MANAGEMENT_APPLICATION[CREATE] permission. 
-     * @param ApplicationInput Use to create an application.
+     * Create an application.  User must have MANAGEMENT_APPLICATION[CREATE] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApplication(ApplicationInput?: ApplicationInput, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    public createApplication(ApplicationInput?: ApplicationInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    public createApplication(ApplicationInput?: ApplicationInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
-    public createApplication(ApplicationInput?: ApplicationInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
+    public createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
+    public createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
+    public createApplication(requestParameters: CreateApplicationRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const ApplicationInput = requestParameters.ApplicationInput;
 
         let headers = this.defaultHeaders;
 
@@ -112,19 +244,20 @@ export class ApplicationsService {
 
     /**
      * Create an application member
-     * Create an application member.  User must have the APPLICATION_MEMBER[CREATE] permission. 
-     * @param applicationId Id of an application.
-     * @param MemberInput Use to create a member.
+     * Create an application member.  User must have the APPLICATION_MEMBER[CREATE] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApplicationMember(applicationId: string, MemberInput?: MemberInput, observe?: 'body', reportProgress?: boolean): Observable<Member>;
-    public createApplicationMember(applicationId: string, MemberInput?: MemberInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
-    public createApplicationMember(applicationId: string, MemberInput?: MemberInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
-    public createApplicationMember(applicationId: string, MemberInput?: MemberInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Member>;
+    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
+    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
+    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling createApplicationMember.');
         }
+        const MemberInput = requestParameters.MemberInput;
 
         let headers = this.defaultHeaders;
 
@@ -165,19 +298,20 @@ export class ApplicationsService {
 
     /**
      * Create notification settings.
-     * Create notification settings.  User must have APPLICATION_NOTIFICATION[READ] permission to create a **portal** notification.  User must have APPLICATION_NOTIFICATION[CREATE] permission to create a **generic** notification. 
-     * @param applicationId Id of an application.
-     * @param GenericNotificationConfig Use to create an notification
+     * Create notification settings.  User must have APPLICATION_NOTIFICATION[READ] permission to create a **portal** notification.  User must have APPLICATION_NOTIFICATION[CREATE] permission to create a **generic** notification.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApplicationNotification(applicationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig | GenericNotificationConfig>;
-    public createApplicationNotification(applicationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig | GenericNotificationConfig>>;
-    public createApplicationNotification(applicationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig | GenericNotificationConfig>>;
-    public createApplicationNotification(applicationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createApplicationNotification(requestParameters: CreateApplicationNotificationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig | GenericNotificationConfig>;
+    public createApplicationNotification(requestParameters: CreateApplicationNotificationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig | GenericNotificationConfig>>;
+    public createApplicationNotification(requestParameters: CreateApplicationNotificationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig | GenericNotificationConfig>>;
+    public createApplicationNotification(requestParameters: CreateApplicationNotificationRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling createApplicationNotification.');
         }
+        const GenericNotificationConfig = requestParameters.GenericNotificationConfig;
 
         let headers = this.defaultHeaders;
 
@@ -218,15 +352,16 @@ export class ApplicationsService {
 
     /**
      * Delete an application
-     * Delete an application.  User must have the APPLICATION_DEFINITION[DELETE] permission. 
-     * @param applicationId Id of an application.
+     * Delete an application.  User must have the APPLICATION_DEFINITION[DELETE] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteApplicationByApplicationId(applicationId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteApplicationByApplicationId(applicationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteApplicationByApplicationId(applicationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteApplicationByApplicationId(applicationId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationByApplicationId.');
         }
@@ -260,19 +395,20 @@ export class ApplicationsService {
 
     /**
      * Remove an application member
-     * Remove an application member.  User must have the APPLICATION_MEMBER[DELETE] permission. 
-     * @param applicationId Id of an application.
-     * @param memberId Id of a member.
+     * Remove an application member.  User must have the APPLICATION_MEMBER[DELETE] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteApplicationMember(applicationId: string, memberId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteApplicationMember(applicationId: string, memberId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteApplicationMember(applicationId: string, memberId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteApplicationMember(applicationId: string, memberId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationMember.');
         }
+        const memberId = requestParameters.memberId;
         if (memberId === null || memberId === undefined) {
             throw new Error('Required parameter memberId was null or undefined when calling deleteApplicationMember.');
         }
@@ -306,19 +442,20 @@ export class ApplicationsService {
 
     /**
      * Delete a notification
-     * Delete a notification.  User must have APPLICATION_NOTIFICATION[DELETE] permission to delete a **generic** notification. 
-     * @param applicationId Id of an application.
-     * @param notificationId Id of a notification.
+     * Delete a notification.  User must have APPLICATION_NOTIFICATION[DELETE] permission to delete a **generic** notification.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteApplicationNotificationByNotificationId(applicationId: string, notificationId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteApplicationNotificationByNotificationId(applicationId: string, notificationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteApplicationNotificationByNotificationId(applicationId: string, notificationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteApplicationNotificationByNotificationId(applicationId: string, notificationId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteApplicationNotificationByNotificationId(requestParameters: DeleteApplicationNotificationByNotificationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteApplicationNotificationByNotificationId(requestParameters: DeleteApplicationNotificationByNotificationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteApplicationNotificationByNotificationId(requestParameters: DeleteApplicationNotificationByNotificationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteApplicationNotificationByNotificationId(requestParameters: DeleteApplicationNotificationByNotificationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationNotificationByNotificationId.');
         }
+        const notificationId = requestParameters.notificationId;
         if (notificationId === null || notificationId === undefined) {
             throw new Error('Required parameter notificationId was null or undefined when calling deleteApplicationNotificationByNotificationId.');
         }
@@ -352,25 +489,26 @@ export class ApplicationsService {
 
     /**
      * Export application logs as CSV
-     * Export application logs as CSV.  User must have the APPLICATION_LOG[READ] permission. 
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param from Lower bound of timestamp for filtering.
-     * @param to Upper bound of timestamp for filtering. Must be greater than *from* query param.
-     * @param query Query used for filtering.
-     * @param field Field used for filtering. **required** when type is **GROUP_BY**.
-     * @param order Order used to sort the result list.
+     * Export application logs as CSV.  User must have the APPLICATION_LOG[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public exportApplicationLogsByApplicationId(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'body', reportProgress?: boolean): Observable<string>;
-    public exportApplicationLogsByApplicationId(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
-    public exportApplicationLogsByApplicationId(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
-    public exportApplicationLogsByApplicationId(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling exportApplicationLogsByApplicationId.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const order = requestParameters.order;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -427,29 +565,30 @@ export class ApplicationsService {
 
     /**
      * Get Application analytics
-     * Get the application analytics.  User must have the APPLICATION_ANALYTICS[READ] permission. 
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param from Lower bound of timestamp for filtering.
-     * @param to Upper bound of timestamp for filtering. Must be greater than *from* query param.
-     * @param interval Interval for time search. Must be &gt;&#x3D; 1 000 and &lt;&#x3D; 1 000 000 000.
-     * @param query Query used for filtering.
-     * @param field Field used for filtering. **required** when type is **GROUP_BY**.
-     * @param type Type of analytics that is expected :   - GROUP_BY :       Used to group total hits by a specific field (Application, Status, Path, ...).\\       Query params :       - from       - to       - interval       - query       - field       - order       - ranges   - DATE_HISTO :        Used to retrieve total hits per range of time, on a specific time interval.\\       Query params :       - from       - to       - interval       - query       - aggs   - COUNT :        Used to retrieve total hits, on a specific time interval.\\       Query params :       - from       - to       - interval       - query 
-     * @param range Used with GROUP_BY type only.  A semicolon separated list of \&quot;from:to\&quot; elements. **_/!\\\\ Different from *from* and *to* query params** 
-     * @param aggs Used with DATE_HISTO type only.  A semicolon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ Type can be **FIELD**, **AVG**, **MIN**, **MAX** 
-     * @param order Used with GROUP_BY type only.   A colon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ By default, sort is ASC. If *type* starts with \&#39;-\&#39;, the order sort is DESC.\\ Currently, only **AVG** is supported. 
+     * Get the application analytics.  User must have the APPLICATION_ANALYTICS[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationAnalytics(applicationId: string, page?: number, size?: number, from?: number, to?: number, interval?: number, query?: string, field?: string, type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT', range?: string, aggs?: string, order?: string, observe?: 'body', reportProgress?: boolean): Observable<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>;
-    public getApplicationAnalytics(applicationId: string, page?: number, size?: number, from?: number, to?: number, interval?: number, query?: string, field?: string, type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT', range?: string, aggs?: string, order?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
-    public getApplicationAnalytics(applicationId: string, page?: number, size?: number, from?: number, to?: number, interval?: number, query?: string, field?: string, type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT', range?: string, aggs?: string, order?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
-    public getApplicationAnalytics(applicationId: string, page?: number, size?: number, from?: number, to?: number, interval?: number, query?: string, field?: string, type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT', range?: string, aggs?: string, order?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>;
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationAnalytics.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const interval = requestParameters.interval;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const type = requestParameters.type;
+        const range = requestParameters.range;
+        const aggs = requestParameters.aggs;
+        const order = requestParameters.order;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -516,15 +655,16 @@ export class ApplicationsService {
 
     /**
      * Get an application.
-     * Get an application.  User must have the APPLICATION_DEFINITION[READ] permission. 
-     * @param applicationId Id of an application.
+     * Get an application.  User must have the APPLICATION_DEFINITION[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationByApplicationId(applicationId: string, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    public getApplicationByApplicationId(applicationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    public getApplicationByApplicationId(applicationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
-    public getApplicationByApplicationId(applicationId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
+    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
+    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
+    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationByApplicationId.');
         }
@@ -558,23 +698,24 @@ export class ApplicationsService {
 
     /**
      * Get a specific log of an application
-     * Get a specific log of an application.  User must have the APPLICATION_LOG[READ] permission. 
-     * @param applicationId Id of an application.
-     * @param logId Id of a log.
-     * @param timestamp Used to select the right index
+     * Get a specific log of an application.  User must have the APPLICATION_LOG[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationLogByApplicationIdAndLogId(applicationId: string, logId: string, timestamp?: number, observe?: 'body', reportProgress?: boolean): Observable<Log>;
-    public getApplicationLogByApplicationIdAndLogId(applicationId: string, logId: string, timestamp?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Log>>;
-    public getApplicationLogByApplicationIdAndLogId(applicationId: string, logId: string, timestamp?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Log>>;
-    public getApplicationLogByApplicationIdAndLogId(applicationId: string, logId: string, timestamp?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Log>;
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Log>>;
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Log>>;
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
         }
+        const logId = requestParameters.logId;
         if (logId === null || logId === undefined) {
             throw new Error('Required parameter logId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
         }
+        const timestamp = requestParameters.timestamp;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (timestamp !== undefined && timestamp !== null) {
@@ -611,25 +752,26 @@ export class ApplicationsService {
 
     /**
      * Get Application logs
-     * Get the application logs.  User must have the APPLICATION_LOG[READ] permission. 
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param from Lower bound of timestamp for filtering.
-     * @param to Upper bound of timestamp for filtering. Must be greater than *from* query param.
-     * @param query Query used for filtering.
-     * @param field Field used for filtering. **required** when type is **GROUP_BY**.
-     * @param order Order used to sort the result list.
+     * Get the application logs.  User must have the APPLICATION_LOG[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationLogs(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'body', reportProgress?: boolean): Observable<LogsResponse>;
-    public getApplicationLogs(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LogsResponse>>;
-    public getApplicationLogs(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LogsResponse>>;
-    public getApplicationLogs(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<LogsResponse>;
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LogsResponse>>;
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LogsResponse>>;
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogs.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const order = requestParameters.order;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -684,19 +826,20 @@ export class ApplicationsService {
 
     /**
      * Get an application member
-     * Get an application member.  User must have the APPLICATION_MEMBER[READ] permission. 
-     * @param applicationId Id of an application.
-     * @param memberId Id of a member.
+     * Get an application member.  User must have the APPLICATION_MEMBER[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, observe?: 'body', reportProgress?: boolean): Observable<Member>;
-    public getApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
-    public getApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
-    public getApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Member>;
+    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
+    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
+    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationMemberByApplicationIdAndMemberId.');
         }
+        const memberId = requestParameters.memberId;
         if (memberId === null || memberId === undefined) {
             throw new Error('Required parameter memberId was null or undefined when calling getApplicationMemberByApplicationIdAndMemberId.');
         }
@@ -730,15 +873,16 @@ export class ApplicationsService {
 
     /**
      * Get the application\&#39;s picture
-     * Get the application\&#39;s picture.  User must have APPLICATION_DEFINITION[READ] permission. 
-     * @param applicationId Id of an application.
+     * Get the application\&#39;s picture.  User must have APPLICATION_DEFINITION[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationPictureByApplicationId(applicationId: string, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
-    public getApplicationPictureByApplicationId(applicationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
-    public getApplicationPictureByApplicationId(applicationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
-    public getApplicationPictureByApplicationId(applicationId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationPictureByApplicationId.');
         }
@@ -774,16 +918,17 @@ export class ApplicationsService {
 
     /**
      * List all the applications accessible to authenticated user.
-     * List all the applications accessible to authenticated user.  User must have MANAGEMENT_APPLICATION[READ] and PORTAL_APPLICATION[READ] permission. 
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
+     * List all the applications accessible to authenticated user.  User must have MANAGEMENT_APPLICATION[READ] and PORTAL_APPLICATION[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplications(page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<ApplicationsResponse>;
-    public getApplications(page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApplicationsResponse>>;
-    public getApplications(page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApplicationsResponse>>;
-    public getApplications(page?: number, size?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApplicationsResponse>;
+    public getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApplicationsResponse>>;
+    public getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApplicationsResponse>>;
+    public getApplications(requestParameters: GetApplicationsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -823,20 +968,21 @@ export class ApplicationsService {
 
     /**
      * List application members
-     * List application members.  User must have the APPLICATION_MEMBER[READ] permission. 
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
+     * List application members.  User must have the APPLICATION_MEMBER[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getMembersByApplicationId(applicationId: string, page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<MembersResponse>;
-    public getMembersByApplicationId(applicationId: string, page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MembersResponse>>;
-    public getMembersByApplicationId(applicationId: string, page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MembersResponse>>;
-    public getMembersByApplicationId(applicationId: string, page?: number, size?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<MembersResponse>;
+    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MembersResponse>>;
+    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MembersResponse>>;
+    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getMembersByApplicationId.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -876,15 +1022,16 @@ export class ApplicationsService {
 
     /**
      * Get application notifications settings
-     * Get application notifications settings.  User must **at least** have APPLICATION_NOTIFICATION[READ] permission to get **portal** notification settings.  User must **also** have APPLICATION_NOTIFICATION[CREATE | UPDATE | DELETE] permission to get **generic** notification settings. 
-     * @param applicationId Id of an application.
+     * Get application notifications settings.  User must **at least** have APPLICATION_NOTIFICATION[READ] permission to get **portal** notification settings.  User must **also** have APPLICATION_NOTIFICATION[CREATE | UPDATE | DELETE] permission to get **generic** notification settings.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getNotificationsByApplicationId(applicationId: string, observe?: 'body', reportProgress?: boolean): Observable<NotificationConfigsResponse>;
-    public getNotificationsByApplicationId(applicationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<NotificationConfigsResponse>>;
-    public getNotificationsByApplicationId(applicationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<NotificationConfigsResponse>>;
-    public getNotificationsByApplicationId(applicationId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<NotificationConfigsResponse>;
+    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<NotificationConfigsResponse>>;
+    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<NotificationConfigsResponse>>;
+    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getNotificationsByApplicationId.');
         }
@@ -918,15 +1065,16 @@ export class ApplicationsService {
 
     /**
      * Renew the client secret for an OAuth2 application
-     * Renew the client secret for an OAuth2 application.  User must have the APPLICATION_DEFINITION[UPDATE] permission. 
-     * @param applicationId Id of an application.
+     * Renew the client secret for an OAuth2 application.  User must have the APPLICATION_DEFINITION[UPDATE] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public renewApplicationSecret(applicationId: string, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    public renewApplicationSecret(applicationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    public renewApplicationSecret(applicationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
-    public renewApplicationSecret(applicationId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
+    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
+    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
+    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling renewApplicationSecret.');
         }
@@ -961,19 +1109,20 @@ export class ApplicationsService {
 
     /**
      * Transfer the ownership of the application
-     * Transfer the ownership of the application.  User must have the APPLICATION_MEMBER[UPDATE] permission. 
-     * @param applicationId Id of an application.
-     * @param TransferOwnershipInput Use to transfer ownership of an application.
+     * Transfer the ownership of the application.  User must have the APPLICATION_MEMBER[UPDATE] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public transferMemberOwnership(applicationId: string, TransferOwnershipInput?: TransferOwnershipInput, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public transferMemberOwnership(applicationId: string, TransferOwnershipInput?: TransferOwnershipInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public transferMemberOwnership(applicationId: string, TransferOwnershipInput?: TransferOwnershipInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public transferMemberOwnership(applicationId: string, TransferOwnershipInput?: TransferOwnershipInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling transferMemberOwnership.');
         }
+        const TransferOwnershipInput = requestParameters.TransferOwnershipInput;
 
         let headers = this.defaultHeaders;
 
@@ -1014,19 +1163,20 @@ export class ApplicationsService {
 
     /**
      * Update an application.
-     * Update an application.  User must have APPLICATION_DEFINITION[UPDATE] permission. 
-     * @param applicationId Id of an application.
-     * @param Application Use to update an application.
+     * Update an application.  User must have APPLICATION_DEFINITION[UPDATE] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateApplicationByApplicationId(applicationId: string, Application?: Application, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    public updateApplicationByApplicationId(applicationId: string, Application?: Application, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    public updateApplicationByApplicationId(applicationId: string, Application?: Application, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
-    public updateApplicationByApplicationId(applicationId: string, Application?: Application, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
+    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
+    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
+    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationByApplicationId.');
         }
+        const Application = requestParameters.Application;
 
         let headers = this.defaultHeaders;
 
@@ -1067,23 +1217,24 @@ export class ApplicationsService {
 
     /**
      * Update an application member.
-     * Update an application member.  User must have the APPLICATION_MEMBER[UPDATE] permission. 
-     * @param applicationId Id of an application.
-     * @param memberId Id of a member.
-     * @param MemberInput Use to update a member.
+     * Update an application member.  User must have the APPLICATION_MEMBER[UPDATE] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, MemberInput?: MemberInput, observe?: 'body', reportProgress?: boolean): Observable<Member>;
-    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, MemberInput?: MemberInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
-    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, MemberInput?: MemberInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
-    public updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, MemberInput?: MemberInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Member>;
+    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
+    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
+    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationMemberByApplicationIdAndMemberId.');
         }
+        const memberId = requestParameters.memberId;
         if (memberId === null || memberId === undefined) {
             throw new Error('Required parameter memberId was null or undefined when calling updateApplicationMemberByApplicationIdAndMemberId.');
         }
+        const MemberInput = requestParameters.MemberInput;
 
         let headers = this.defaultHeaders;
 
@@ -1124,23 +1275,24 @@ export class ApplicationsService {
 
     /**
      * Update a generic notification for an application.
-     * Update a generic notification for an application.  User must have APPLICATION_NOTIFICATION[UPDATE] permission to update a **generic** notification. 
-     * @param applicationId Id of an application.
-     * @param notificationId Id of a notification.
-     * @param GenericNotificationConfig Use to update a generic notification.
+     * Update a generic notification for an application.  User must have APPLICATION_NOTIFICATION[UPDATE] permission to update a **generic** notification.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateGenericApplicationNotification(applicationId: string, notificationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<GenericNotificationConfig>;
-    public updateGenericApplicationNotification(applicationId: string, notificationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GenericNotificationConfig>>;
-    public updateGenericApplicationNotification(applicationId: string, notificationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GenericNotificationConfig>>;
-    public updateGenericApplicationNotification(applicationId: string, notificationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateGenericApplicationNotification(requestParameters: UpdateGenericApplicationNotificationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<GenericNotificationConfig>;
+    public updateGenericApplicationNotification(requestParameters: UpdateGenericApplicationNotificationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GenericNotificationConfig>>;
+    public updateGenericApplicationNotification(requestParameters: UpdateGenericApplicationNotificationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GenericNotificationConfig>>;
+    public updateGenericApplicationNotification(requestParameters: UpdateGenericApplicationNotificationRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateGenericApplicationNotification.');
         }
+        const notificationId = requestParameters.notificationId;
         if (notificationId === null || notificationId === undefined) {
             throw new Error('Required parameter notificationId was null or undefined when calling updateGenericApplicationNotification.');
         }
+        const GenericNotificationConfig = requestParameters.GenericNotificationConfig;
 
         let headers = this.defaultHeaders;
 
@@ -1181,19 +1333,20 @@ export class ApplicationsService {
 
     /**
      * Update a portal notification for an application.
-     * Update a portal notification for an application.  User must have APPLICATION_NOTIFICATION[READ] permission to update a **portal** notification. 
-     * @param applicationId Id of an application.
-     * @param PortalNotificationConfig Use to update a portal notification config.
+     * Update a portal notification for an application.  User must have APPLICATION_NOTIFICATION[READ] permission to update a **portal** notification.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updatePortalApplicationNotification(applicationId: string, PortalNotificationConfig?: PortalNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig>;
-    public updatePortalApplicationNotification(applicationId: string, PortalNotificationConfig?: PortalNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig>>;
-    public updatePortalApplicationNotification(applicationId: string, PortalNotificationConfig?: PortalNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig>>;
-    public updatePortalApplicationNotification(applicationId: string, PortalNotificationConfig?: PortalNotificationConfig, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updatePortalApplicationNotification(requestParameters: UpdatePortalApplicationNotificationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig>;
+    public updatePortalApplicationNotification(requestParameters: UpdatePortalApplicationNotificationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig>>;
+    public updatePortalApplicationNotification(requestParameters: UpdatePortalApplicationNotificationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig>>;
+    public updatePortalApplicationNotification(requestParameters: UpdatePortalApplicationNotificationRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updatePortalApplicationNotification.');
         }
+        const PortalNotificationConfig = requestParameters.PortalNotificationConfig;
 
         let headers = this.defaultHeaders;
 

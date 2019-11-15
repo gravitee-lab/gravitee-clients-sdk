@@ -22,8 +22,52 @@ import { ErrorResponse } from '../model/errorResponse';
 import { Log } from '../model/log';
 import { LogsResponse } from '../model/logsResponse';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
+import { BASE_PATH, COLLECTION_FORMATS }                       from '../variables';
 import { Configuration }                                     from '../configuration';
+
+
+export interface ExportApplicationLogsByApplicationIdRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+    from?: number;
+    to?: number;
+    query?: string;
+    field?: string;
+    order?: 'ASC' | 'DESC';
+}
+
+export interface GetApplicationAnalyticsRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+    from?: number;
+    to?: number;
+    interval?: number;
+    query?: string;
+    field?: string;
+    type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT';
+    range?: string;
+    aggs?: string;
+    order?: string;
+}
+
+export interface GetApplicationLogByApplicationIdAndLogIdRequestParams {
+    applicationId: string;
+    logId: string;
+    timestamp?: number;
+}
+
+export interface GetApplicationLogsRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+    from?: number;
+    to?: number;
+    query?: string;
+    field?: string;
+    order?: 'ASC' | 'DESC';
+}
 
 
 @Injectable({
@@ -53,25 +97,26 @@ export class AnalyticsService {
 
     /**
      * Export application logs as CSV
-     * Export application logs as CSV.  User must have the APPLICATION_LOG[READ] permission. 
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param from Lower bound of timestamp for filtering.
-     * @param to Upper bound of timestamp for filtering. Must be greater than *from* query param.
-     * @param query Query used for filtering.
-     * @param field Field used for filtering. **required** when type is **GROUP_BY**.
-     * @param order Order used to sort the result list.
+     * Export application logs as CSV.  User must have the APPLICATION_LOG[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public exportApplicationLogsByApplicationId(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'body', reportProgress?: boolean): Observable<string>;
-    public exportApplicationLogsByApplicationId(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
-    public exportApplicationLogsByApplicationId(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
-    public exportApplicationLogsByApplicationId(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling exportApplicationLogsByApplicationId.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const order = requestParameters.order;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -128,29 +173,30 @@ export class AnalyticsService {
 
     /**
      * Get Application analytics
-     * Get the application analytics.  User must have the APPLICATION_ANALYTICS[READ] permission. 
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param from Lower bound of timestamp for filtering.
-     * @param to Upper bound of timestamp for filtering. Must be greater than *from* query param.
-     * @param interval Interval for time search. Must be &gt;&#x3D; 1 000 and &lt;&#x3D; 1 000 000 000.
-     * @param query Query used for filtering.
-     * @param field Field used for filtering. **required** when type is **GROUP_BY**.
-     * @param type Type of analytics that is expected :   - GROUP_BY :       Used to group total hits by a specific field (Application, Status, Path, ...).\\       Query params :       - from       - to       - interval       - query       - field       - order       - ranges   - DATE_HISTO :        Used to retrieve total hits per range of time, on a specific time interval.\\       Query params :       - from       - to       - interval       - query       - aggs   - COUNT :        Used to retrieve total hits, on a specific time interval.\\       Query params :       - from       - to       - interval       - query 
-     * @param range Used with GROUP_BY type only.  A semicolon separated list of \&quot;from:to\&quot; elements. **_/!\\\\ Different from *from* and *to* query params** 
-     * @param aggs Used with DATE_HISTO type only.  A semicolon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ Type can be **FIELD**, **AVG**, **MIN**, **MAX** 
-     * @param order Used with GROUP_BY type only.   A colon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ By default, sort is ASC. If *type* starts with \&#39;-\&#39;, the order sort is DESC.\\ Currently, only **AVG** is supported. 
+     * Get the application analytics.  User must have the APPLICATION_ANALYTICS[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationAnalytics(applicationId: string, page?: number, size?: number, from?: number, to?: number, interval?: number, query?: string, field?: string, type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT', range?: string, aggs?: string, order?: string, observe?: 'body', reportProgress?: boolean): Observable<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>;
-    public getApplicationAnalytics(applicationId: string, page?: number, size?: number, from?: number, to?: number, interval?: number, query?: string, field?: string, type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT', range?: string, aggs?: string, order?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
-    public getApplicationAnalytics(applicationId: string, page?: number, size?: number, from?: number, to?: number, interval?: number, query?: string, field?: string, type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT', range?: string, aggs?: string, order?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
-    public getApplicationAnalytics(applicationId: string, page?: number, size?: number, from?: number, to?: number, interval?: number, query?: string, field?: string, type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT', range?: string, aggs?: string, order?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>;
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationAnalytics.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const interval = requestParameters.interval;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const type = requestParameters.type;
+        const range = requestParameters.range;
+        const aggs = requestParameters.aggs;
+        const order = requestParameters.order;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -217,23 +263,24 @@ export class AnalyticsService {
 
     /**
      * Get a specific log of an application
-     * Get a specific log of an application.  User must have the APPLICATION_LOG[READ] permission. 
-     * @param applicationId Id of an application.
-     * @param logId Id of a log.
-     * @param timestamp Used to select the right index
+     * Get a specific log of an application.  User must have the APPLICATION_LOG[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationLogByApplicationIdAndLogId(applicationId: string, logId: string, timestamp?: number, observe?: 'body', reportProgress?: boolean): Observable<Log>;
-    public getApplicationLogByApplicationIdAndLogId(applicationId: string, logId: string, timestamp?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Log>>;
-    public getApplicationLogByApplicationIdAndLogId(applicationId: string, logId: string, timestamp?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Log>>;
-    public getApplicationLogByApplicationIdAndLogId(applicationId: string, logId: string, timestamp?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Log>;
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Log>>;
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Log>>;
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
         }
+        const logId = requestParameters.logId;
         if (logId === null || logId === undefined) {
             throw new Error('Required parameter logId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
         }
+        const timestamp = requestParameters.timestamp;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (timestamp !== undefined && timestamp !== null) {
@@ -270,25 +317,26 @@ export class AnalyticsService {
 
     /**
      * Get Application logs
-     * Get the application logs.  User must have the APPLICATION_LOG[READ] permission. 
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param from Lower bound of timestamp for filtering.
-     * @param to Upper bound of timestamp for filtering. Must be greater than *from* query param.
-     * @param query Query used for filtering.
-     * @param field Field used for filtering. **required** when type is **GROUP_BY**.
-     * @param order Order used to sort the result list.
+     * Get the application logs.  User must have the APPLICATION_LOG[READ] permission.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationLogs(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'body', reportProgress?: boolean): Observable<LogsResponse>;
-    public getApplicationLogs(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LogsResponse>>;
-    public getApplicationLogs(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LogsResponse>>;
-    public getApplicationLogs(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<LogsResponse>;
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LogsResponse>>;
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LogsResponse>>;
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogs.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const order = requestParameters.order;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {

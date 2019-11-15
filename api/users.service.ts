@@ -27,6 +27,20 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 
 
+export interface FinalizeUserRegistrationRequestParams {
+    FinalizeRegistrationInput?: FinalizeRegistrationInput;
+}
+
+export interface GetUsersRequestParams {
+    page?: number;
+    size?: number;
+}
+
+export interface RegisterNewUserRequestParams {
+    RegisterUserInput?: RegisterUserInput;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -55,14 +69,15 @@ export class UsersService {
     /**
      * Finalize user registration.
      * Create a new user for the portal.  User registration must be enabled. 
-     * @param FinalizeRegistrationInput Used to finalize a user registration.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public finalizeUserRegistration(FinalizeRegistrationInput?: FinalizeRegistrationInput, observe?: 'body', reportProgress?: boolean): Observable<User>;
-    public finalizeUserRegistration(FinalizeRegistrationInput?: FinalizeRegistrationInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
-    public finalizeUserRegistration(FinalizeRegistrationInput?: FinalizeRegistrationInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
-    public finalizeUserRegistration(FinalizeRegistrationInput?: FinalizeRegistrationInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const FinalizeRegistrationInput = requestParameters.FinalizeRegistrationInput;
 
         let headers = this.defaultHeaders;
 
@@ -104,15 +119,16 @@ export class UsersService {
     /**
      * List platform users.
      * List platform users.  User must have the MANAGEMENT_USERS[READ] permission. 
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUsers(page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<UsersResponse>;
-    public getUsers(page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UsersResponse>>;
-    public getUsers(page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UsersResponse>>;
-    public getUsers(page?: number, size?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getUsers(requestParameters: GetUsersRequestParams, observe?: 'body', reportProgress?: boolean): Observable<UsersResponse>;
+    public getUsers(requestParameters: GetUsersRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UsersResponse>>;
+    public getUsers(requestParameters: GetUsersRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UsersResponse>>;
+    public getUsers(requestParameters: GetUsersRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -153,14 +169,15 @@ export class UsersService {
     /**
      * Register a new user.
      * Register a new user for the portal. As a result, an email is sent with an activation link.  User registration must be enabled.\\ A SMTP server must have been configured. 
-     * @param RegisterUserInput Used to register a new User.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public registerNewUser(RegisterUserInput?: RegisterUserInput, observe?: 'body', reportProgress?: boolean): Observable<User>;
-    public registerNewUser(RegisterUserInput?: RegisterUserInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
-    public registerNewUser(RegisterUserInput?: RegisterUserInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
-    public registerNewUser(RegisterUserInput?: RegisterUserInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const RegisterUserInput = requestParameters.RegisterUserInput;
 
         let headers = this.defaultHeaders;
 

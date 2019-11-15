@@ -14,6 +14,16 @@ import { Observable } from 'rxjs';
 import { PortalNotificationsResponse } from '../model/portalNotificationsResponse';
 import { User } from '../model/user';
 import { Configuration } from '../configuration';
+export interface DeleteCurrentUserNotificationByNotificationIdRequestParams {
+    notificationId: string;
+}
+export interface GetCurrentUserNotificationsRequestParams {
+    page?: number;
+    size?: number;
+}
+export interface UpdateCurrentUserRequestParams {
+    User?: User;
+}
 export declare class UserService {
     protected httpClient: HttpClient;
     protected basePath: string;
@@ -33,13 +43,13 @@ export declare class UserService {
     /**
      * Delete a specific notification of the current user
      * Delete a specific notification of the current user.
-     * @param notificationId Id of a notification.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    deleteCurrentUserNotificationByNotificationId(notificationId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    deleteCurrentUserNotificationByNotificationId(notificationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    deleteCurrentUserNotificationByNotificationId(notificationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    deleteCurrentUserNotificationByNotificationId(requestParameters: DeleteCurrentUserNotificationByNotificationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    deleteCurrentUserNotificationByNotificationId(requestParameters: DeleteCurrentUserNotificationByNotificationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    deleteCurrentUserNotificationByNotificationId(requestParameters: DeleteCurrentUserNotificationByNotificationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
     /**
      * Get the authenticated user
      * Get information about the authenticated user.
@@ -61,22 +71,21 @@ export declare class UserService {
     /**
      * Retrieve user\&#39;s notifications
      * Retrieve current user\&#39;s notifications.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getCurrentUserNotifications(page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationsResponse>;
-    getCurrentUserNotifications(page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationsResponse>>;
-    getCurrentUserNotifications(page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationsResponse>>;
+    getCurrentUserNotifications(requestParameters: GetCurrentUserNotificationsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationsResponse>;
+    getCurrentUserNotifications(requestParameters: GetCurrentUserNotificationsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationsResponse>>;
+    getCurrentUserNotifications(requestParameters: GetCurrentUserNotificationsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationsResponse>>;
     /**
      * Modify current user information.
      * Modify current user information.  Only the current user can modify his/her information.
-     * @param User Use to update a user.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    updateCurrentUser(User?: User, observe?: 'body', reportProgress?: boolean): Observable<User>;
-    updateCurrentUser(User?: User, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
-    updateCurrentUser(User?: User, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    updateCurrentUser(requestParameters: UpdateCurrentUserRequestParams, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    updateCurrentUser(requestParameters: UpdateCurrentUserRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    updateCurrentUser(requestParameters: UpdateCurrentUserRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
 }

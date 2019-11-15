@@ -3,8 +3,8 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
-import { APIService } from './api/aPI.service';
 import { AnalyticsService } from './api/analytics.service';
+import { ApiService } from './api/api.service';
 import { ApplicationsService } from './api/applications.service';
 import { AuthenticationService } from './api/authentication.service';
 import { DocumentationService } from './api/documentation.service';
@@ -18,8 +18,8 @@ import { UsersService } from './api/users.service';
   declarations: [],
   exports:      [],
   providers: [
-    APIService,
     AnalyticsService,
+    ApiService,
     ApplicationsService,
     AuthenticationService,
     DocumentationService,

@@ -27,6 +27,37 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 
 
+export interface CloseSubscriptionRequestParams {
+    subscriptionId: string;
+}
+
+export interface CreateSubscriptionRequestParams {
+    SubscriptionInput?: SubscriptionInput;
+}
+
+export interface GetSubscriptionBuySubscriptionIdRequestParams {
+    subscriptionId: string;
+    include?: Array<'keys'>;
+}
+
+export interface GetSubscriptionsRequestParams {
+    apiId?: string;
+    applicationId?: string;
+    page?: number;
+    size?: number;
+}
+
+export interface RenewKeySubscriptionRequestParams {
+    subscriptionId: string;
+    request_body?: Array<string>;
+}
+
+export interface RevokeKeySubscriptionRequestParams {
+    subscriptionId: string;
+    keyId: string;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -55,14 +86,15 @@ export class SubscriptionService {
     /**
      * Close a subscription
      * Close a subscription.  User must have APPLICATION_SUBSCRIPTION[DELETE] permission. 
-     * @param subscriptionId Id of a subscription.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public closeSubscription(subscriptionId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public closeSubscription(subscriptionId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public closeSubscription(subscriptionId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public closeSubscription(subscriptionId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling closeSubscription.');
         }
@@ -98,14 +130,15 @@ export class SubscriptionService {
     /**
      * Create a subscription.
      * Create a new subscription.  User must have APPLICATION_SUBSCRIPTION[CREATE] permission. 
-     * @param SubscriptionInput Use to create a subscription.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createSubscription(SubscriptionInput?: SubscriptionInput, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
-    public createSubscription(SubscriptionInput?: SubscriptionInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
-    public createSubscription(SubscriptionInput?: SubscriptionInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
-    public createSubscription(SubscriptionInput?: SubscriptionInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
+    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
+    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
+    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const SubscriptionInput = requestParameters.SubscriptionInput;
 
         let headers = this.defaultHeaders;
 
@@ -147,18 +180,19 @@ export class SubscriptionService {
     /**
      * Get a subscription.
      * Get a subscription.  User must have API_SUBSCRIPTION[CREATE] or APPLICATION_SUBSCRIPTION[CREATE] permission. 
-     * @param subscriptionId Id of a subscription.
-     * @param include Comma-separated list of related objects to include in the response.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSubscriptionBuySubscriptionId(subscriptionId: string, include?: Array<'keys'>, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
-    public getSubscriptionBuySubscriptionId(subscriptionId: string, include?: Array<'keys'>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
-    public getSubscriptionBuySubscriptionId(subscriptionId: string, include?: Array<'keys'>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
-    public getSubscriptionBuySubscriptionId(subscriptionId: string, include?: Array<'keys'>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getSubscriptionBuySubscriptionId(requestParameters: GetSubscriptionBuySubscriptionIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
+    public getSubscriptionBuySubscriptionId(requestParameters: GetSubscriptionBuySubscriptionIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
+    public getSubscriptionBuySubscriptionId(requestParameters: GetSubscriptionBuySubscriptionIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
+    public getSubscriptionBuySubscriptionId(requestParameters: GetSubscriptionBuySubscriptionIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling getSubscriptionBuySubscriptionId.');
         }
+        const include = requestParameters.include;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (include) {
@@ -197,17 +231,18 @@ export class SubscriptionService {
 
     /**
      * List all subscriptions, filtered by api and/or by application. At least an api or an application must be provided.  User must have the APPLICATION_SUBSCRIPTION[READ] permission to list subscription with application query param.\\ User must have the API_SUBSCRIPTION[READ] permission to list subscription with api query param. 
-     * @param apiId Id of an api.
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSubscriptions(apiId?: string, applicationId?: string, page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<SubscriptionsResponse>;
-    public getSubscriptions(apiId?: string, applicationId?: string, page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SubscriptionsResponse>>;
-    public getSubscriptions(apiId?: string, applicationId?: string, page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SubscriptionsResponse>>;
-    public getSubscriptions(apiId?: string, applicationId?: string, page?: number, size?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<SubscriptionsResponse>;
+    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SubscriptionsResponse>>;
+    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SubscriptionsResponse>>;
+    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        const applicationId = requestParameters.applicationId;
+        const page = requestParameters.page;
+        const size = requestParameters.size;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (apiId !== undefined && apiId !== null) {
@@ -254,18 +289,19 @@ export class SubscriptionService {
     /**
      * Renew a key subscription.
      * Renew a key subscription.  User must have API_SUBSCRIPTION[UPDATE] or APPLICATION_SUBSCRIPTION[UPDATE] permission. 
-     * @param subscriptionId Id of a subscription.
-     * @param request_body Use to renew keys of a subscription.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public renewKeySubscription(subscriptionId: string, request_body?: Array<string>, observe?: 'body', reportProgress?: boolean): Observable<Key>;
-    public renewKeySubscription(subscriptionId: string, request_body?: Array<string>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Key>>;
-    public renewKeySubscription(subscriptionId: string, request_body?: Array<string>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Key>>;
-    public renewKeySubscription(subscriptionId: string, request_body?: Array<string>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Key>;
+    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Key>>;
+    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Key>>;
+    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling renewKeySubscription.');
         }
+        const request_body = requestParameters.request_body;
 
         let headers = this.defaultHeaders;
 
@@ -307,18 +343,19 @@ export class SubscriptionService {
     /**
      * Revoke a key subscription.
      * Revoke a key subscription.  User must have API_SUBSCRIPTION[UPDATE] or APPLICATION_SUBSCRIPTION[UPDATE] permission. 
-     * @param subscriptionId Id of a subscription.
-     * @param keyId 
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public revokeKeySubscription(subscriptionId: string, keyId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public revokeKeySubscription(subscriptionId: string, keyId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public revokeKeySubscription(subscriptionId: string, keyId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public revokeKeySubscription(subscriptionId: string, keyId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling revokeKeySubscription.');
         }
+        const keyId = requestParameters.keyId;
         if (keyId === null || keyId === undefined) {
             throw new Error('Required parameter keyId was null or undefined when calling revokeKeySubscription.');
         }

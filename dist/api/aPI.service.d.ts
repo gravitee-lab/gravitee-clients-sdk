@@ -21,7 +21,49 @@ import { Rating } from '../model/rating';
 import { RatingInput } from '../model/ratingInput';
 import { RatingsResponse } from '../model/ratingsResponse';
 import { Configuration } from '../configuration';
-export declare class APIService {
+export interface CreateApiRatingForApiRequestParams {
+    apiId: string;
+    RatingInput?: RatingInput;
+}
+export interface GetApiByApiIdRequestParams {
+    apiId: string;
+    include?: Array<'pages' | 'plans'>;
+}
+export interface GetApiPlansByApiIdRequestParams {
+    apiId: string;
+    page?: number;
+    size?: number;
+}
+export interface GetApiRatingsByApiIdRequestParams {
+    apiId: string;
+    page?: number;
+    size?: number;
+}
+export interface GetApisRequestParams {
+    page?: number;
+    size?: number;
+    context_path?: string;
+    label?: string;
+    version?: string;
+    name?: string;
+    view?: string;
+    cat?: CategoryApiQuery;
+}
+export interface GetPageByApiIdAndPageIdRequestParams {
+    apiId: string;
+    pageId: string;
+}
+export interface GetPagesByApiIdRequestParams {
+    apiId: string;
+    page?: number;
+    size?: number;
+    homepage?: boolean;
+    parent?: string;
+}
+export interface GetPictureByApiIdRequestParams {
+    apiId: string;
+}
+export declare class ApiService {
     protected httpClient: HttpClient;
     protected basePath: string;
     defaultHeaders: HttpHeaders;
@@ -31,99 +73,81 @@ export declare class APIService {
     /**
      * Create a rating for an API
      * Create a rating for an API.  This API has to be accessible by the current user, otherwise a 404 will be returned.  The current must have API_RATING[CREATE] permission to create a rating.
-     * @param apiId Id of an API.
-     * @param RatingInput Use to add a rating to an api
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    createApiRatingForApi(apiId: string, RatingInput?: RatingInput, observe?: 'body', reportProgress?: boolean): Observable<Rating>;
-    createApiRatingForApi(apiId: string, RatingInput?: RatingInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Rating>>;
-    createApiRatingForApi(apiId: string, RatingInput?: RatingInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Rating>>;
+    createApiRatingForApi(requestParameters: CreateApiRatingForApiRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Rating>;
+    createApiRatingForApi(requestParameters: CreateApiRatingForApiRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Rating>>;
+    createApiRatingForApi(requestParameters: CreateApiRatingForApiRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Rating>>;
     /**
      * Get the API definition
      * Get the detail of an API.  This API has to be accessible by the current user, otherwise a 404 will be returned.
-     * @param apiId Id of an API.
-     * @param include Comma-separated list of related objects to include in the response.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getApiByApiId(apiId: string, include?: Array<'pages' | 'plans'>, observe?: 'body', reportProgress?: boolean): Observable<Api>;
-    getApiByApiId(apiId: string, include?: Array<'pages' | 'plans'>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Api>>;
-    getApiByApiId(apiId: string, include?: Array<'pages' | 'plans'>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Api>>;
+    getApiByApiId(requestParameters: GetApiByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Api>;
+    getApiByApiId(requestParameters: GetApiByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Api>>;
+    getApiByApiId(requestParameters: GetApiByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Api>>;
     /**
      * List plans for an API
      * List plans for an API.  This API has to be accessible by the current user, otherwise a 404 will be returned.
-     * @param apiId Id of an API.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getApiPlansByApiId(apiId: string, page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<PlansResponse>;
-    getApiPlansByApiId(apiId: string, page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PlansResponse>>;
-    getApiPlansByApiId(apiId: string, page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PlansResponse>>;
+    getApiPlansByApiId(requestParameters: GetApiPlansByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PlansResponse>;
+    getApiPlansByApiId(requestParameters: GetApiPlansByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PlansResponse>>;
+    getApiPlansByApiId(requestParameters: GetApiPlansByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PlansResponse>>;
     /**
      * List ratings for an API
      * List ratings for an API.  This API has to be accessible by the current user, otherwise a 404 will be returned.
-     * @param apiId Id of an API.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getApiRatingsByApiId(apiId: string, page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<RatingsResponse>;
-    getApiRatingsByApiId(apiId: string, page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RatingsResponse>>;
-    getApiRatingsByApiId(apiId: string, page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RatingsResponse>>;
+    getApiRatingsByApiId(requestParameters: GetApiRatingsByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<RatingsResponse>;
+    getApiRatingsByApiId(requestParameters: GetApiRatingsByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RatingsResponse>>;
+    getApiRatingsByApiId(requestParameters: GetApiRatingsByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RatingsResponse>>;
     /**
      * List APIs
      * List public APIs for anonymous requests. List all the APIs the current user is allowed to view for authenticated requests.  The list can be filtered according to query parameters.  By default the list is sorted by alphabetic order. If a **cat** query param is sent, a specific sorting can be applied. Please refer to **cat** description for detail.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param context_path The context-path of an API.
-     * @param label One of the labels of an API.
-     * @param version The version of an API.
-     * @param name The name of an API.
-     * @param view One of the view linked with an API.
-     * @param cat Name of a CATEGORY. A category is a static filter used to pre-select some APIs. It can be combined with others query params.   - FEATURED : top APIs. Sorted by alphabetical order.   - MINE : APIs subscribed by the current user. Sorted by alphabetical order.   - STARRED: Rated APIs. Sorted by Ratings DESC, nb of ratings DESC, alphabetic order.   - TRENDINGS: Subscribed APIs. Sorted by number of subscriptions DESC, alphabetic order.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getApis(page?: number, size?: number, context_path?: string, label?: string, version?: string, name?: string, view?: string, cat?: CategoryApiQuery, observe?: 'body', reportProgress?: boolean): Observable<ApisResponse>;
-    getApis(page?: number, size?: number, context_path?: string, label?: string, version?: string, name?: string, view?: string, cat?: CategoryApiQuery, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApisResponse>>;
-    getApis(page?: number, size?: number, context_path?: string, label?: string, version?: string, name?: string, view?: string, cat?: CategoryApiQuery, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApisResponse>>;
+    getApis(requestParameters: GetApisRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApisResponse>;
+    getApis(requestParameters: GetApisRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApisResponse>>;
+    getApis(requestParameters: GetApisRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApisResponse>>;
     /**
      * Get an API page
      * Get an API page.  This API has to be accessible by the current user, otherwise a 404 will be returned.
-     * @param apiId Id of an API.
-     * @param pageId Id of a documentation page.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getPageByApiIdAndPageId(apiId: string, pageId: string, observe?: 'body', reportProgress?: boolean): Observable<Page>;
-    getPageByApiIdAndPageId(apiId: string, pageId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
-    getPageByApiIdAndPageId(apiId: string, pageId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
+    getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Page>;
+    getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
+    getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
     /**
      * List API pages
      * List all documentation pages of an API.  This API has to be accessible by the current user, otherwise a 404 will be returned.
-     * @param apiId Id of an API.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param homepage If true, only the documentation homepage of the portal is returned.
-     * @param parent The name of the parent documentation page. If not null, only this page and its children are returned.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getPagesByApiId(apiId: string, page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
-    getPagesByApiId(apiId: string, page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
-    getPagesByApiId(apiId: string, page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
+    getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
+    getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
+    getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
     /**
      * Get the API\&#39;s picture
      * Get the API\&#39;s picture.  This API has to be accessible by the current user, otherwise a 404 will be returned.
-     * @param apiId Id of an API.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getPictureByApiId(apiId: string, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
-    getPictureByApiId(apiId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
-    getPictureByApiId(apiId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    getPictureByApiId(requestParameters: GetPictureByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    getPictureByApiId(requestParameters: GetPictureByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    getPictureByApiId(requestParameters: GetPictureByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
 }

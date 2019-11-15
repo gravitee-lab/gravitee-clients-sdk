@@ -29,6 +29,24 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 
 
+export interface CreateTicketRequestParams {
+    TicketInput?: TicketInput;
+}
+
+export interface GetPictureByViewIdRequestParams {
+    viewId: string;
+}
+
+export interface GetViewByViewIdRequestParams {
+    viewId: string;
+}
+
+export interface GetViewsRequestParams {
+    page?: number;
+    size?: number;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -57,14 +75,15 @@ export class PortalService {
     /**
      * Create a ticket.
      * Create a ticket. This ticket can aim :   * a specific application   * a specific API   * the gravitee portal  User must be authenticated to use this service. 
-     * @param TicketInput a new ticket to create
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createTicket(TicketInput?: TicketInput, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public createTicket(TicketInput?: TicketInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public createTicket(TicketInput?: TicketInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public createTicket(TicketInput?: TicketInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createTicket(requestParameters: CreateTicketRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public createTicket(requestParameters: CreateTicketRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public createTicket(requestParameters: CreateTicketRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public createTicket(requestParameters: CreateTicketRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const TicketInput = requestParameters.TicketInput;
 
         let headers = this.defaultHeaders;
 
@@ -106,14 +125,15 @@ export class PortalService {
     /**
      * Get picture of a View
      * Get the picture of a view. 
-     * @param viewId Id of a View.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPictureByViewId(viewId: string, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
-    public getPictureByViewId(viewId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
-    public getPictureByViewId(viewId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
-    public getPictureByViewId(viewId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPictureByViewId(requestParameters: GetPictureByViewIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getPictureByViewId(requestParameters: GetPictureByViewIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getPictureByViewId(requestParameters: GetPictureByViewIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getPictureByViewId(requestParameters: GetPictureByViewIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const viewId = requestParameters.viewId;
         if (viewId === null || viewId === undefined) {
             throw new Error('Required parameter viewId was null or undefined when calling getPictureByViewId.');
         }
@@ -244,14 +264,15 @@ export class PortalService {
     /**
      * Get a View
      * Get a specific view. 
-     * @param viewId Id of a View.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getViewByViewId(viewId: string, observe?: 'body', reportProgress?: boolean): Observable<View>;
-    public getViewByViewId(viewId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<View>>;
-    public getViewByViewId(viewId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<View>>;
-    public getViewByViewId(viewId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getViewByViewId(requestParameters: GetViewByViewIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<View>;
+    public getViewByViewId(requestParameters: GetViewByViewIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<View>>;
+    public getViewByViewId(requestParameters: GetViewByViewIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<View>>;
+    public getViewByViewId(requestParameters: GetViewByViewIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const viewId = requestParameters.viewId;
         if (viewId === null || viewId === undefined) {
             throw new Error('Required parameter viewId was null or undefined when calling getViewByViewId.');
         }
@@ -281,15 +302,16 @@ export class PortalService {
     /**
      * Get a View list
      * Get all views of the platform. 
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getViews(page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<ViewsResponse>;
-    public getViews(page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ViewsResponse>>;
-    public getViews(page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ViewsResponse>>;
-    public getViews(page?: number, size?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getViews(requestParameters: GetViewsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ViewsResponse>;
+    public getViews(requestParameters: GetViewsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ViewsResponse>>;
+    public getViews(requestParameters: GetViewsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ViewsResponse>>;
+    public getViews(requestParameters: GetViewsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {

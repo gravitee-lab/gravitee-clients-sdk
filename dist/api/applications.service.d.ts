@@ -25,6 +25,114 @@ import { NotificationConfigsResponse } from '../model/notificationConfigsRespons
 import { PortalNotificationConfig } from '../model/portalNotificationConfig';
 import { TransferOwnershipInput } from '../model/transferOwnershipInput';
 import { Configuration } from '../configuration';
+export interface CreateApplicationRequestParams {
+    ApplicationInput?: ApplicationInput;
+}
+export interface CreateApplicationMemberRequestParams {
+    applicationId: string;
+    MemberInput?: MemberInput;
+}
+export interface CreateApplicationNotificationRequestParams {
+    applicationId: string;
+    GenericNotificationConfig?: GenericNotificationConfig;
+}
+export interface DeleteApplicationByApplicationIdRequestParams {
+    applicationId: string;
+}
+export interface DeleteApplicationMemberRequestParams {
+    applicationId: string;
+    memberId: string;
+}
+export interface DeleteApplicationNotificationByNotificationIdRequestParams {
+    applicationId: string;
+    notificationId: string;
+}
+export interface ExportApplicationLogsByApplicationIdRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+    from?: number;
+    to?: number;
+    query?: string;
+    field?: string;
+    order?: 'ASC' | 'DESC';
+}
+export interface GetApplicationAnalyticsRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+    from?: number;
+    to?: number;
+    interval?: number;
+    query?: string;
+    field?: string;
+    type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT';
+    range?: string;
+    aggs?: string;
+    order?: string;
+}
+export interface GetApplicationByApplicationIdRequestParams {
+    applicationId: string;
+}
+export interface GetApplicationLogByApplicationIdAndLogIdRequestParams {
+    applicationId: string;
+    logId: string;
+    timestamp?: number;
+}
+export interface GetApplicationLogsRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+    from?: number;
+    to?: number;
+    query?: string;
+    field?: string;
+    order?: 'ASC' | 'DESC';
+}
+export interface GetApplicationMemberByApplicationIdAndMemberIdRequestParams {
+    applicationId: string;
+    memberId: string;
+}
+export interface GetApplicationPictureByApplicationIdRequestParams {
+    applicationId: string;
+}
+export interface GetApplicationsRequestParams {
+    page?: number;
+    size?: number;
+}
+export interface GetMembersByApplicationIdRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+}
+export interface GetNotificationsByApplicationIdRequestParams {
+    applicationId: string;
+}
+export interface RenewApplicationSecretRequestParams {
+    applicationId: string;
+}
+export interface TransferMemberOwnershipRequestParams {
+    applicationId: string;
+    TransferOwnershipInput?: TransferOwnershipInput;
+}
+export interface UpdateApplicationByApplicationIdRequestParams {
+    applicationId: string;
+    Application?: Application;
+}
+export interface UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams {
+    applicationId: string;
+    memberId: string;
+    MemberInput?: MemberInput;
+}
+export interface UpdateGenericApplicationNotificationRequestParams {
+    applicationId: string;
+    notificationId: string;
+    GenericNotificationConfig?: GenericNotificationConfig;
+}
+export interface UpdatePortalApplicationNotificationRequestParams {
+    applicationId: string;
+    PortalNotificationConfig?: PortalNotificationConfig;
+}
 export declare class ApplicationsService {
     protected httpClient: HttpClient;
     protected basePath: string;
@@ -35,263 +143,221 @@ export declare class ApplicationsService {
     /**
      * Create an application
      * Create an application.  User must have MANAGEMENT_APPLICATION[CREATE] permission.
-     * @param ApplicationInput Use to create an application.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    createApplication(ApplicationInput?: ApplicationInput, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    createApplication(ApplicationInput?: ApplicationInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    createApplication(ApplicationInput?: ApplicationInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
+    createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
+    createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
+    createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
     /**
      * Create an application member
      * Create an application member.  User must have the APPLICATION_MEMBER[CREATE] permission.
-     * @param applicationId Id of an application.
-     * @param MemberInput Use to create a member.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    createApplicationMember(applicationId: string, MemberInput?: MemberInput, observe?: 'body', reportProgress?: boolean): Observable<Member>;
-    createApplicationMember(applicationId: string, MemberInput?: MemberInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
-    createApplicationMember(applicationId: string, MemberInput?: MemberInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
+    createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Member>;
+    createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
+    createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
     /**
      * Create notification settings.
      * Create notification settings.  User must have APPLICATION_NOTIFICATION[READ] permission to create a **portal** notification.  User must have APPLICATION_NOTIFICATION[CREATE] permission to create a **generic** notification.
-     * @param applicationId Id of an application.
-     * @param GenericNotificationConfig Use to create an notification
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    createApplicationNotification(applicationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig | GenericNotificationConfig>;
-    createApplicationNotification(applicationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig | GenericNotificationConfig>>;
-    createApplicationNotification(applicationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig | GenericNotificationConfig>>;
+    createApplicationNotification(requestParameters: CreateApplicationNotificationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig | GenericNotificationConfig>;
+    createApplicationNotification(requestParameters: CreateApplicationNotificationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig | GenericNotificationConfig>>;
+    createApplicationNotification(requestParameters: CreateApplicationNotificationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig | GenericNotificationConfig>>;
     /**
      * Delete an application
      * Delete an application.  User must have the APPLICATION_DEFINITION[DELETE] permission.
-     * @param applicationId Id of an application.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    deleteApplicationByApplicationId(applicationId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    deleteApplicationByApplicationId(applicationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    deleteApplicationByApplicationId(applicationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
     /**
      * Remove an application member
      * Remove an application member.  User must have the APPLICATION_MEMBER[DELETE] permission.
-     * @param applicationId Id of an application.
-     * @param memberId Id of a member.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    deleteApplicationMember(applicationId: string, memberId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    deleteApplicationMember(applicationId: string, memberId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    deleteApplicationMember(applicationId: string, memberId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
     /**
      * Delete a notification
      * Delete a notification.  User must have APPLICATION_NOTIFICATION[DELETE] permission to delete a **generic** notification.
-     * @param applicationId Id of an application.
-     * @param notificationId Id of a notification.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    deleteApplicationNotificationByNotificationId(applicationId: string, notificationId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    deleteApplicationNotificationByNotificationId(applicationId: string, notificationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    deleteApplicationNotificationByNotificationId(applicationId: string, notificationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    deleteApplicationNotificationByNotificationId(requestParameters: DeleteApplicationNotificationByNotificationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    deleteApplicationNotificationByNotificationId(requestParameters: DeleteApplicationNotificationByNotificationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    deleteApplicationNotificationByNotificationId(requestParameters: DeleteApplicationNotificationByNotificationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
     /**
      * Export application logs as CSV
      * Export application logs as CSV.  User must have the APPLICATION_LOG[READ] permission.
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param from Lower bound of timestamp for filtering.
-     * @param to Upper bound of timestamp for filtering. Must be greater than *from* query param.
-     * @param query Query used for filtering.
-     * @param field Field used for filtering. **required** when type is **GROUP_BY**.
-     * @param order Order used to sort the result list.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    exportApplicationLogsByApplicationId(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'body', reportProgress?: boolean): Observable<string>;
-    exportApplicationLogsByApplicationId(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
-    exportApplicationLogsByApplicationId(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
     /**
      * Get Application analytics
      * Get the application analytics.  User must have the APPLICATION_ANALYTICS[READ] permission.
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param from Lower bound of timestamp for filtering.
-     * @param to Upper bound of timestamp for filtering. Must be greater than *from* query param.
-     * @param interval Interval for time search. Must be &gt;&#x3D; 1 000 and &lt;&#x3D; 1 000 000 000.
-     * @param query Query used for filtering.
-     * @param field Field used for filtering. **required** when type is **GROUP_BY**.
-     * @param type Type of analytics that is expected :   - GROUP_BY :       Used to group total hits by a specific field (Application, Status, Path, ...).\\       Query params :       - from       - to       - interval       - query       - field       - order       - ranges   - DATE_HISTO :        Used to retrieve total hits per range of time, on a specific time interval.\\       Query params :       - from       - to       - interval       - query       - aggs   - COUNT :        Used to retrieve total hits, on a specific time interval.\\       Query params :       - from       - to       - interval       - query
-     * @param range Used with GROUP_BY type only.  A semicolon separated list of \&quot;from:to\&quot; elements. **_/!\\\\ Different from *from* and *to* query params**
-     * @param aggs Used with DATE_HISTO type only.  A semicolon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ Type can be **FIELD**, **AVG**, **MIN**, **MAX**
-     * @param order Used with GROUP_BY type only.   A colon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ By default, sort is ASC. If *type* starts with \&#39;-\&#39;, the order sort is DESC.\\ Currently, only **AVG** is supported.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getApplicationAnalytics(applicationId: string, page?: number, size?: number, from?: number, to?: number, interval?: number, query?: string, field?: string, type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT', range?: string, aggs?: string, order?: string, observe?: 'body', reportProgress?: boolean): Observable<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>;
-    getApplicationAnalytics(applicationId: string, page?: number, size?: number, from?: number, to?: number, interval?: number, query?: string, field?: string, type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT', range?: string, aggs?: string, order?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
-    getApplicationAnalytics(applicationId: string, page?: number, size?: number, from?: number, to?: number, interval?: number, query?: string, field?: string, type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT', range?: string, aggs?: string, order?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
+    getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>;
+    getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
+    getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
     /**
      * Get an application.
      * Get an application.  User must have the APPLICATION_DEFINITION[READ] permission.
-     * @param applicationId Id of an application.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getApplicationByApplicationId(applicationId: string, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    getApplicationByApplicationId(applicationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    getApplicationByApplicationId(applicationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
+    getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
+    getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
+    getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
     /**
      * Get a specific log of an application
      * Get a specific log of an application.  User must have the APPLICATION_LOG[READ] permission.
-     * @param applicationId Id of an application.
-     * @param logId Id of a log.
-     * @param timestamp Used to select the right index
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getApplicationLogByApplicationIdAndLogId(applicationId: string, logId: string, timestamp?: number, observe?: 'body', reportProgress?: boolean): Observable<Log>;
-    getApplicationLogByApplicationIdAndLogId(applicationId: string, logId: string, timestamp?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Log>>;
-    getApplicationLogByApplicationIdAndLogId(applicationId: string, logId: string, timestamp?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Log>>;
+    getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Log>;
+    getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Log>>;
+    getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Log>>;
     /**
      * Get Application logs
      * Get the application logs.  User must have the APPLICATION_LOG[READ] permission.
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param from Lower bound of timestamp for filtering.
-     * @param to Upper bound of timestamp for filtering. Must be greater than *from* query param.
-     * @param query Query used for filtering.
-     * @param field Field used for filtering. **required** when type is **GROUP_BY**.
-     * @param order Order used to sort the result list.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getApplicationLogs(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'body', reportProgress?: boolean): Observable<LogsResponse>;
-    getApplicationLogs(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LogsResponse>>;
-    getApplicationLogs(applicationId: string, page?: number, size?: number, from?: number, to?: number, query?: string, field?: string, order?: 'ASC' | 'DESC', observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LogsResponse>>;
+    getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<LogsResponse>;
+    getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LogsResponse>>;
+    getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LogsResponse>>;
     /**
      * Get an application member
      * Get an application member.  User must have the APPLICATION_MEMBER[READ] permission.
-     * @param applicationId Id of an application.
-     * @param memberId Id of a member.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, observe?: 'body', reportProgress?: boolean): Observable<Member>;
-    getApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
-    getApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
+    getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Member>;
+    getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
+    getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
     /**
      * Get the application\&#39;s picture
      * Get the application\&#39;s picture.  User must have APPLICATION_DEFINITION[READ] permission.
-     * @param applicationId Id of an application.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getApplicationPictureByApplicationId(applicationId: string, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
-    getApplicationPictureByApplicationId(applicationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
-    getApplicationPictureByApplicationId(applicationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
     /**
      * List all the applications accessible to authenticated user.
      * List all the applications accessible to authenticated user.  User must have MANAGEMENT_APPLICATION[READ] and PORTAL_APPLICATION[READ] permission.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getApplications(page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<ApplicationsResponse>;
-    getApplications(page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApplicationsResponse>>;
-    getApplications(page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApplicationsResponse>>;
+    getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApplicationsResponse>;
+    getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApplicationsResponse>>;
+    getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApplicationsResponse>>;
     /**
      * List application members
      * List application members.  User must have the APPLICATION_MEMBER[READ] permission.
-     * @param applicationId Id of an application.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getMembersByApplicationId(applicationId: string, page?: number, size?: number, observe?: 'body', reportProgress?: boolean): Observable<MembersResponse>;
-    getMembersByApplicationId(applicationId: string, page?: number, size?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MembersResponse>>;
-    getMembersByApplicationId(applicationId: string, page?: number, size?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MembersResponse>>;
+    getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<MembersResponse>;
+    getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MembersResponse>>;
+    getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MembersResponse>>;
     /**
      * Get application notifications settings
      * Get application notifications settings.  User must **at least** have APPLICATION_NOTIFICATION[READ] permission to get **portal** notification settings.  User must **also** have APPLICATION_NOTIFICATION[CREATE | UPDATE | DELETE] permission to get **generic** notification settings.
-     * @param applicationId Id of an application.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    getNotificationsByApplicationId(applicationId: string, observe?: 'body', reportProgress?: boolean): Observable<NotificationConfigsResponse>;
-    getNotificationsByApplicationId(applicationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<NotificationConfigsResponse>>;
-    getNotificationsByApplicationId(applicationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<NotificationConfigsResponse>>;
+    getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<NotificationConfigsResponse>;
+    getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<NotificationConfigsResponse>>;
+    getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<NotificationConfigsResponse>>;
     /**
      * Renew the client secret for an OAuth2 application
      * Renew the client secret for an OAuth2 application.  User must have the APPLICATION_DEFINITION[UPDATE] permission.
-     * @param applicationId Id of an application.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    renewApplicationSecret(applicationId: string, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    renewApplicationSecret(applicationId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    renewApplicationSecret(applicationId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
+    renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
+    renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
+    renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
     /**
      * Transfer the ownership of the application
      * Transfer the ownership of the application.  User must have the APPLICATION_MEMBER[UPDATE] permission.
-     * @param applicationId Id of an application.
-     * @param TransferOwnershipInput Use to transfer ownership of an application.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    transferMemberOwnership(applicationId: string, TransferOwnershipInput?: TransferOwnershipInput, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    transferMemberOwnership(applicationId: string, TransferOwnershipInput?: TransferOwnershipInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    transferMemberOwnership(applicationId: string, TransferOwnershipInput?: TransferOwnershipInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
     /**
      * Update an application.
      * Update an application.  User must have APPLICATION_DEFINITION[UPDATE] permission.
-     * @param applicationId Id of an application.
-     * @param Application Use to update an application.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    updateApplicationByApplicationId(applicationId: string, Application?: Application, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    updateApplicationByApplicationId(applicationId: string, Application?: Application, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    updateApplicationByApplicationId(applicationId: string, Application?: Application, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
+    updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
+    updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
+    updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
     /**
      * Update an application member.
      * Update an application member.  User must have the APPLICATION_MEMBER[UPDATE] permission.
-     * @param applicationId Id of an application.
-     * @param memberId Id of a member.
-     * @param MemberInput Use to update a member.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, MemberInput?: MemberInput, observe?: 'body', reportProgress?: boolean): Observable<Member>;
-    updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, MemberInput?: MemberInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
-    updateApplicationMemberByApplicationIdAndMemberId(applicationId: string, memberId: string, MemberInput?: MemberInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
+    updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Member>;
+    updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
+    updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
     /**
      * Update a generic notification for an application.
      * Update a generic notification for an application.  User must have APPLICATION_NOTIFICATION[UPDATE] permission to update a **generic** notification.
-     * @param applicationId Id of an application.
-     * @param notificationId Id of a notification.
-     * @param GenericNotificationConfig Use to update a generic notification.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    updateGenericApplicationNotification(applicationId: string, notificationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<GenericNotificationConfig>;
-    updateGenericApplicationNotification(applicationId: string, notificationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GenericNotificationConfig>>;
-    updateGenericApplicationNotification(applicationId: string, notificationId: string, GenericNotificationConfig?: GenericNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GenericNotificationConfig>>;
+    updateGenericApplicationNotification(requestParameters: UpdateGenericApplicationNotificationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<GenericNotificationConfig>;
+    updateGenericApplicationNotification(requestParameters: UpdateGenericApplicationNotificationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GenericNotificationConfig>>;
+    updateGenericApplicationNotification(requestParameters: UpdateGenericApplicationNotificationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GenericNotificationConfig>>;
     /**
      * Update a portal notification for an application.
      * Update a portal notification for an application.  User must have APPLICATION_NOTIFICATION[READ] permission to update a **portal** notification.
-     * @param applicationId Id of an application.
-     * @param PortalNotificationConfig Use to update a portal notification config.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    updatePortalApplicationNotification(applicationId: string, PortalNotificationConfig?: PortalNotificationConfig, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig>;
-    updatePortalApplicationNotification(applicationId: string, PortalNotificationConfig?: PortalNotificationConfig, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig>>;
-    updatePortalApplicationNotification(applicationId: string, PortalNotificationConfig?: PortalNotificationConfig, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig>>;
+    updatePortalApplicationNotification(requestParameters: UpdatePortalApplicationNotificationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig>;
+    updatePortalApplicationNotification(requestParameters: UpdatePortalApplicationNotificationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig>>;
+    updatePortalApplicationNotification(requestParameters: UpdatePortalApplicationNotificationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig>>;
 }

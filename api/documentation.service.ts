@@ -25,6 +25,31 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 
 
+export interface GetPageByApiIdAndPageIdRequestParams {
+    apiId: string;
+    pageId: string;
+}
+
+export interface GetPageByPageIdRequestParams {
+    pageId: string;
+}
+
+export interface GetPagesRequestParams {
+    page?: number;
+    size?: number;
+    homepage?: boolean;
+    parent?: string;
+}
+
+export interface GetPagesByApiIdRequestParams {
+    apiId: string;
+    page?: number;
+    size?: number;
+    homepage?: boolean;
+    parent?: string;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -53,18 +78,19 @@ export class DocumentationService {
     /**
      * Get an API page
      * Get an API page.  This API has to be accessible by the current user, otherwise a 404 will be returned. 
-     * @param apiId Id of an API.
-     * @param pageId Id of a documentation page.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPageByApiIdAndPageId(apiId: string, pageId: string, observe?: 'body', reportProgress?: boolean): Observable<Page>;
-    public getPageByApiIdAndPageId(apiId: string, pageId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
-    public getPageByApiIdAndPageId(apiId: string, pageId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
-    public getPageByApiIdAndPageId(apiId: string, pageId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Page>;
+    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
+    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
+    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getPageByApiIdAndPageId.');
         }
+        const pageId = requestParameters.pageId;
         if (pageId === null || pageId === undefined) {
             throw new Error('Required parameter pageId was null or undefined when calling getPageByApiIdAndPageId.');
         }
@@ -94,14 +120,15 @@ export class DocumentationService {
     /**
      * Get a portal page
      * Get a specific portal documentation page. 
-     * @param pageId Id of a documentation page.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPageByPageId(pageId: string, observe?: 'body', reportProgress?: boolean): Observable<Page>;
-    public getPageByPageId(pageId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
-    public getPageByPageId(pageId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
-    public getPageByPageId(pageId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Page>;
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const pageId = requestParameters.pageId;
         if (pageId === null || pageId === undefined) {
             throw new Error('Required parameter pageId was null or undefined when calling getPageByPageId.');
         }
@@ -131,17 +158,18 @@ export class DocumentationService {
     /**
      * List portal pages
      * List all portal documentation pages 
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param homepage If true, only the documentation homepage of the portal is returned.
-     * @param parent The name of the parent documentation page. If not null, only this page and its children are returned.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPages(page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
-    public getPages(page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
-    public getPages(page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
-    public getPages(page?: number, size?: number, homepage?: boolean, parent?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPages(requestParameters: GetPagesRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
+    public getPages(requestParameters: GetPagesRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
+    public getPages(requestParameters: GetPagesRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
+    public getPages(requestParameters: GetPagesRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const homepage = requestParameters.homepage;
+        const parent = requestParameters.parent;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -183,21 +211,22 @@ export class DocumentationService {
     /**
      * List API pages
      * List all documentation pages of an API.  This API has to be accessible by the current user, otherwise a 404 will be returned. 
-     * @param apiId Id of an API.
-     * @param page The page number for pagination.
-     * @param size The number of items per page for pagination.
-     * @param homepage If true, only the documentation homepage of the portal is returned.
-     * @param parent The name of the parent documentation page. If not null, only this page and its children are returned.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPagesByApiId(apiId: string, page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
-    public getPagesByApiId(apiId: string, page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
-    public getPagesByApiId(apiId: string, page?: number, size?: number, homepage?: boolean, parent?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
-    public getPagesByApiId(apiId: string, page?: number, size?: number, homepage?: boolean, parent?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
+    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
+    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
+    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getPagesByApiId.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const homepage = requestParameters.homepage;
+        const parent = requestParameters.parent;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {

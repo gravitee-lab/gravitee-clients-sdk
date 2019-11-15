@@ -14,6 +14,17 @@ import { Observable } from 'rxjs';
 import { PayloadInput } from '../model/payloadInput';
 import { Token } from '../model/token';
 import { Configuration } from '../configuration';
+export interface ExchangeAuthorizationCodeRequestParams {
+    identity: string;
+    PayloadInput?: PayloadInput;
+}
+export interface LoginRequestParams {
+    Authorization: string;
+}
+export interface TokenExchangeRequestParams {
+    identity: string;
+    token: string;
+}
 export declare class AuthenticationService {
     protected httpClient: HttpClient;
     protected basePath: string;
@@ -23,23 +34,22 @@ export declare class AuthenticationService {
     constructor(httpClient: HttpClient, basePath: string, configuration: Configuration);
     /**
      * Used to get a gravitee token from an Authorization code (PayloadInput.code). Portal API authenticates the user with the specified IDP ({identity} path param).
-     * @param identity
-     * @param PayloadInput OAuth2 payload for authentication.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'body', reportProgress?: boolean): Observable<Token>;
-    exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
-    exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
+    exchangeAuthorizationCode(requestParameters: ExchangeAuthorizationCodeRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Token>;
+    exchangeAuthorizationCode(requestParameters: ExchangeAuthorizationCodeRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
+    exchangeAuthorizationCode(requestParameters: ExchangeAuthorizationCodeRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
     /**
      * Used to get a Gravitee token. This token is mandatory for all the secured resources of the Portal API.
-     * @param Authorization Basic authentication.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    login(Authorization: string, observe?: 'body', reportProgress?: boolean): Observable<Token>;
-    login(Authorization: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
-    login(Authorization: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
+    login(requestParameters: LoginRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Token>;
+    login(requestParameters: LoginRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
+    login(requestParameters: LoginRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
     /**
      * User need to be authenticated to logout.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -50,12 +60,11 @@ export declare class AuthenticationService {
     logout(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
     /**
      * Used to get a gravitee token from a IdentityProvider token. Portal API authenticates the user with the specified IDP ({identity} path param).
-     * @param identity
-     * @param token
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    tokenExchange(identity: string, token: string, observe?: 'body', reportProgress?: boolean): Observable<Token>;
-    tokenExchange(identity: string, token: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
-    tokenExchange(identity: string, token: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
+    tokenExchange(requestParameters: TokenExchangeRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Token>;
+    tokenExchange(requestParameters: TokenExchangeRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
+    tokenExchange(requestParameters: TokenExchangeRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
 }

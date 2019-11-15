@@ -25,6 +25,21 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 
 
+export interface ExchangeAuthorizationCodeRequestParams {
+    identity: string;
+    PayloadInput?: PayloadInput;
+}
+
+export interface LoginRequestParams {
+    Authorization: string;
+}
+
+export interface TokenExchangeRequestParams {
+    identity: string;
+    token: string;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,18 +67,19 @@ export class AuthenticationService {
 
     /**
      * Used to get a gravitee token from an Authorization code (PayloadInput.code). Portal API authenticates the user with the specified IDP ({identity} path param). 
-     * @param identity 
-     * @param PayloadInput OAuth2 payload for authentication.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'body', reportProgress?: boolean): Observable<Token>;
-    public exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
-    public exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
-    public exchangeAuthorizationCode(identity: string, PayloadInput?: PayloadInput, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public exchangeAuthorizationCode(requestParameters: ExchangeAuthorizationCodeRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Token>;
+    public exchangeAuthorizationCode(requestParameters: ExchangeAuthorizationCodeRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
+    public exchangeAuthorizationCode(requestParameters: ExchangeAuthorizationCodeRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
+    public exchangeAuthorizationCode(requestParameters: ExchangeAuthorizationCodeRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const identity = requestParameters.identity;
         if (identity === null || identity === undefined) {
             throw new Error('Required parameter identity was null or undefined when calling exchangeAuthorizationCode.');
         }
+        const PayloadInput = requestParameters.PayloadInput;
 
         let headers = this.defaultHeaders;
 
@@ -99,14 +115,15 @@ export class AuthenticationService {
 
     /**
      * Used to get a Gravitee token. This token is mandatory for all the secured resources of the Portal API. 
-     * @param Authorization Basic authentication.
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public login(Authorization: string, observe?: 'body', reportProgress?: boolean): Observable<Token>;
-    public login(Authorization: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
-    public login(Authorization: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
-    public login(Authorization: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public login(requestParameters: LoginRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Token>;
+    public login(requestParameters: LoginRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
+    public login(requestParameters: LoginRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
+    public login(requestParameters: LoginRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const Authorization = requestParameters.Authorization;
         if (Authorization === null || Authorization === undefined) {
             throw new Error('Required parameter Authorization was null or undefined when calling login.');
         }
@@ -182,18 +199,19 @@ export class AuthenticationService {
 
     /**
      * Used to get a gravitee token from a IdentityProvider token. Portal API authenticates the user with the specified IDP ({identity} path param). 
-     * @param identity 
-     * @param token 
+     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public tokenExchange(identity: string, token: string, observe?: 'body', reportProgress?: boolean): Observable<Token>;
-    public tokenExchange(identity: string, token: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
-    public tokenExchange(identity: string, token: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
-    public tokenExchange(identity: string, token: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public tokenExchange(requestParameters: TokenExchangeRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Token>;
+    public tokenExchange(requestParameters: TokenExchangeRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Token>>;
+    public tokenExchange(requestParameters: TokenExchangeRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Token>>;
+    public tokenExchange(requestParameters: TokenExchangeRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const identity = requestParameters.identity;
         if (identity === null || identity === undefined) {
             throw new Error('Required parameter identity was null or undefined when calling tokenExchange.');
         }
+        const token = requestParameters.token;
         if (token === null || token === undefined) {
             throw new Error('Required parameter token was null or undefined when calling tokenExchange.');
         }

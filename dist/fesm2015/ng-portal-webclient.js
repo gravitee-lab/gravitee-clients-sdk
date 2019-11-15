@@ -89,275 +89,6 @@ class Configuration {
     }
 }
 
-let APIService = class APIService {
-    constructor(httpClient, basePath, configuration) {
-        this.httpClient = httpClient;
-        this.basePath = 'http://demo.gravitee.io/portal/DEFAULT';
-        this.defaultHeaders = new HttpHeaders();
-        this.configuration = new Configuration();
-        if (configuration) {
-            this.configuration = configuration;
-        }
-        if (typeof this.configuration.basePath !== 'string') {
-            if (typeof basePath !== 'string') {
-                basePath = this.basePath;
-            }
-            this.configuration.basePath = basePath;
-        }
-        this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
-    }
-    createApiRatingForApi(apiId, RatingInput, observe = 'body', reportProgress = false) {
-        if (apiId === null || apiId === undefined) {
-            throw new Error('Required parameter apiId was null or undefined when calling createApiRatingForApi.');
-        }
-        let headers = this.defaultHeaders;
-        // authentication (BasicAuth) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-        // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        // to determine the Content-Type header
-        const consumes = [
-            'application/json'
-        ];
-        const httpContentTypeSelected = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-        return this.httpClient.post(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings`, RatingInput, {
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    }
-    getApiByApiId(apiId, include, observe = 'body', reportProgress = false) {
-        if (apiId === null || apiId === undefined) {
-            throw new Error('Required parameter apiId was null or undefined when calling getApiByApiId.');
-        }
-        let queryParameters = new HttpParams({ encoder: this.encoder });
-        if (include) {
-            include.forEach((element) => {
-                queryParameters = queryParameters.append('include', element);
-            });
-        }
-        let headers = this.defaultHeaders;
-        // to determine the Accept header
-        const httpHeaderAccepts = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}`, {
-            params: queryParameters,
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    }
-    getApiPlansByApiId(apiId, page, size, observe = 'body', reportProgress = false) {
-        if (apiId === null || apiId === undefined) {
-            throw new Error('Required parameter apiId was null or undefined when calling getApiPlansByApiId.');
-        }
-        let queryParameters = new HttpParams({ encoder: this.encoder });
-        if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', page);
-        }
-        if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', size);
-        }
-        let headers = this.defaultHeaders;
-        // to determine the Accept header
-        const httpHeaderAccepts = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/plans`, {
-            params: queryParameters,
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    }
-    getApiRatingsByApiId(apiId, page, size, observe = 'body', reportProgress = false) {
-        if (apiId === null || apiId === undefined) {
-            throw new Error('Required parameter apiId was null or undefined when calling getApiRatingsByApiId.');
-        }
-        let queryParameters = new HttpParams({ encoder: this.encoder });
-        if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', page);
-        }
-        if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', size);
-        }
-        let headers = this.defaultHeaders;
-        // to determine the Accept header
-        const httpHeaderAccepts = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings`, {
-            params: queryParameters,
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    }
-    getApis(page, size, context_path, label, version, name, view, cat, observe = 'body', reportProgress = false) {
-        let queryParameters = new HttpParams({ encoder: this.encoder });
-        if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', page);
-        }
-        if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', size);
-        }
-        if (context_path !== undefined && context_path !== null) {
-            queryParameters = queryParameters.set('context-path', context_path);
-        }
-        if (label !== undefined && label !== null) {
-            queryParameters = queryParameters.set('label', label);
-        }
-        if (version !== undefined && version !== null) {
-            queryParameters = queryParameters.set('version', version);
-        }
-        if (name !== undefined && name !== null) {
-            queryParameters = queryParameters.set('name', name);
-        }
-        if (view !== undefined && view !== null) {
-            queryParameters = queryParameters.set('view', view);
-        }
-        if (cat !== undefined && cat !== null) {
-            queryParameters = queryParameters.set('cat', cat);
-        }
-        let headers = this.defaultHeaders;
-        // to determine the Accept header
-        const httpHeaderAccepts = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(`${this.configuration.basePath}/apis`, {
-            params: queryParameters,
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    }
-    getPageByApiIdAndPageId(apiId, pageId, observe = 'body', reportProgress = false) {
-        if (apiId === null || apiId === undefined) {
-            throw new Error('Required parameter apiId was null or undefined when calling getPageByApiIdAndPageId.');
-        }
-        if (pageId === null || pageId === undefined) {
-            throw new Error('Required parameter pageId was null or undefined when calling getPageByApiIdAndPageId.');
-        }
-        let headers = this.defaultHeaders;
-        // to determine the Accept header
-        const httpHeaderAccepts = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/pages/${encodeURIComponent(String(pageId))}`, {
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    }
-    getPagesByApiId(apiId, page, size, homepage, parent, observe = 'body', reportProgress = false) {
-        if (apiId === null || apiId === undefined) {
-            throw new Error('Required parameter apiId was null or undefined when calling getPagesByApiId.');
-        }
-        let queryParameters = new HttpParams({ encoder: this.encoder });
-        if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', page);
-        }
-        if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', size);
-        }
-        if (homepage !== undefined && homepage !== null) {
-            queryParameters = queryParameters.set('homepage', homepage);
-        }
-        if (parent !== undefined && parent !== null) {
-            queryParameters = queryParameters.set('parent', parent);
-        }
-        let headers = this.defaultHeaders;
-        // to determine the Accept header
-        const httpHeaderAccepts = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/pages`, {
-            params: queryParameters,
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    }
-    getPictureByApiId(apiId, observe = 'body', reportProgress = false) {
-        if (apiId === null || apiId === undefined) {
-            throw new Error('Required parameter apiId was null or undefined when calling getPictureByApiId.');
-        }
-        let headers = this.defaultHeaders;
-        // to determine the Accept header
-        const httpHeaderAccepts = [
-            'image/_*',
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/picture`, {
-            responseType: "blob",
-            withCredentials: this.configuration.withCredentials,
-            headers: headers,
-            observe: observe,
-            reportProgress: reportProgress
-        });
-    }
-};
-APIService.ctorParameters = () => [
-    { type: HttpClient },
-    { type: String, decorators: [{ type: Optional }, { type: Inject, args: [BASE_PATH,] }] },
-    { type: Configuration, decorators: [{ type: Optional }] }
-];
-APIService.ngInjectableDef = ɵɵdefineInjectable({ factory: function APIService_Factory() { return new APIService(ɵɵinject(HttpClient), ɵɵinject(BASE_PATH, 8), ɵɵinject(Configuration, 8)); }, token: APIService, providedIn: "root" });
-APIService = __decorate([
-    Injectable({
-        providedIn: 'root'
-    }),
-    __param(1, Optional()), __param(1, Inject(BASE_PATH)), __param(2, Optional())
-], APIService);
-
 let AnalyticsService = class AnalyticsService {
     constructor(httpClient, basePath, configuration) {
         this.httpClient = httpClient;
@@ -375,10 +106,18 @@ let AnalyticsService = class AnalyticsService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    exportApplicationLogsByApplicationId(applicationId, page, size, from, to, query, field, order, observe = 'body', reportProgress = false) {
+    exportApplicationLogsByApplicationId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling exportApplicationLogsByApplicationId.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const order = requestParameters.order;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -424,10 +163,22 @@ let AnalyticsService = class AnalyticsService {
             reportProgress: reportProgress
         });
     }
-    getApplicationAnalytics(applicationId, page, size, from, to, interval, query, field, type, range, aggs, order, observe = 'body', reportProgress = false) {
+    getApplicationAnalytics(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationAnalytics.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const interval = requestParameters.interval;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const type = requestParameters.type;
+        const range = requestParameters.range;
+        const aggs = requestParameters.aggs;
+        const order = requestParameters.order;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -484,13 +235,16 @@ let AnalyticsService = class AnalyticsService {
             reportProgress: reportProgress
         });
     }
-    getApplicationLogByApplicationIdAndLogId(applicationId, logId, timestamp, observe = 'body', reportProgress = false) {
+    getApplicationLogByApplicationIdAndLogId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
         }
+        const logId = requestParameters.logId;
         if (logId === null || logId === undefined) {
             throw new Error('Required parameter logId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
         }
+        const timestamp = requestParameters.timestamp;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (timestamp !== undefined && timestamp !== null) {
             queryParameters = queryParameters.set('timestamp', timestamp);
@@ -517,10 +271,18 @@ let AnalyticsService = class AnalyticsService {
             reportProgress: reportProgress
         });
     }
-    getApplicationLogs(applicationId, page, size, from, to, query, field, order, observe = 'body', reportProgress = false) {
+    getApplicationLogs(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogs.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const order = requestParameters.order;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -579,6 +341,301 @@ AnalyticsService = __decorate([
     __param(1, Optional()), __param(1, Inject(BASE_PATH)), __param(2, Optional())
 ], AnalyticsService);
 
+let ApiService = class ApiService {
+    constructor(httpClient, basePath, configuration) {
+        this.httpClient = httpClient;
+        this.basePath = 'http://demo.gravitee.io/portal/DEFAULT';
+        this.defaultHeaders = new HttpHeaders();
+        this.configuration = new Configuration();
+        if (configuration) {
+            this.configuration = configuration;
+        }
+        if (typeof this.configuration.basePath !== 'string') {
+            if (typeof basePath !== 'string') {
+                basePath = this.basePath;
+            }
+            this.configuration.basePath = basePath;
+        }
+        this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
+    }
+    createApiRatingForApi(requestParameters, observe = 'body', reportProgress = false) {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling createApiRatingForApi.');
+        }
+        const RatingInput = requestParameters.RatingInput;
+        let headers = this.defaultHeaders;
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        // to determine the Content-Type header
+        const consumes = [
+            'application/json'
+        ];
+        const httpContentTypeSelected = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+        return this.httpClient.post(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings`, RatingInput, {
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+    getApiByApiId(requestParameters, observe = 'body', reportProgress = false) {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getApiByApiId.');
+        }
+        const include = requestParameters.include;
+        let queryParameters = new HttpParams({ encoder: this.encoder });
+        if (include) {
+            include.forEach((element) => {
+                queryParameters = queryParameters.append('include', element);
+            });
+        }
+        let headers = this.defaultHeaders;
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}`, {
+            params: queryParameters,
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+    getApiPlansByApiId(requestParameters, observe = 'body', reportProgress = false) {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getApiPlansByApiId.');
+        }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        let queryParameters = new HttpParams({ encoder: this.encoder });
+        if (page !== undefined && page !== null) {
+            queryParameters = queryParameters.set('page', page);
+        }
+        if (size !== undefined && size !== null) {
+            queryParameters = queryParameters.set('size', size);
+        }
+        let headers = this.defaultHeaders;
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/plans`, {
+            params: queryParameters,
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+    getApiRatingsByApiId(requestParameters, observe = 'body', reportProgress = false) {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getApiRatingsByApiId.');
+        }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        let queryParameters = new HttpParams({ encoder: this.encoder });
+        if (page !== undefined && page !== null) {
+            queryParameters = queryParameters.set('page', page);
+        }
+        if (size !== undefined && size !== null) {
+            queryParameters = queryParameters.set('size', size);
+        }
+        let headers = this.defaultHeaders;
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings`, {
+            params: queryParameters,
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+    getApis(requestParameters, observe = 'body', reportProgress = false) {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const context_path = requestParameters.context_path;
+        const label = requestParameters.label;
+        const version = requestParameters.version;
+        const name = requestParameters.name;
+        const view = requestParameters.view;
+        const cat = requestParameters.cat;
+        let queryParameters = new HttpParams({ encoder: this.encoder });
+        if (page !== undefined && page !== null) {
+            queryParameters = queryParameters.set('page', page);
+        }
+        if (size !== undefined && size !== null) {
+            queryParameters = queryParameters.set('size', size);
+        }
+        if (context_path !== undefined && context_path !== null) {
+            queryParameters = queryParameters.set('context-path', context_path);
+        }
+        if (label !== undefined && label !== null) {
+            queryParameters = queryParameters.set('label', label);
+        }
+        if (version !== undefined && version !== null) {
+            queryParameters = queryParameters.set('version', version);
+        }
+        if (name !== undefined && name !== null) {
+            queryParameters = queryParameters.set('name', name);
+        }
+        if (view !== undefined && view !== null) {
+            queryParameters = queryParameters.set('view', view);
+        }
+        if (cat !== undefined && cat !== null) {
+            queryParameters = queryParameters.set('cat', cat);
+        }
+        let headers = this.defaultHeaders;
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(`${this.configuration.basePath}/apis`, {
+            params: queryParameters,
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+    getPageByApiIdAndPageId(requestParameters, observe = 'body', reportProgress = false) {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getPageByApiIdAndPageId.');
+        }
+        const pageId = requestParameters.pageId;
+        if (pageId === null || pageId === undefined) {
+            throw new Error('Required parameter pageId was null or undefined when calling getPageByApiIdAndPageId.');
+        }
+        let headers = this.defaultHeaders;
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/pages/${encodeURIComponent(String(pageId))}`, {
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+    getPagesByApiId(requestParameters, observe = 'body', reportProgress = false) {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getPagesByApiId.');
+        }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const homepage = requestParameters.homepage;
+        const parent = requestParameters.parent;
+        let queryParameters = new HttpParams({ encoder: this.encoder });
+        if (page !== undefined && page !== null) {
+            queryParameters = queryParameters.set('page', page);
+        }
+        if (size !== undefined && size !== null) {
+            queryParameters = queryParameters.set('size', size);
+        }
+        if (homepage !== undefined && homepage !== null) {
+            queryParameters = queryParameters.set('homepage', homepage);
+        }
+        if (parent !== undefined && parent !== null) {
+            queryParameters = queryParameters.set('parent', parent);
+        }
+        let headers = this.defaultHeaders;
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/pages`, {
+            params: queryParameters,
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+    getPictureByApiId(requestParameters, observe = 'body', reportProgress = false) {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getPictureByApiId.');
+        }
+        let headers = this.defaultHeaders;
+        // to determine the Accept header
+        const httpHeaderAccepts = [
+            'image/_*',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/picture`, {
+            responseType: "blob",
+            withCredentials: this.configuration.withCredentials,
+            headers: headers,
+            observe: observe,
+            reportProgress: reportProgress
+        });
+    }
+};
+ApiService.ctorParameters = () => [
+    { type: HttpClient },
+    { type: String, decorators: [{ type: Optional }, { type: Inject, args: [BASE_PATH,] }] },
+    { type: Configuration, decorators: [{ type: Optional }] }
+];
+ApiService.ngInjectableDef = ɵɵdefineInjectable({ factory: function ApiService_Factory() { return new ApiService(ɵɵinject(HttpClient), ɵɵinject(BASE_PATH, 8), ɵɵinject(Configuration, 8)); }, token: ApiService, providedIn: "root" });
+ApiService = __decorate([
+    Injectable({
+        providedIn: 'root'
+    }),
+    __param(1, Optional()), __param(1, Inject(BASE_PATH)), __param(2, Optional())
+], ApiService);
+
 let ApplicationsService = class ApplicationsService {
     constructor(httpClient, basePath, configuration) {
         this.httpClient = httpClient;
@@ -596,7 +653,8 @@ let ApplicationsService = class ApplicationsService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    createApplication(ApplicationInput, observe = 'body', reportProgress = false) {
+    createApplication(requestParameters, observe = 'body', reportProgress = false) {
+        const ApplicationInput = requestParameters.ApplicationInput;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -626,10 +684,12 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    createApplicationMember(applicationId, MemberInput, observe = 'body', reportProgress = false) {
+    createApplicationMember(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling createApplicationMember.');
         }
+        const MemberInput = requestParameters.MemberInput;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -659,10 +719,12 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    createApplicationNotification(applicationId, GenericNotificationConfig, observe = 'body', reportProgress = false) {
+    createApplicationNotification(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling createApplicationNotification.');
         }
+        const GenericNotificationConfig = requestParameters.GenericNotificationConfig;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -692,7 +754,8 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    deleteApplicationByApplicationId(applicationId, observe = 'body', reportProgress = false) {
+    deleteApplicationByApplicationId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationByApplicationId.');
         }
@@ -717,10 +780,12 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    deleteApplicationMember(applicationId, memberId, observe = 'body', reportProgress = false) {
+    deleteApplicationMember(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationMember.');
         }
+        const memberId = requestParameters.memberId;
         if (memberId === null || memberId === undefined) {
             throw new Error('Required parameter memberId was null or undefined when calling deleteApplicationMember.');
         }
@@ -745,10 +810,12 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    deleteApplicationNotificationByNotificationId(applicationId, notificationId, observe = 'body', reportProgress = false) {
+    deleteApplicationNotificationByNotificationId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationNotificationByNotificationId.');
         }
+        const notificationId = requestParameters.notificationId;
         if (notificationId === null || notificationId === undefined) {
             throw new Error('Required parameter notificationId was null or undefined when calling deleteApplicationNotificationByNotificationId.');
         }
@@ -773,10 +840,18 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    exportApplicationLogsByApplicationId(applicationId, page, size, from, to, query, field, order, observe = 'body', reportProgress = false) {
+    exportApplicationLogsByApplicationId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling exportApplicationLogsByApplicationId.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const order = requestParameters.order;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -822,10 +897,22 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    getApplicationAnalytics(applicationId, page, size, from, to, interval, query, field, type, range, aggs, order, observe = 'body', reportProgress = false) {
+    getApplicationAnalytics(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationAnalytics.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const interval = requestParameters.interval;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const type = requestParameters.type;
+        const range = requestParameters.range;
+        const aggs = requestParameters.aggs;
+        const order = requestParameters.order;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -882,7 +969,8 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    getApplicationByApplicationId(applicationId, observe = 'body', reportProgress = false) {
+    getApplicationByApplicationId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationByApplicationId.');
         }
@@ -907,13 +995,16 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    getApplicationLogByApplicationIdAndLogId(applicationId, logId, timestamp, observe = 'body', reportProgress = false) {
+    getApplicationLogByApplicationIdAndLogId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
         }
+        const logId = requestParameters.logId;
         if (logId === null || logId === undefined) {
             throw new Error('Required parameter logId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
         }
+        const timestamp = requestParameters.timestamp;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (timestamp !== undefined && timestamp !== null) {
             queryParameters = queryParameters.set('timestamp', timestamp);
@@ -940,10 +1031,18 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    getApplicationLogs(applicationId, page, size, from, to, query, field, order, observe = 'body', reportProgress = false) {
+    getApplicationLogs(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogs.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const from = requestParameters.from;
+        const to = requestParameters.to;
+        const query = requestParameters.query;
+        const field = requestParameters.field;
+        const order = requestParameters.order;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -988,10 +1087,12 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    getApplicationMemberByApplicationIdAndMemberId(applicationId, memberId, observe = 'body', reportProgress = false) {
+    getApplicationMemberByApplicationIdAndMemberId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationMemberByApplicationIdAndMemberId.');
         }
+        const memberId = requestParameters.memberId;
         if (memberId === null || memberId === undefined) {
             throw new Error('Required parameter memberId was null or undefined when calling getApplicationMemberByApplicationIdAndMemberId.');
         }
@@ -1016,7 +1117,8 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    getApplicationPictureByApplicationId(applicationId, observe = 'body', reportProgress = false) {
+    getApplicationPictureByApplicationId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationPictureByApplicationId.');
         }
@@ -1043,7 +1145,9 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    getApplications(page, size, observe = 'body', reportProgress = false) {
+    getApplications(requestParameters, observe = 'body', reportProgress = false) {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -1073,10 +1177,13 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    getMembersByApplicationId(applicationId, page, size, observe = 'body', reportProgress = false) {
+    getMembersByApplicationId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getMembersByApplicationId.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -1106,7 +1213,8 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    getNotificationsByApplicationId(applicationId, observe = 'body', reportProgress = false) {
+    getNotificationsByApplicationId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getNotificationsByApplicationId.');
         }
@@ -1131,7 +1239,8 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    renewApplicationSecret(applicationId, observe = 'body', reportProgress = false) {
+    renewApplicationSecret(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling renewApplicationSecret.');
         }
@@ -1156,10 +1265,12 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    transferMemberOwnership(applicationId, TransferOwnershipInput, observe = 'body', reportProgress = false) {
+    transferMemberOwnership(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling transferMemberOwnership.');
         }
+        const TransferOwnershipInput = requestParameters.TransferOwnershipInput;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1189,10 +1300,12 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    updateApplicationByApplicationId(applicationId, Application, observe = 'body', reportProgress = false) {
+    updateApplicationByApplicationId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationByApplicationId.');
         }
+        const Application = requestParameters.Application;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1222,13 +1335,16 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    updateApplicationMemberByApplicationIdAndMemberId(applicationId, memberId, MemberInput, observe = 'body', reportProgress = false) {
+    updateApplicationMemberByApplicationIdAndMemberId(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationMemberByApplicationIdAndMemberId.');
         }
+        const memberId = requestParameters.memberId;
         if (memberId === null || memberId === undefined) {
             throw new Error('Required parameter memberId was null or undefined when calling updateApplicationMemberByApplicationIdAndMemberId.');
         }
+        const MemberInput = requestParameters.MemberInput;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1258,13 +1374,16 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    updateGenericApplicationNotification(applicationId, notificationId, GenericNotificationConfig, observe = 'body', reportProgress = false) {
+    updateGenericApplicationNotification(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateGenericApplicationNotification.');
         }
+        const notificationId = requestParameters.notificationId;
         if (notificationId === null || notificationId === undefined) {
             throw new Error('Required parameter notificationId was null or undefined when calling updateGenericApplicationNotification.');
         }
+        const GenericNotificationConfig = requestParameters.GenericNotificationConfig;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1294,10 +1413,12 @@ let ApplicationsService = class ApplicationsService {
             reportProgress: reportProgress
         });
     }
-    updatePortalApplicationNotification(applicationId, PortalNotificationConfig, observe = 'body', reportProgress = false) {
+    updatePortalApplicationNotification(requestParameters, observe = 'body', reportProgress = false) {
+        const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updatePortalApplicationNotification.');
         }
+        const PortalNotificationConfig = requestParameters.PortalNotificationConfig;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1358,10 +1479,12 @@ let AuthenticationService = class AuthenticationService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    exchangeAuthorizationCode(identity, PayloadInput, observe = 'body', reportProgress = false) {
+    exchangeAuthorizationCode(requestParameters, observe = 'body', reportProgress = false) {
+        const identity = requestParameters.identity;
         if (identity === null || identity === undefined) {
             throw new Error('Required parameter identity was null or undefined when calling exchangeAuthorizationCode.');
         }
+        const PayloadInput = requestParameters.PayloadInput;
         let headers = this.defaultHeaders;
         // to determine the Accept header
         const httpHeaderAccepts = [
@@ -1386,7 +1509,8 @@ let AuthenticationService = class AuthenticationService {
             reportProgress: reportProgress
         });
     }
-    login(Authorization, observe = 'body', reportProgress = false) {
+    login(requestParameters, observe = 'body', reportProgress = false) {
+        const Authorization = requestParameters.Authorization;
         if (Authorization === null || Authorization === undefined) {
             throw new Error('Required parameter Authorization was null or undefined when calling login.');
         }
@@ -1436,10 +1560,12 @@ let AuthenticationService = class AuthenticationService {
             reportProgress: reportProgress
         });
     }
-    tokenExchange(identity, token, observe = 'body', reportProgress = false) {
+    tokenExchange(requestParameters, observe = 'body', reportProgress = false) {
+        const identity = requestParameters.identity;
         if (identity === null || identity === undefined) {
             throw new Error('Required parameter identity was null or undefined when calling tokenExchange.');
         }
+        const token = requestParameters.token;
         if (token === null || token === undefined) {
             throw new Error('Required parameter token was null or undefined when calling tokenExchange.');
         }
@@ -1495,10 +1621,12 @@ let DocumentationService = class DocumentationService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    getPageByApiIdAndPageId(apiId, pageId, observe = 'body', reportProgress = false) {
+    getPageByApiIdAndPageId(requestParameters, observe = 'body', reportProgress = false) {
+        const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getPageByApiIdAndPageId.');
         }
+        const pageId = requestParameters.pageId;
         if (pageId === null || pageId === undefined) {
             throw new Error('Required parameter pageId was null or undefined when calling getPageByApiIdAndPageId.');
         }
@@ -1518,7 +1646,8 @@ let DocumentationService = class DocumentationService {
             reportProgress: reportProgress
         });
     }
-    getPageByPageId(pageId, observe = 'body', reportProgress = false) {
+    getPageByPageId(requestParameters, observe = 'body', reportProgress = false) {
+        const pageId = requestParameters.pageId;
         if (pageId === null || pageId === undefined) {
             throw new Error('Required parameter pageId was null or undefined when calling getPageByPageId.');
         }
@@ -1538,7 +1667,11 @@ let DocumentationService = class DocumentationService {
             reportProgress: reportProgress
         });
     }
-    getPages(page, size, homepage, parent, observe = 'body', reportProgress = false) {
+    getPages(requestParameters, observe = 'body', reportProgress = false) {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const homepage = requestParameters.homepage;
+        const parent = requestParameters.parent;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -1569,10 +1702,15 @@ let DocumentationService = class DocumentationService {
             reportProgress: reportProgress
         });
     }
-    getPagesByApiId(apiId, page, size, homepage, parent, observe = 'body', reportProgress = false) {
+    getPagesByApiId(requestParameters, observe = 'body', reportProgress = false) {
+        const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getPagesByApiId.');
         }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const homepage = requestParameters.homepage;
+        const parent = requestParameters.parent;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -1634,7 +1772,8 @@ let PortalService = class PortalService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    createTicket(TicketInput, observe = 'body', reportProgress = false) {
+    createTicket(requestParameters, observe = 'body', reportProgress = false) {
+        const TicketInput = requestParameters.TicketInput;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1664,7 +1803,8 @@ let PortalService = class PortalService {
             reportProgress: reportProgress
         });
     }
-    getPictureByViewId(viewId, observe = 'body', reportProgress = false) {
+    getPictureByViewId(requestParameters, observe = 'body', reportProgress = false) {
+        const viewId = requestParameters.viewId;
         if (viewId === null || viewId === undefined) {
             throw new Error('Required parameter viewId was null or undefined when calling getPictureByViewId.');
         }
@@ -1737,7 +1877,8 @@ let PortalService = class PortalService {
             reportProgress: reportProgress
         });
     }
-    getViewByViewId(viewId, observe = 'body', reportProgress = false) {
+    getViewByViewId(requestParameters, observe = 'body', reportProgress = false) {
+        const viewId = requestParameters.viewId;
         if (viewId === null || viewId === undefined) {
             throw new Error('Required parameter viewId was null or undefined when calling getViewByViewId.');
         }
@@ -1757,7 +1898,9 @@ let PortalService = class PortalService {
             reportProgress: reportProgress
         });
     }
-    getViews(page, size, observe = 'body', reportProgress = false) {
+    getViews(requestParameters, observe = 'body', reportProgress = false) {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -1813,7 +1956,8 @@ let SubscriptionService = class SubscriptionService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    closeSubscription(subscriptionId, observe = 'body', reportProgress = false) {
+    closeSubscription(requestParameters, observe = 'body', reportProgress = false) {
+        const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling closeSubscription.');
         }
@@ -1838,7 +1982,8 @@ let SubscriptionService = class SubscriptionService {
             reportProgress: reportProgress
         });
     }
-    createSubscription(SubscriptionInput, observe = 'body', reportProgress = false) {
+    createSubscription(requestParameters, observe = 'body', reportProgress = false) {
+        const SubscriptionInput = requestParameters.SubscriptionInput;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1868,10 +2013,12 @@ let SubscriptionService = class SubscriptionService {
             reportProgress: reportProgress
         });
     }
-    getSubscriptionBuySubscriptionId(subscriptionId, include, observe = 'body', reportProgress = false) {
+    getSubscriptionBuySubscriptionId(requestParameters, observe = 'body', reportProgress = false) {
+        const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling getSubscriptionBuySubscriptionId.');
         }
+        const include = requestParameters.include;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (include) {
             include.forEach((element) => {
@@ -1900,7 +2047,11 @@ let SubscriptionService = class SubscriptionService {
             reportProgress: reportProgress
         });
     }
-    getSubscriptions(apiId, applicationId, page, size, observe = 'body', reportProgress = false) {
+    getSubscriptions(requestParameters, observe = 'body', reportProgress = false) {
+        const apiId = requestParameters.apiId;
+        const applicationId = requestParameters.applicationId;
+        const page = requestParameters.page;
+        const size = requestParameters.size;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (apiId !== undefined && apiId !== null) {
             queryParameters = queryParameters.set('apiId', apiId);
@@ -1936,10 +2087,12 @@ let SubscriptionService = class SubscriptionService {
             reportProgress: reportProgress
         });
     }
-    renewKeySubscription(subscriptionId, request_body, observe = 'body', reportProgress = false) {
+    renewKeySubscription(requestParameters, observe = 'body', reportProgress = false) {
+        const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling renewKeySubscription.');
         }
+        const request_body = requestParameters.request_body;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -1969,10 +2122,12 @@ let SubscriptionService = class SubscriptionService {
             reportProgress: reportProgress
         });
     }
-    revokeKeySubscription(subscriptionId, keyId, observe = 'body', reportProgress = false) {
+    revokeKeySubscription(requestParameters, observe = 'body', reportProgress = false) {
+        const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling revokeKeySubscription.');
         }
+        const keyId = requestParameters.keyId;
         if (keyId === null || keyId === undefined) {
             throw new Error('Required parameter keyId was null or undefined when calling revokeKeySubscription.');
         }
@@ -2050,7 +2205,8 @@ let UserService = class UserService {
             reportProgress: reportProgress
         });
     }
-    deleteCurrentUserNotificationByNotificationId(notificationId, observe = 'body', reportProgress = false) {
+    deleteCurrentUserNotificationByNotificationId(requestParameters, observe = 'body', reportProgress = false) {
+        const notificationId = requestParameters.notificationId;
         if (notificationId === null || notificationId === undefined) {
             throw new Error('Required parameter notificationId was null or undefined when calling deleteCurrentUserNotificationByNotificationId.');
         }
@@ -2121,7 +2277,9 @@ let UserService = class UserService {
             reportProgress: reportProgress
         });
     }
-    getCurrentUserNotifications(page, size, observe = 'body', reportProgress = false) {
+    getCurrentUserNotifications(requestParameters, observe = 'body', reportProgress = false) {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -2151,7 +2309,8 @@ let UserService = class UserService {
             reportProgress: reportProgress
         });
     }
-    updateCurrentUser(User, observe = 'body', reportProgress = false) {
+    updateCurrentUser(requestParameters, observe = 'body', reportProgress = false) {
+        const User = requestParameters.User;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -2212,7 +2371,8 @@ let UsersService = class UsersService {
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
-    finalizeUserRegistration(FinalizeRegistrationInput, observe = 'body', reportProgress = false) {
+    finalizeUserRegistration(requestParameters, observe = 'body', reportProgress = false) {
+        const FinalizeRegistrationInput = requestParameters.FinalizeRegistrationInput;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -2242,7 +2402,9 @@ let UsersService = class UsersService {
             reportProgress: reportProgress
         });
     }
-    getUsers(page, size, observe = 'body', reportProgress = false) {
+    getUsers(requestParameters, observe = 'body', reportProgress = false) {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
         let queryParameters = new HttpParams({ encoder: this.encoder });
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', page);
@@ -2272,7 +2434,8 @@ let UsersService = class UsersService {
             reportProgress: reportProgress
         });
     }
-    registerNewUser(RegisterUserInput, observe = 'body', reportProgress = false) {
+    registerNewUser(requestParameters, observe = 'body', reportProgress = false) {
+        const RegisterUserInput = requestParameters.RegisterUserInput;
         let headers = this.defaultHeaders;
         // authentication (BasicAuth) required
         if (this.configuration.username || this.configuration.password) {
@@ -2316,7 +2479,7 @@ UsersService = __decorate([
     __param(1, Optional()), __param(1, Inject(BASE_PATH)), __param(2, Optional())
 ], UsersService);
 
-const APIS = [APIService, AnalyticsService, ApplicationsService, AuthenticationService, DocumentationService, PortalService, SubscriptionService, UserService, UsersService];
+const APIS = [AnalyticsService, ApiService, ApplicationsService, AuthenticationService, DocumentationService, PortalService, SubscriptionService, UserService, UsersService];
 
 /**
  * Gravitee.io Portal Rest API
@@ -2468,8 +2631,8 @@ ApiModule = ApiModule_1 = __decorate([
         declarations: [],
         exports: [],
         providers: [
-            APIService,
             AnalyticsService,
+            ApiService,
             ApplicationsService,
             AuthenticationService,
             DocumentationService,
@@ -2487,5 +2650,5 @@ ApiModule = ApiModule_1 = __decorate([
  * Generated bundle index. Do not edit.
  */
 
-export { APIS, APIService, AnalyticsService, ApiModule, ApplicationsService, AuthenticationService, BASE_PATH, COLLECTION_FORMATS, CategoryApiQuery, Configuration, DocumentationService, HttpMethod, IdentityProviderType, Page, Plan, PortalService, Subscription, SubscriptionService, Token, UserService, UsersService };
+export { APIS, AnalyticsService, ApiModule, ApiService, AuthenticationService, BASE_PATH, COLLECTION_FORMATS, CategoryApiQuery, Configuration, HttpMethod, IdentityProviderType, Page, Plan, PortalService, Subscription, SubscriptionService, Token, UserService, UsersService, ApplicationsService as ɵa, DocumentationService as ɵb };
 //# sourceMappingURL=ng-portal-webclient.js.map

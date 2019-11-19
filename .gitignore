@@ -5,3 +5,5 @@ typings
 *.iml
 
 dist
+node
+target

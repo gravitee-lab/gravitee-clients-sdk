@@ -22,7 +22,7 @@ import { ErrorResponse } from '../model/errorResponse';
 import { Log } from '../model/log';
 import { LogsResponse } from '../model/logsResponse';
 
-import { BASE_PATH, COLLECTION_FORMATS }                       from '../variables';
+import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 

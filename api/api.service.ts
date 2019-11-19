@@ -83,6 +83,12 @@ export interface GetPictureByApiIdRequestParams {
     apiId: string;
 }
 
+export interface SearchApisRequestParams {
+    q: string;
+    page?: number;
+    size?: number;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -512,6 +518,59 @@ export class ApiService {
         return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/picture`,
             {
                 responseType: "blob",
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Search APIs with a query
+     * Same as &#x60;/apis&#x60; but with a search query as a parameter. Search for API using the search engine. Supports pagination. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public searchApis(requestParameters: SearchApisRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApisResponse>;
+    public searchApis(requestParameters: SearchApisRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApisResponse>>;
+    public searchApis(requestParameters: SearchApisRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApisResponse>>;
+    public searchApis(requestParameters: SearchApisRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const q = requestParameters.q;
+        if (q === null || q === undefined) {
+            throw new Error('Required parameter q was null or undefined when calling searchApis.');
+        }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (page !== undefined && page !== null) {
+            queryParameters = queryParameters.set('page', <any>page);
+        }
+        if (size !== undefined && size !== null) {
+            queryParameters = queryParameters.set('size', <any>size);
+        }
+        if (q !== undefined && q !== null) {
+            queryParameters = queryParameters.set('q', <any>q);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.post<ApisResponse>(`${this.configuration.basePath}/apis/_search`,
+            null,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

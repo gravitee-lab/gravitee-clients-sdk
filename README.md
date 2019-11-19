@@ -25,9 +25,7 @@ npm run build
 
 ### Publishing
 
-```
-Just commit all files with dist folder
-```
+First build the package then run `npm publish dist` (don't forget to specify the dist folder!)
 
 ### Consuming
 
@@ -56,7 +54,7 @@ npm link
 
 In your project:
 ```
-npm link ng-portal-webclient
+npm link @gravitee/ng-portal-webclient
 ```
 
 __Note for Windows users:__ The Angular CLI has troubles to use linked npm packages.
@@ -71,7 +69,7 @@ In your Angular project:
 
 ```
 // without configuring providers
-import { ApiModule } from 'ng-portal-webclient/dist';
+import { ApiModule } from '@gravitee/ng-portal-webclient';
 import { HttpClientModule } from '@angular/common/http';
 
 
@@ -91,7 +89,7 @@ export class AppModule {}
 
 ```
 // configuring providers
-import { ApiModule, Configuration, ConfigurationParameters } from 'ng-portal-webclient/dist';
+import { ApiModule, Configuration, ConfigurationParameters } from '@gravitee/ng-portal-webclient';
 
 export function apiConfigFactory (): Configuration => {
   const params: ConfigurationParameters = {
@@ -110,7 +108,7 @@ export class AppModule {}
 ```
 
 ```
-import { DefaultApi } from 'ng-portal-webclient/dist';
+import { DefaultApi } from '@gravitee/ng-portal-webclient';
 
 export class AppComponent {
 	 constructor(private apiGateway: DefaultApi) { }
@@ -149,7 +147,7 @@ export class AppModule {
 If different than the generated base path, during app bootstrap, you can provide the base path to your service. 
 
 ```
-import { BASE_PATH } from 'ng-portal-webclient/dist';
+import { BASE_PATH } from '@gravitee/ng-portal-webclient';
 
 bootstrap(AppComponent, [
     { provide: BASE_PATH, useValue: 'https://your-web-service.com' },
@@ -158,7 +156,7 @@ bootstrap(AppComponent, [
 or
 
 ```
-import { BASE_PATH } from 'ng-portal-webclient/dist';
+import { BASE_PATH } from '@gravitee/ng-portal-webclient';
 
 @NgModule({
     imports: [],
@@ -182,7 +180,7 @@ export const environment = {
 
 In the src/app/app.module.ts:
 ```
-import { BASE_PATH } from 'ng-portal-webclient/dist';
+import { BASE_PATH } from '@gravitee/ng-portal-webclient';
 import { environment } from '../environments/environment';
 
 @NgModule({

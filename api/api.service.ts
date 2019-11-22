@@ -63,6 +63,7 @@ export interface GetApisRequestParams {
     name?: string;
     view?: string;
     cat?: CategoryApiQuery;
+    _cat?: CategoryApiQuery;
 }
 
 export interface GetPageByApiIdAndPageIdRequestParams {
@@ -326,6 +327,7 @@ export class ApiService {
         const name = requestParameters.name;
         const view = requestParameters.view;
         const cat = requestParameters.cat;
+        const _cat = requestParameters._cat;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -351,6 +353,9 @@ export class ApiService {
         }
         if (cat !== undefined && cat !== null) {
             queryParameters = queryParameters.set('cat', <any>cat);
+        }
+        if (_cat !== undefined && _cat !== null) {
+            queryParameters = queryParameters.set('-cat', <any>_cat);
         }
 
         let headers = this.defaultHeaders;

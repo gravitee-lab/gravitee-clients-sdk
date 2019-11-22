@@ -37,25 +37,15 @@ _published:_
 npm install gravitee-io/gravitee-clients-sdk --save
 ```
 
-_without publishing (not recommended):_
+_without publishing (not recommended/just for dev locally):_
 
 ```
 npm install PATH_TO_GENERATED_PACKAGE/dist.tgz --save
 ```
 
-_It's important to take the tgz file, otherwise you'll get trouble with links on windows_
+You can use task `publish:local` to build and create tgz to `/tmp/gravitee-ng-portal-webclient.tgz`
 
-_using `npm link`:_
-
-In PATH_TO_GENERATED_PACKAGE/dist:
-```
-npm link
-```
-
-In your project:
-```
-npm link @gravitee/ng-portal-webclient
-```
+_It's important to take the tgz file, otherwise you'll get trouble with links _
 
 __Note for Windows users:__ The Angular CLI has troubles to use linked npm packages.
 Please refer to this issue https://github.com/angular/angular-cli/issues/8284 for a solution / workaround.

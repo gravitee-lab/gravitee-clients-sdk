@@ -1,7 +1,7 @@
-export * from './analytics.service';
 import { AnalyticsService } from './analytics.service';
 export * from './api.service';
 import { ApiService } from './api.service';
+export * from './applications.service';
 import { ApplicationsService } from './applications.service';
 export * from './authentication.service';
 import { AuthenticationService } from './authentication.service';

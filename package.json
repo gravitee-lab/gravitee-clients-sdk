@@ -9,7 +9,8 @@
   ],
   "license": "Unlicense",
   "scripts": {
-    "build": "ng-packagr -p ng-package.json"
+    "build": "ng-packagr -p ng-package.json",
+    "publish:local": "npm run build; pushd dist; npm pack;mv gravitee-ng-portal-webclient*.tgz /tmp/gravitee-ng-portal-webclient.tgz; popd;"
   },
   "peerDependencies": {
     "@angular/core": "^8.2.9",

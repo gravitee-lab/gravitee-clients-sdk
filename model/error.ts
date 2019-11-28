@@ -13,16 +13,20 @@
 
 export interface ModelError { 
     /**
-     * Code of the error
+     * Status HTTP of the error
+     */
+    status?: string;
+    /**
+     * Message of the error
+     */
+    message?: string;
+    /**
+     * Technical code of the error
      */
     code?: string;
     /**
-     * Title of the error
+     * Parameters
      */
-    title?: string;
-    /**
-     * Detail of the error
-     */
-    detail?: string;
+    parameters?: { [key: string]: string; };
 }
 

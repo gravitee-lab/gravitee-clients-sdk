@@ -7,7 +7,6 @@ import { AnalyticsService } from './api/analytics.service';
 import { ApiService } from './api/api.service';
 import { ApplicationsService } from './api/applications.service';
 import { AuthenticationService } from './api/authentication.service';
-import { DocumentationService } from './api/documentation.service';
 import { PortalService } from './api/portal.service';
 import { SubscriptionService } from './api/subscription.service';
 import { UserService } from './api/user.service';
@@ -22,7 +21,6 @@ import { UsersService } from './api/users.service';
     ApiService,
     ApplicationsService,
     AuthenticationService,
-    DocumentationService,
     PortalService,
     SubscriptionService,
     UserService,

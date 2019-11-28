@@ -21,6 +21,8 @@ import { ConfigurationIdentitiesResponse } from '../model/configurationIdentitie
 import { ConfigurationResponse } from '../model/configurationResponse';
 import { ErrorResponse } from '../model/errorResponse';
 import { Info } from '../model/info';
+import { Page } from '../model/page';
+import { PagesResponse } from '../model/pagesResponse';
 import { TicketInput } from '../model/ticketInput';
 import { View } from '../model/view';
 import { ViewsResponse } from '../model/viewsResponse';
@@ -31,6 +33,22 @@ import { Configuration }                                     from '../configurat
 
 export interface CreateTicketRequestParams {
     TicketInput?: TicketInput;
+}
+
+export interface GetPageByPageIdRequestParams {
+    pageId: string;
+    include?: Array<'content'>;
+}
+
+export interface GetPageContentByPageIdRequestParams {
+    pageId: string;
+}
+
+export interface GetPagesRequestParams {
+    page?: number;
+    size?: number;
+    homepage?: boolean;
+    parent?: string;
 }
 
 export interface GetPictureByViewIdRequestParams {
@@ -114,6 +132,145 @@ export class PortalService {
         return this.httpClient.post<any>(`${this.configuration.basePath}/tickets`,
             TicketInput,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get a portal page
+     * Get a specific portal documentation page. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Page>;
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const pageId = requestParameters.pageId;
+        if (pageId === null || pageId === undefined) {
+            throw new Error('Required parameter pageId was null or undefined when calling getPageByPageId.');
+        }
+        const include = requestParameters.include;
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (include) {
+            include.forEach((element) => {
+                queryParameters = queryParameters.append('include', <any>element);
+            })
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<Page>(`${this.configuration.basePath}/pages/${encodeURIComponent(String(pageId))}`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the content of a portal page.
+     * Get the contentn of a specific portal documentation page. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const pageId = requestParameters.pageId;
+        if (pageId === null || pageId === undefined) {
+            throw new Error('Required parameter pageId was null or undefined when calling getPageContentByPageId.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<string>(`${this.configuration.basePath}/pages/${encodeURIComponent(String(pageId))}/content`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * List portal pages
+     * List all portal documentation pages 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPages(requestParameters: GetPagesRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
+    public getPages(requestParameters: GetPagesRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
+    public getPages(requestParameters: GetPagesRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
+    public getPages(requestParameters: GetPagesRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+        const homepage = requestParameters.homepage;
+        const parent = requestParameters.parent;
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (page !== undefined && page !== null) {
+            queryParameters = queryParameters.set('page', <any>page);
+        }
+        if (size !== undefined && size !== null) {
+            queryParameters = queryParameters.set('size', <any>size);
+        }
+        if (homepage !== undefined && homepage !== null) {
+            queryParameters = queryParameters.set('homepage', <any>homepage);
+        }
+        if (parent !== undefined && parent !== null) {
+            queryParameters = queryParameters.set('parent', <any>parent);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<PagesResponse>(`${this.configuration.basePath}/pages`,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

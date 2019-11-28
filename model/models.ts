@@ -56,6 +56,7 @@ export * from './notificationConfigsResponse';
 export * from './oAuthClientSettings';
 export * from './page';
 export * from './pageConfiguration';
+export * from './pageLinks';
 export * from './pagesResponse';
 export * from './payloadInput';
 export * from './plan';

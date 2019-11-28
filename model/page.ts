@@ -11,6 +11,7 @@
  */
 import { PageConfiguration } from './pageConfiguration';
 import { Metadata } from './metadata';
+import { PageLinks } from './pageLinks';
 
 
 export interface Page { 
@@ -39,10 +40,6 @@ export interface Page {
      */
     updated_at?: Date;
     /**
-     * Raw content of the page.
-     */
-    content?: string;
-    /**
      * Array of key-value about the page.
      */
     configuraton?: Array<PageConfiguration>;
@@ -50,6 +47,11 @@ export interface Page {
      * Array of metadata about the page. This array is filled when the page has been fetched from a distant source (GitHub, GitLab, etc...).
      */
     metadata?: Array<Metadata>;
+    _links?: PageLinks;
+    /**
+     * Only returned with *_/apis/{apiId}/pages/{pageId}* and *_/pages/{pageId}*. Need *include* query param to contain \'content\'.  The content of the page. 
+     */
+    content?: string;
 }
 export namespace Page {
     export type TypeEnum = 'SWAGGER' | 'MARKDOWN' | 'FOLDER' | 'ROOT';

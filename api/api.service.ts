@@ -74,6 +74,12 @@ export interface GetApisRequestParams {
 export interface GetPageByApiIdAndPageIdRequestParams {
     apiId: string;
     pageId: string;
+    include?: Array<'content'>;
+}
+
+export interface GetPageContentByApiIdAndPageIdRequestParams {
+    apiId: string;
+    pageId: string;
 }
 
 export interface GetPagesByApiIdRequestParams {
@@ -449,6 +455,14 @@ export class ApiService {
         if (pageId === null || pageId === undefined) {
             throw new Error('Required parameter pageId was null or undefined when calling getPageByApiIdAndPageId.');
         }
+        const include = requestParameters.include;
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (include) {
+            include.forEach((element) => {
+                queryParameters = queryParameters.append('include', <any>element);
+            })
+        }
 
         let headers = this.defaultHeaders;
 
@@ -463,6 +477,50 @@ export class ApiService {
 
 
         return this.httpClient.get<Page>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/pages/${encodeURIComponent(String(pageId))}`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the content of an API page.
+     * Get the content of a specific API documentation page.  This API has to be accessible by the current user, otherwise a 404 will be returned. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getPageContentByApiIdAndPageId.');
+        }
+        const pageId = requestParameters.pageId;
+        if (pageId === null || pageId === undefined) {
+            throw new Error('Required parameter pageId was null or undefined when calling getPageContentByApiIdAndPageId.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<string>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/pages/${encodeURIComponent(String(pageId))}/content`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

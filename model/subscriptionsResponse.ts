@@ -19,9 +19,9 @@ export interface SubscriptionsResponse {
      */
     data?: Array<Subscription>;
     /**
-     * Map of Map of String
+     * Map of Map of Object
      */
-    metadata?: { [key: string]: { [key: string]: string; }; };
+    metadata?: { [key: string]: { [key: string]: object; }; };
     links?: Links;
 }
 

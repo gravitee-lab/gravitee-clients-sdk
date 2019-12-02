@@ -19,9 +19,9 @@ export interface PagesResponse {
      */
     data?: Array<Page>;
     /**
-     * Map of Map of String
+     * Map of Map of Object
      */
-    metadata?: { [key: string]: { [key: string]: string; }; };
+    metadata?: { [key: string]: { [key: string]: object; }; };
     links?: Links;
 }
 

@@ -17,8 +17,8 @@ export interface Bucket {
     name?: string;
     data?: Array<number>;
     /**
-     * Map of Map of String
+     * Map of Map of Object
      */
-    metadata?: { [key: string]: { [key: string]: string; }; };
+    metadata?: { [key: string]: { [key: string]: object; }; };
 }
 

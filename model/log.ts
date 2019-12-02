@@ -59,9 +59,9 @@ export interface Log {
     request?: Request;
     response?: Response;
     /**
-     * Map of Map of String
+     * Map of Map of Object
      */
-    metadata?: { [key: string]: { [key: string]: string; }; };
+    metadata?: { [key: string]: { [key: string]: object; }; };
     /**
      * API Gateway host.
      */

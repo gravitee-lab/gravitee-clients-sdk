@@ -1,5 +1,6 @@
 export * from './api';
 export * from './apiLinks';
+export * from './apiMetrics';
 export * from './apisResponse';
 export * from './application';
 export * from './applicationInput';

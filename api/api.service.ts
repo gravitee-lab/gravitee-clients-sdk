@@ -18,6 +18,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { Api } from '../model/api';
+import { ApiMetrics } from '../model/apiMetrics';
 import { ApisResponse } from '../model/apisResponse';
 import { CategoryApiQuery } from '../model/categoryApiQuery';
 import { ErrorResponse } from '../model/errorResponse';
@@ -40,6 +41,10 @@ export interface CreateApiRatingForApiRequestParams {
 export interface GetApiByApiIdRequestParams {
     apiId: string;
     include?: Array<'pages' | 'plans'>;
+}
+
+export interface GetApiMetricsByApiIdRequestParams {
+    apiId: string;
 }
 
 export interface GetApiPlansByApiIdRequestParams {
@@ -208,6 +213,44 @@ export class ApiService {
         return this.httpClient.get<Api>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}`,
             {
                 params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get API metrics
+     * Get some metrics about an API :   * number of subscribers   * number of hits during the last 7 days   * health ratio over the last week  This API has to be accessible by the current user, otherwise a 404 will be returned. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApiMetrics>;
+    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiMetrics>>;
+    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiMetrics>>;
+    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getApiMetricsByApiId.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<ApiMetrics>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/metrics`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

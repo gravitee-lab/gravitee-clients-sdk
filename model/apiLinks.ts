@@ -13,6 +13,7 @@
 
 export interface ApiLinks { 
     self?: string;
+    metrics?: string;
     pages?: string;
     picture?: string;
     plans?: string;

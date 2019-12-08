@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { Api } from '../model/api';
 import { ApiMetrics } from '../model/apiMetrics';
 import { ApisResponse } from '../model/apisResponse';
+import { ApplicationsResponse } from '../model/applicationsResponse';
 import { CategoryApiQuery } from '../model/categoryApiQuery';
 import { ErrorResponse } from '../model/errorResponse';
 import { Page } from '../model/page';
@@ -92,6 +93,12 @@ export interface GetPagesByApiIdRequestParams {
 
 export interface GetPictureByApiIdRequestParams {
     apiId: string;
+}
+
+export interface GetSubscriberApplicationsByApiIdRequestParams {
+    apiId: string;
+    page?: number;
+    size?: number;
 }
 
 export interface SearchApisRequestParams {
@@ -619,6 +626,55 @@ export class ApiService {
         return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/picture`,
             {
                 responseType: "blob",
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * List applications that subscribred to an API
+     * If the current user is the owner of the API, all connected applications will be returned. Else only applications that current is allowed to access will.  This API has to be accessible by the current user, otherwise a 404 will be returned. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApplicationsResponse>;
+    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApplicationsResponse>>;
+    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApplicationsResponse>>;
+    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getSubscriberApplicationsByApiId.');
+        }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (page !== undefined && page !== null) {
+            queryParameters = queryParameters.set('page', <any>page);
+        }
+        if (size !== undefined && size !== null) {
+            queryParameters = queryParameters.set('size', <any>size);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<ApplicationsResponse>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/subscribers`,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

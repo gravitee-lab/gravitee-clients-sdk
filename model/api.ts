@@ -50,6 +50,10 @@ export interface Api {
     labels?: Array<string>;
     owner: User;
     /**
+     * Last update date and time.
+     */
+    updated_at?: Date;
+    /**
      * List of views this API belongs to.
      */
     views?: Array<string>;

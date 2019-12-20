@@ -78,6 +78,7 @@ export * from './ratingSummary';
 export * from './ratingsResponse';
 export * from './registerUserInput';
 export * from './request';
+export * from './resetUserPasswordInput';
 export * from './response';
 export * from './simpleApplicationSettings';
 export * from './subscription';

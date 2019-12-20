@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { ErrorResponse } from '../model/errorResponse';
 import { FinalizeRegistrationInput } from '../model/finalizeRegistrationInput';
 import { RegisterUserInput } from '../model/registerUserInput';
+import { ResetUserPasswordInput } from '../model/resetUserPasswordInput';
 import { User } from '../model/user';
 import { UsersResponse } from '../model/usersResponse';
 
@@ -38,6 +39,10 @@ export interface GetUsersRequestParams {
 
 export interface RegisterNewUserRequestParams {
     RegisterUserInput?: RegisterUserInput;
+}
+
+export interface ResetUserPasswordRequestParams {
+    ResetUserPasswordInput?: ResetUserPasswordInput;
 }
 
 
@@ -207,6 +212,56 @@ export class UsersService {
 
         return this.httpClient.post<User>(`${this.configuration.basePath}/users/registration`,
             RegisterUserInput,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Reset a user\&#39;s password
+     * Send an email with a link so the user with this email can provide a new password. The user must be internally managed and active. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const ResetUserPasswordInput = requestParameters.ResetUserPasswordInput;
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.post<User>(`${this.configuration.basePath}/users/_reset_password`,
+            ResetUserPasswordInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

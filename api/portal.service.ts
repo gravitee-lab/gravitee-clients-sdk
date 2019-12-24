@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { ConfigurationIdentitiesResponse } from '../model/configurationIdentitiesResponse';
 import { ConfigurationResponse } from '../model/configurationResponse';
 import { ErrorResponse } from '../model/errorResponse';
+import { IdentityProvider } from '../model/identityProvider';
 import { Info } from '../model/info';
 import { Page } from '../model/page';
 import { PagesResponse } from '../model/pagesResponse';
@@ -53,6 +54,10 @@ export interface GetPagesRequestParams {
 
 export interface GetPictureByViewIdRequestParams {
     viewId: string;
+}
+
+export interface GetPortalIdentityProviderRequestParams {
+    identityProviderId: string;
 }
 
 export interface GetViewByViewIdRequestParams {
@@ -343,6 +348,44 @@ export class PortalService {
 
 
         return this.httpClient.get<ConfigurationResponse>(`${this.configuration.basePath}/configuration`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get an identity provider.
+     * Get a specific identity provider by its id. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe?: 'body', reportProgress?: boolean): Observable<IdentityProvider>;
+    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<IdentityProvider>>;
+    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<IdentityProvider>>;
+    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const identityProviderId = requestParameters.identityProviderId;
+        if (identityProviderId === null || identityProviderId === undefined) {
+            throw new Error('Required parameter identityProviderId was null or undefined when calling getPortalIdentityProvider.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<IdentityProvider>(`${this.configuration.basePath}/configuration/identities/${encodeURIComponent(String(identityProviderId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -18,7 +18,6 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ErrorResponse } from '../model/errorResponse';
-import { PayloadInput } from '../model/payloadInput';
 import { Token } from '../model/token';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -27,7 +26,11 @@ import { Configuration }                                     from '../configurat
 
 export interface ExchangeAuthorizationCodeRequestParams {
     identity: string;
-    PayloadInput?: PayloadInput;
+    client_id?: string;
+    redirect_uri?: string;
+    code?: string;
+    grant_type?: string;
+    code_verifier?: string;
 }
 
 export interface LoginRequestParams {
@@ -63,6 +66,19 @@ export class AuthenticationService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     /**
@@ -79,7 +95,11 @@ export class AuthenticationService {
         if (identity === null || identity === undefined) {
             throw new Error('Required parameter identity was null or undefined when calling exchangeAuthorizationCode.');
         }
-        const PayloadInput = requestParameters.PayloadInput;
+        const client_id = requestParameters.client_id;
+        const redirect_uri = requestParameters.redirect_uri;
+        const code = requestParameters.code;
+        const grant_type = requestParameters.grant_type;
+        const code_verifier = requestParameters.code_verifier;
 
         let headers = this.defaultHeaders;
 
@@ -92,18 +112,40 @@ export class AuthenticationService {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
+            'application/x-www-form-urlencoded'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (client_id !== undefined) {
+            formParams = formParams.append('client_id', <any>client_id) as any || formParams;
+        }
+        if (redirect_uri !== undefined) {
+            formParams = formParams.append('redirect_uri', <any>redirect_uri) as any || formParams;
+        }
+        if (code !== undefined) {
+            formParams = formParams.append('code', <any>code) as any || formParams;
+        }
+        if (grant_type !== undefined) {
+            formParams = formParams.append('grant_type', <any>grant_type) as any || formParams;
+        }
+        if (code_verifier !== undefined) {
+            formParams = formParams.append('code_verifier', <any>code_verifier) as any || formParams;
         }
 
         return this.httpClient.post<Token>(`${this.configuration.basePath}/auth/oauth2/${encodeURIComponent(String(identity))}`,
-            PayloadInput,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

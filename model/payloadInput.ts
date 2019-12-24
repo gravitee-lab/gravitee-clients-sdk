@@ -15,6 +15,7 @@ export interface PayloadInput {
     client_id?: string;
     redirect_uri?: string;
     code?: string;
-    state?: string;
+    grant_type?: string;
+    code_verifier?: string;
 }
 

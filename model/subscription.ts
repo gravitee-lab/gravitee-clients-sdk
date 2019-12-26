@@ -59,11 +59,12 @@ export interface Subscription {
     keys?: Array<Key>;
 }
 export namespace Subscription {
-    export type StatusEnum = 'PENDING' | 'ACCEPTED' | 'REJECTED';
+    export type StatusEnum = 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'PAUSED';
     export const StatusEnum = {
         PENDING: 'PENDING' as StatusEnum,
         ACCEPTED: 'ACCEPTED' as StatusEnum,
-        REJECTED: 'REJECTED' as StatusEnum
+        REJECTED: 'REJECTED' as StatusEnum,
+        PAUSED: 'PAUSED' as StatusEnum
     };
 }
 

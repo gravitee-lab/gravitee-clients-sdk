@@ -31,6 +31,10 @@ export interface Application {
      * Type of the application (Web, Mobile, ...).
      */
     applicationType?: string;
+    /**
+     * True if the application has client id.
+     */
+    hasClientId?: boolean;
     owner?: User;
     /**
      * Creation date and time of the application.

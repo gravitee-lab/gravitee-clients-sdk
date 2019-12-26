@@ -35,7 +35,7 @@ export interface CreateSubscriptionRequestParams {
     SubscriptionInput?: SubscriptionInput;
 }
 
-export interface GetSubscriptionBuySubscriptionIdRequestParams {
+export interface GetSubscriptionByIdRequestParams {
     subscriptionId: string;
     include?: Array<'keys'>;
 }
@@ -184,13 +184,13 @@ export class SubscriptionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSubscriptionBuySubscriptionId(requestParameters: GetSubscriptionBuySubscriptionIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
-    public getSubscriptionBuySubscriptionId(requestParameters: GetSubscriptionBuySubscriptionIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
-    public getSubscriptionBuySubscriptionId(requestParameters: GetSubscriptionBuySubscriptionIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
-    public getSubscriptionBuySubscriptionId(requestParameters: GetSubscriptionBuySubscriptionIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
+    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
+    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
+    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
-            throw new Error('Required parameter subscriptionId was null or undefined when calling getSubscriptionBuySubscriptionId.');
+            throw new Error('Required parameter subscriptionId was null or undefined when calling getSubscriptionById.');
         }
         const include = requestParameters.include;
 
@@ -230,7 +230,7 @@ export class SubscriptionService {
     }
 
     /**
-     * List all subscriptions, filtered by api and/or by application. At least an api or an application must be provided.  User must have the APPLICATION_SUBSCRIPTION[READ] permission to list subscription with application query param.\\ User must have the API_SUBSCRIPTION[READ] permission to list subscription with api query param. 
+     * List all ACCEPTED, PAUSED &amp; PENDING subscriptions, filtered by api and/or by application. At least an api or an application must be provided.  User must have the APPLICATION_SUBSCRIPTION[READ] permission to list subscription with application query param.\\ User must have the API_SUBSCRIPTION[READ] permission to list subscription with api query param. 
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

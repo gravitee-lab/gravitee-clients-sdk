@@ -51,12 +51,13 @@ export interface Page {
     content?: string;
 }
 export namespace Page {
-    export type TypeEnum = 'SWAGGER' | 'MARKDOWN' | 'FOLDER' | 'ROOT';
+    export type TypeEnum = 'SWAGGER' | 'MARKDOWN' | 'FOLDER' | 'ROOT' | 'LINK';
     export const TypeEnum = {
         SWAGGER: 'SWAGGER' as TypeEnum,
         MARKDOWN: 'MARKDOWN' as TypeEnum,
         FOLDER: 'FOLDER' as TypeEnum,
-        ROOT: 'ROOT' as TypeEnum
+        ROOT: 'ROOT' as TypeEnum,
+        LINK: 'LINK' as TypeEnum
     };
 }
 

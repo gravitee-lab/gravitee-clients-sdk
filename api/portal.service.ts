@@ -22,6 +22,7 @@ import { ConfigurationResponse } from '../model/configurationResponse';
 import { ErrorResponse } from '../model/errorResponse';
 import { IdentityProvider } from '../model/identityProvider';
 import { Info } from '../model/info';
+import { LinksResponse } from '../model/linksResponse';
 import { Page } from '../model/page';
 import { PagesResponse } from '../model/pagesResponse';
 import { TicketInput } from '../model/ticketInput';
@@ -452,6 +453,39 @@ export class PortalService {
 
 
         return this.httpClient.get<Info>(`${this.configuration.basePath}/info`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the portal links for header and footer.
+     * Get all the links (internal and external) to be displayed in the header and in the footer of the portal. 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPortalLinks(observe?: 'body', reportProgress?: boolean): Observable<LinksResponse>;
+    public getPortalLinks(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LinksResponse>>;
+    public getPortalLinks(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LinksResponse>>;
+    public getPortalLinks(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<LinksResponse>(`${this.configuration.basePath}/configuration/links`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

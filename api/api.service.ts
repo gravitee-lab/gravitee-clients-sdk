@@ -23,6 +23,7 @@ import { ApisResponse } from '../model/apisResponse';
 import { ApplicationsResponse } from '../model/applicationsResponse';
 import { CategoryApiQuery } from '../model/categoryApiQuery';
 import { ErrorResponse } from '../model/errorResponse';
+import { LinksResponse } from '../model/linksResponse';
 import { Page } from '../model/page';
 import { PagesResponse } from '../model/pagesResponse';
 import { PlansResponse } from '../model/plansResponse';
@@ -42,6 +43,10 @@ export interface CreateApiRatingForApiRequestParams {
 export interface GetApiByApiIdRequestParams {
     apiId: string;
     include?: Array<'pages' | 'plans'>;
+}
+
+export interface GetApiLinksRequestParams {
+    apiId: string;
 }
 
 export interface GetApiMetricsByApiIdRequestParams {
@@ -226,6 +231,44 @@ export class ApiService {
         return this.httpClient.get<Api>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}`,
             {
                 params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the API links from Aside SYSTEM_FOLDER.
+     * Get all the links (internal and external) to be displayed in the detail of the API. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe?: 'body', reportProgress?: boolean): Observable<LinksResponse>;
+    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LinksResponse>>;
+    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LinksResponse>>;
+    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getApiLinks.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<LinksResponse>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/links`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

@@ -9,15 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Link } from './link';
 
 
-export interface ApiLinks { 
-    self?: string;
-    links?: string;
-    metrics?: string;
-    pages?: string;
-    picture?: string;
-    plans?: string;
-    ratings?: string;
+export interface CategorizedLinks { 
+    /**
+     * true if the links of this category are in system folder and not in a subfolder.
+     */
+    root?: boolean;
+    /**
+     * name of the group of links
+     */
+    category?: string;
+    links?: Array<Link>;
 }
 

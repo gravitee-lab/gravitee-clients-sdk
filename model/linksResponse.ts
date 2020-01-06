@@ -9,15 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CategorizedLinks } from './categorizedLinks';
 
 
-export interface ApiLinks { 
-    self?: string;
-    links?: string;
-    metrics?: string;
-    pages?: string;
-    picture?: string;
-    plans?: string;
-    ratings?: string;
+export interface LinksResponse { 
+    /**
+     * Map of CategorizedLinks. Keys of the map can be: * aside * header * footer * subfooter 
+     */
+    slots?: { [key: string]: Array<CategorizedLinks>; };
 }
 

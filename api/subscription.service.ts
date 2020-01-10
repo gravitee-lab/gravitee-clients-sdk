@@ -43,6 +43,7 @@ export interface GetSubscriptionByIdRequestParams {
 export interface GetSubscriptionsRequestParams {
     apiId?: string;
     applicationId?: string;
+    statuses?: Array<'ACCEPTED' | 'CLOSED' | 'PAUSED' | 'PENDING' | 'REJECTED'>;
     page?: number;
     size?: number;
 }
@@ -241,6 +242,7 @@ export class SubscriptionService {
     public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         const applicationId = requestParameters.applicationId;
+        const statuses = requestParameters.statuses;
         const page = requestParameters.page;
         const size = requestParameters.size;
 
@@ -250,6 +252,11 @@ export class SubscriptionService {
         }
         if (applicationId !== undefined && applicationId !== null) {
             queryParameters = queryParameters.set('applicationId', <any>applicationId);
+        }
+        if (statuses) {
+            statuses.forEach((element) => {
+                queryParameters = queryParameters.append('statuses', <any>element);
+            })
         }
         if (page !== undefined && page !== null) {
             queryParameters = queryParameters.set('page', <any>page);

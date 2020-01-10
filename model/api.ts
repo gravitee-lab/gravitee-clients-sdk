@@ -37,9 +37,17 @@ export interface Api {
      */
     description: string;
     /**
-     * Whether or not the API is public.
+     * Whether or not the API is in draft.
      */
     draft?: boolean;
+    /**
+     * Whether or not the API is public.
+     */
+    _public?: boolean;
+    /**
+     * Whether or not the API is running.
+     */
+    running?: boolean;
     /**
      * List of all the avaible endpoints to call the API.
      */

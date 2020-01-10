@@ -123,6 +123,7 @@ export interface GetApplicationPictureByApplicationIdRequestParams {
 export interface GetApplicationsRequestParams {
     page?: number;
     size?: number;
+    forSubscription?: boolean;
 }
 
 export interface GetMembersByApplicationIdRequestParams {
@@ -929,6 +930,7 @@ export class ApplicationsService {
     public getApplications(requestParameters: GetApplicationsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const page = requestParameters.page;
         const size = requestParameters.size;
+        const forSubscription = requestParameters.forSubscription;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -936,6 +938,9 @@ export class ApplicationsService {
         }
         if (size !== undefined && size !== null) {
             queryParameters = queryParameters.set('size', <any>size);
+        }
+        if (forSubscription !== undefined && forSubscription !== null) {
+            queryParameters = queryParameters.set('forSubscription', <any>forSubscription);
         }
 
         let headers = this.defaultHeaders;

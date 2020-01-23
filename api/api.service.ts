@@ -28,6 +28,7 @@ import { Page } from '../model/page';
 import { PagesResponse } from '../model/pagesResponse';
 import { PlansResponse } from '../model/plansResponse';
 import { Rating } from '../model/rating';
+import { RatingAnswerInput } from '../model/ratingAnswerInput';
 import { RatingInput } from '../model/ratingInput';
 import { RatingsResponse } from '../model/ratingsResponse';
 
@@ -35,9 +36,26 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 
 
-export interface CreateApiRatingForApiRequestParams {
+export interface CreateApiRatingRequestParams {
     apiId: string;
     RatingInput?: RatingInput;
+}
+
+export interface CreateApiRatingAnswerRequestParams {
+    apiId: string;
+    ratingId: string;
+    RatingAnswerInput?: RatingAnswerInput;
+}
+
+export interface DeleteApiRatingRequestParams {
+    apiId: string;
+    ratingId: string;
+}
+
+export interface DeleteApiRatingAnswerRequestParams {
+    apiId: string;
+    ratingId: string;
+    answerId: string;
 }
 
 export interface GetApiByApiIdRequestParams {
@@ -63,6 +81,8 @@ export interface GetApiRatingsByApiIdRequestParams {
     apiId: string;
     page?: number;
     size?: number;
+    mine?: boolean;
+    order?: string;
 }
 
 export interface GetApisRequestParams {
@@ -112,6 +132,12 @@ export interface SearchApisRequestParams {
     size?: number;
 }
 
+export interface UpdateApiRatingRequestParams {
+    apiId: string;
+    ratingId: string;
+    RatingInput?: RatingInput;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -145,13 +171,13 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApiRatingForApi(requestParameters: CreateApiRatingForApiRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Rating>;
-    public createApiRatingForApi(requestParameters: CreateApiRatingForApiRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Rating>>;
-    public createApiRatingForApi(requestParameters: CreateApiRatingForApiRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Rating>>;
-    public createApiRatingForApi(requestParameters: CreateApiRatingForApiRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Rating>;
+    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Rating>>;
+    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Rating>>;
+    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
-            throw new Error('Required parameter apiId was null or undefined when calling createApiRatingForApi.');
+            throw new Error('Required parameter apiId was null or undefined when calling createApiRating.');
         }
         const RatingInput = requestParameters.RatingInput;
 
@@ -183,6 +209,162 @@ export class ApiService {
 
         return this.httpClient.post<Rating>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings`,
             RatingInput,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Create an answer to rating
+     * Create an answer to rating of API.  This API has to be accessible by the current user, otherwise a 404 will be returned.  The current must have API_RATING_ANSWER[CREATE] permission to create an answer. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Rating>;
+    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Rating>>;
+    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Rating>>;
+    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling createApiRatingAnswer.');
+        }
+        const ratingId = requestParameters.ratingId;
+        if (ratingId === null || ratingId === undefined) {
+            throw new Error('Required parameter ratingId was null or undefined when calling createApiRatingAnswer.');
+        }
+        const RatingAnswerInput = requestParameters.RatingAnswerInput;
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.post<Rating>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings/${encodeURIComponent(String(ratingId))}/answers`,
+            RatingAnswerInput,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Delete a rating for an API
+     * Delete a rating for an API.  This API has to be accessible by the current user, otherwise a 404 will be returned.  The current must have API_RATING[DELETE] permission to delete a rating. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling deleteApiRating.');
+        }
+        const ratingId = requestParameters.ratingId;
+        if (ratingId === null || ratingId === undefined) {
+            throw new Error('Required parameter ratingId was null or undefined when calling deleteApiRating.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.delete<any>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings/${encodeURIComponent(String(ratingId))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Delete an answer rating for an API
+     * Delete an answer rating for an API.  This API has to be accessible by the current user, otherwise a 404 will be returned.  The current must have API_RATING_ANSWER[DELETE] permission to delete a rating. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling deleteApiRatingAnswer.');
+        }
+        const ratingId = requestParameters.ratingId;
+        if (ratingId === null || ratingId === undefined) {
+            throw new Error('Required parameter ratingId was null or undefined when calling deleteApiRatingAnswer.');
+        }
+        const answerId = requestParameters.answerId;
+        if (answerId === null || answerId === undefined) {
+            throw new Error('Required parameter answerId was null or undefined when calling deleteApiRatingAnswer.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.delete<any>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings/${encodeURIComponent(String(ratingId))}/answers/${encodeURIComponent(String(answerId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -381,6 +563,8 @@ export class ApiService {
         }
         const page = requestParameters.page;
         const size = requestParameters.size;
+        const mine = requestParameters.mine;
+        const order = requestParameters.order;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -388,6 +572,12 @@ export class ApiService {
         }
         if (size !== undefined && size !== null) {
             queryParameters = queryParameters.set('size', <any>size);
+        }
+        if (mine !== undefined && mine !== null) {
+            queryParameters = queryParameters.set('mine', <any>mine);
+        }
+        if (order !== undefined && order !== null) {
+            queryParameters = queryParameters.set('order', <any>order);
         }
 
         let headers = this.defaultHeaders;
@@ -771,6 +961,64 @@ export class ApiService {
             null,
             {
                 params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Update a rating for an API
+     * Update a rating for an API.  This API has to be accessible by the current user, otherwise a 404 will be returned.  The current must have API_RATING[CREATE] permission to update a rating. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Rating>;
+    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Rating>>;
+    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Rating>>;
+    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling updateApiRating.');
+        }
+        const ratingId = requestParameters.ratingId;
+        if (ratingId === null || ratingId === undefined) {
+            throw new Error('Required parameter ratingId was null or undefined when calling updateApiRating.');
+        }
+        const RatingInput = requestParameters.RatingInput;
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.put<Rating>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings/${encodeURIComponent(String(ratingId))}`,
+            RatingInput,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

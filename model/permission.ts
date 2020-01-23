@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { User } from './user';
 
 
-export interface RatingAnswer { 
-    id: string;
-    author: User;
-    date: Date;
-    comment: string;
+export interface Permission { 
+    /**
+     * Name of permission.
+     */
+    name?: string;
+    rights?: Array<string>;
 }
 

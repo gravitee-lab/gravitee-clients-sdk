@@ -9,18 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserLinks } from './userLinks';
+import { PortalHook } from './portalHook';
 
 
-export interface User { 
+export interface ConfigurationHooksResponse { 
     /**
-     * Unique identifier of a user.
+     * List of hooks
      */
-    id?: string;
-    first_name?: string;
-    last_name?: string;
-    display_name?: string;
-    email?: string;
-    _links?: UserLinks;
+    data?: Array<PortalHook>;
 }
 

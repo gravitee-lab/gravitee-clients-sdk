@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { ErrorResponse } from '../model/errorResponse';
 import { PortalNotificationsResponse } from '../model/portalNotificationsResponse';
 import { User } from '../model/user';
+import { UserInput } from '../model/userInput';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -35,7 +36,7 @@ export interface GetCurrentUserNotificationsRequestParams {
 }
 
 export interface UpdateCurrentUserRequestParams {
-    User?: User;
+    UserInput?: UserInput;
 }
 
 
@@ -284,7 +285,7 @@ export class UserService {
     public updateCurrentUser(requestParameters: UpdateCurrentUserRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
     public updateCurrentUser(requestParameters: UpdateCurrentUserRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
     public updateCurrentUser(requestParameters: UpdateCurrentUserRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        const User = requestParameters.User;
+        const UserInput = requestParameters.UserInput;
 
         let headers = this.defaultHeaders;
 
@@ -313,7 +314,7 @@ export class UserService {
         }
 
         return this.httpClient.put<User>(`${this.configuration.basePath}/user`,
-            User,
+            UserInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

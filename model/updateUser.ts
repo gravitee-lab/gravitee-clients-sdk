@@ -9,18 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserLinks } from './userLinks';
 
 
-export interface User { 
+export interface UpdateUser { 
     /**
      * Unique identifier of a user.
      */
     id?: string;
-    first_name?: string;
-    last_name?: string;
-    display_name?: string;
-    email?: string;
-    _links?: UserLinks;
+    /**
+     * Avatar of the user.
+     */
+    avatar?: string;
 }
 

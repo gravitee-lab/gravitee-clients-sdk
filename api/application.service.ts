@@ -17,6 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { ApisResponse } from '../model/apisResponse';
 import { Application } from '../model/application';
 import { ApplicationInput } from '../model/applicationInput';
 import { ApplicationsResponse } from '../model/applicationsResponse';
@@ -136,6 +137,12 @@ export interface GetNotificationsByApplicationIdRequestParams {
     applicationId: string;
 }
 
+export interface GetSubscriberApisByApplicationIdRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+}
+
 export interface RenewApplicationSecretRequestParams {
     applicationId: string;
 }
@@ -171,7 +178,7 @@ export interface UpdatePortalApplicationNotificationRequestParams {
 @Injectable({
   providedIn: 'root'
 })
-export class ApplicationsService {
+export class ApplicationService {
 
     protected basePath = 'http://demo.gravitee.io/portal/DEFAULT';
     public defaultHeaders = new HttpHeaders();
@@ -1060,6 +1067,55 @@ export class ApplicationsService {
 
         return this.httpClient.get<NotificationConfigsResponse>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * List APIs that subscribed with an application
+     * If the current user is the owner of the API, all connected ACCEPTED, PAUSED &amp; PENDING applications will be returned. Else only APIs that current is allowed to access will.  This application has to be accessible by the current user, otherwise a 404 will be returned. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApisResponse>;
+    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApisResponse>>;
+    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApisResponse>>;
+    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
+        if (applicationId === null || applicationId === undefined) {
+            throw new Error('Required parameter applicationId was null or undefined when calling getSubscriberApisByApplicationId.');
+        }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (page !== undefined && page !== null) {
+            queryParameters = queryParameters.set('page', <any>page);
+        }
+        if (size !== undefined && size !== null) {
+            queryParameters = queryParameters.set('size', <any>size);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<ApisResponse>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/subscribers`,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

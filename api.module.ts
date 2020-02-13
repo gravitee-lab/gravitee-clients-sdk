@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { AnalyticsService } from './api/analytics.service';
 import { ApiService } from './api/api.service';
-import { ApplicationsService } from './api/applications.service';
+import { ApplicationService } from './api/application.service';
 import { AuthenticationService } from './api/authentication.service';
 import { PermissionsService } from './api/permissions.service';
 import { PortalService } from './api/portal.service';
@@ -20,7 +20,7 @@ import { UsersService } from './api/users.service';
   providers: [
     AnalyticsService,
     ApiService,
-    ApplicationsService,
+    ApplicationService,
     AuthenticationService,
     PermissionsService,
     PortalService,

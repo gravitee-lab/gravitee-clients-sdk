@@ -1,8 +1,8 @@
 import { AnalyticsService } from './analytics.service';
 export * from './api.service';
 import { ApiService } from './api.service';
-export * from './applications.service';
-import { ApplicationsService } from './applications.service';
+export * from './application.service';
+import { ApplicationService } from './application.service';
 export * from './authentication.service';
 import { AuthenticationService } from './authentication.service';
 export * from './permissions.service';
@@ -15,4 +15,4 @@ export * from './user.service';
 import { UserService } from './user.service';
 export * from './users.service';
 import { UsersService } from './users.service';
-export const APIS = [AnalyticsService, ApiService, ApplicationsService, AuthenticationService, PermissionsService, PortalService, SubscriptionService, UserService, UsersService];
+export const APIS = [AnalyticsService, ApiService, ApplicationService, AuthenticationService, PermissionsService, PortalService, SubscriptionService, UserService, UsersService];

@@ -26,6 +26,7 @@ import { Info } from '../model/info';
 import { LinksResponse } from '../model/linksResponse';
 import { Page } from '../model/page';
 import { PagesResponse } from '../model/pagesResponse';
+import { ThemeResponse } from '../model/themeResponse';
 import { TicketInput } from '../model/ticketInput';
 import { View } from '../model/view';
 import { ViewsResponse } from '../model/viewsResponse';
@@ -520,6 +521,39 @@ export class PortalService {
 
 
         return this.httpClient.get<LinksResponse>(`${this.configuration.basePath}/configuration/links`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get portal theme.
+     * Get portal theme. 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPortalTheme(observe?: 'body', reportProgress?: boolean): Observable<ThemeResponse>;
+    public getPortalTheme(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ThemeResponse>>;
+    public getPortalTheme(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ThemeResponse>>;
+    public getPortalTheme(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<ThemeResponse>(`${this.configuration.basePath}/theme`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

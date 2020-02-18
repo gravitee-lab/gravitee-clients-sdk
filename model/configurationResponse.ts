@@ -11,7 +11,6 @@
  */
 import { ConfigurationPortal } from './configurationPortal';
 import { ConfigurationPlan } from './configurationPlan';
-import { ConfigurationTheme } from './configurationTheme';
 import { ConfigurationAnalytics } from './configurationAnalytics';
 import { ConfigurationAuthentication } from './configurationAuthentication';
 import { ConfigurationApplication } from './configurationApplication';
@@ -27,7 +26,6 @@ export interface ConfigurationResponse {
     authentication?: ConfigurationAuthentication;
     scheduler?: ConfigurationScheduler;
     documentation?: ConfigurationDocumentation;
-    theme?: ConfigurationTheme;
     plan?: ConfigurationPlan;
     apiReview?: Enabled;
     analytics?: ConfigurationAnalytics;

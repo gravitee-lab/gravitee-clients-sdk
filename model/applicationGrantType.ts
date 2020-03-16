@@ -9,14 +9,24 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ApplicationSettings } from './applicationSettings';
 
 
-export interface ApplicationInput { 
+export interface ApplicationGrantType { 
+    /**
+     * code of grant type
+     */
+    code?: string;
+    /**
+     * type of grant type
+     */
+    type?: string;
+    /**
+     * name of grant type
+     */
     name?: string;
-    description?: string;
-    picture?: string;
-    groups?: Array<string>;
-    settings?: ApplicationSettings;
+    /**
+     * List of response types
+     */
+    responses_types?: Array<string>;
 }
 

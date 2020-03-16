@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ApplicationSettings } from './applicationSettings';
+import { ApplicationType } from './applicationType';
 
 
-export interface ApplicationInput { 
-    name?: string;
-    description?: string;
-    picture?: string;
-    groups?: Array<string>;
-    settings?: ApplicationSettings;
+export interface ConfigurationApplicationsResponse { 
+    /**
+     * List of application types
+     */
+    data?: Array<ApplicationType>;
 }
 

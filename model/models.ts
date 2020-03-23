@@ -91,6 +91,7 @@ export * from './timerange';
 export * from './token';
 export * from './transferOwnershipInput';
 export * from './user';
+export * from './userConfig';
 export * from './userInput';
 export * from './userLinks';
 export * from './usersResponse';

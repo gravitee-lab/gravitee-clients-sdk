@@ -9,20 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserLinks } from './userLinks';
-import { UserConfig } from './userConfig';
 
 
-export interface User { 
+export interface UserConfig { 
     /**
-     * Unique identifier of a user.
+     * The URL of the Gravitee management UI
      */
-    id?: string;
-    first_name?: string;
-    last_name?: string;
-    display_name?: string;
-    email?: string;
-    config?: UserConfig;
-    _links?: UserLinks;
+    management_url?: string;
 }
 

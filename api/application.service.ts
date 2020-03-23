@@ -86,7 +86,7 @@ export interface GetApplicationAnalyticsRequestParams {
     query?: string;
     field?: string;
     type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT';
-    range?: string;
+    ranges?: string;
     aggs?: string;
     order?: string;
 }
@@ -594,7 +594,7 @@ export class ApplicationService {
         const query = requestParameters.query;
         const field = requestParameters.field;
         const type = requestParameters.type;
-        const range = requestParameters.range;
+        const ranges = requestParameters.ranges;
         const aggs = requestParameters.aggs;
         const order = requestParameters.order;
 
@@ -623,8 +623,8 @@ export class ApplicationService {
         if (type !== undefined && type !== null) {
             queryParameters = queryParameters.set('type', <any>type);
         }
-        if (range !== undefined && range !== null) {
-            queryParameters = queryParameters.set('range', <any>range);
+        if (ranges !== undefined && ranges !== null) {
+            queryParameters = queryParameters.set('ranges', <any>ranges);
         }
         if (aggs !== undefined && aggs !== null) {
             queryParameters = queryParameters.set('aggs', <any>aggs);

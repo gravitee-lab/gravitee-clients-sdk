@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { ConfigurationHooksResponse } from '../model/configurationHooksResponse';
 import { ConfigurationIdentitiesResponse } from '../model/configurationIdentitiesResponse';
 import { ConfigurationResponse } from '../model/configurationResponse';
+import { Dashboard } from '../model/dashboard';
 import { ErrorResponse } from '../model/errorResponse';
 import { IdentityProvider } from '../model/identityProvider';
 import { Info } from '../model/info';
@@ -139,6 +140,39 @@ export class PortalService {
 
         return this.httpClient.post<any>(`${this.configuration.basePath}/tickets`,
             TicketInput,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get a Dashboards list
+     * Get all dashboards of the platform. 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getDashboards(observe?: 'body', reportProgress?: boolean): Observable<Array<Dashboard>>;
+    public getDashboards(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Dashboard>>>;
+    public getDashboards(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Dashboard>>>;
+    public getDashboards(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<Array<Dashboard>>(`${this.configuration.basePath}/dashboards`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

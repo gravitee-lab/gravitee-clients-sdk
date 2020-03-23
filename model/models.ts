@@ -32,6 +32,7 @@ export * from './configurationPortalRatingComment';
 export * from './configurationResponse';
 export * from './configurationScheduler';
 export * from './countAnalytics';
+export * from './dashboard';
 export * from './dateHistoAnalytics';
 export * from './enabled';
 export * from './errorResponse';

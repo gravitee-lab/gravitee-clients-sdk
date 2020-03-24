@@ -17,7 +17,6 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ConfigurationHooksResponse } from '../model/configurationHooksResponse';
 import { ConfigurationIdentitiesResponse } from '../model/configurationIdentitiesResponse';
 import { ConfigurationResponse } from '../model/configurationResponse';
 import { Dashboard } from '../model/dashboard';
@@ -385,39 +384,6 @@ export class PortalService {
 
 
         return this.httpClient.get<ConfigurationResponse>(`${this.configuration.basePath}/configuration`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get the hook list.
-     * Get all the hooks that can be used in the portal. 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getPortalHooks(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationHooksResponse>;
-    public getPortalHooks(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationHooksResponse>>;
-    public getPortalHooks(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationHooksResponse>>;
-    public getPortalHooks(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        return this.httpClient.get<ConfigurationHooksResponse>(`${this.configuration.basePath}/configuration/hooks`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -23,14 +23,13 @@ import { ApplicationInput } from '../model/applicationInput';
 import { ApplicationsResponse } from '../model/applicationsResponse';
 import { DateHistoAnalytics, GroupByAnalytics, CountAnalytics } from '../model/models';
 import { ErrorResponse } from '../model/errorResponse';
-import { GenericNotificationConfig } from '../model/genericNotificationConfig';
+import { Hook } from '../model/hook';
 import { Log } from '../model/log';
 import { LogsResponse } from '../model/logsResponse';
 import { Member } from '../model/member';
 import { MemberInput } from '../model/memberInput';
 import { MembersResponse } from '../model/membersResponse';
-import { NotificationConfigsResponse } from '../model/notificationConfigsResponse';
-import { PortalNotificationConfig } from '../model/portalNotificationConfig';
+import { NotificationInput } from '../model/notificationInput';
 import { TransferOwnershipInput } from '../model/transferOwnershipInput';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -46,11 +45,6 @@ export interface CreateApplicationMemberRequestParams {
     MemberInput?: MemberInput;
 }
 
-export interface CreateApplicationNotificationRequestParams {
-    applicationId: string;
-    GenericNotificationConfig?: GenericNotificationConfig;
-}
-
 export interface DeleteApplicationByApplicationIdRequestParams {
     applicationId: string;
 }
@@ -58,11 +52,6 @@ export interface DeleteApplicationByApplicationIdRequestParams {
 export interface DeleteApplicationMemberRequestParams {
     applicationId: string;
     memberId: string;
-}
-
-export interface DeleteApplicationNotificationByNotificationIdRequestParams {
-    applicationId: string;
-    notificationId: string;
 }
 
 export interface ExportApplicationLogsByApplicationIdRequestParams {
@@ -163,15 +152,9 @@ export interface UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams 
     MemberInput?: MemberInput;
 }
 
-export interface UpdateGenericApplicationNotificationRequestParams {
+export interface UpdateApplicationNotificationsRequestParams {
     applicationId: string;
-    notificationId: string;
-    GenericNotificationConfig?: GenericNotificationConfig;
-}
-
-export interface UpdatePortalApplicationNotificationRequestParams {
-    applicationId: string;
-    PortalNotificationConfig?: PortalNotificationConfig;
+    NotificationInput?: NotificationInput;
 }
 
 
@@ -305,60 +288,6 @@ export class ApplicationService {
     }
 
     /**
-     * Create notification settings.
-     * Create notification settings.  User must have APPLICATION_NOTIFICATION[READ] permission to create a **portal** notification.  User must have APPLICATION_NOTIFICATION[CREATE] permission to create a **generic** notification. 
-     * @param requestParameters
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public createApplicationNotification(requestParameters: CreateApplicationNotificationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig | GenericNotificationConfig>;
-    public createApplicationNotification(requestParameters: CreateApplicationNotificationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig | GenericNotificationConfig>>;
-    public createApplicationNotification(requestParameters: CreateApplicationNotificationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig | GenericNotificationConfig>>;
-    public createApplicationNotification(requestParameters: CreateApplicationNotificationRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        const applicationId = requestParameters.applicationId;
-        if (applicationId === null || applicationId === undefined) {
-            throw new Error('Required parameter applicationId was null or undefined when calling createApplicationNotification.');
-        }
-        const GenericNotificationConfig = requestParameters.GenericNotificationConfig;
-
-        let headers = this.defaultHeaders;
-
-        // authentication (BasicAuth) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-        // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.post<PortalNotificationConfig | GenericNotificationConfig>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`,
-            GenericNotificationConfig,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * Delete an application
      * Delete an application.  User must have the APPLICATION_DEFINITION[DELETE] permission. 
      * @param requestParameters
@@ -439,53 +368,6 @@ export class ApplicationService {
 
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/${encodeURIComponent(String(memberId))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Delete a notification
-     * Delete a notification.  User must have APPLICATION_NOTIFICATION[DELETE] permission to delete a **generic** notification. 
-     * @param requestParameters
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public deleteApplicationNotificationByNotificationId(requestParameters: DeleteApplicationNotificationByNotificationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteApplicationNotificationByNotificationId(requestParameters: DeleteApplicationNotificationByNotificationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteApplicationNotificationByNotificationId(requestParameters: DeleteApplicationNotificationByNotificationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteApplicationNotificationByNotificationId(requestParameters: DeleteApplicationNotificationByNotificationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        const applicationId = requestParameters.applicationId;
-        if (applicationId === null || applicationId === undefined) {
-            throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationNotificationByNotificationId.');
-        }
-        const notificationId = requestParameters.notificationId;
-        if (notificationId === null || notificationId === undefined) {
-            throw new Error('Required parameter notificationId was null or undefined when calling deleteApplicationNotificationByNotificationId.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // authentication (BasicAuth) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-        // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        return this.httpClient.delete<any>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications/${encodeURIComponent(String(notificationId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -979,6 +861,39 @@ export class ApplicationService {
     }
 
     /**
+     * Get the application\&#39;s hooks list.
+     * Get application\&#39;s hooks that can be used in the portal. 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getHooks(observe?: 'body', reportProgress?: boolean): Observable<Array<Hook>>;
+    public getHooks(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Hook>>>;
+    public getHooks(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Hook>>>;
+    public getHooks(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<Array<Hook>>(`${this.configuration.basePath}/applications/hooks`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * List application members
      * List application members.  User must have the APPLICATION_MEMBER[READ] permission. 
      * @param requestParameters
@@ -1033,15 +948,15 @@ export class ApplicationService {
     }
 
     /**
-     * Get application notifications settings
-     * Get application notifications settings.  User must **at least** have APPLICATION_NOTIFICATION[READ] permission to get **portal** notification settings.  User must **also** have APPLICATION_NOTIFICATION[CREATE | UPDATE | DELETE] permission to get **generic** notification settings. 
+     * Get application notifications
+     * Get application notifications.  User must have APPLICATION_NOTIFICATION[READ] permission to get notifications. 
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<NotificationConfigsResponse>;
-    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<NotificationConfigsResponse>>;
-    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<NotificationConfigsResponse>>;
+    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
     public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
@@ -1065,7 +980,7 @@ export class ApplicationService {
         }
 
 
-        return this.httpClient.get<NotificationConfigsResponse>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`,
+        return this.httpClient.get<Array<string>>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -1335,25 +1250,21 @@ export class ApplicationService {
     }
 
     /**
-     * Update a generic notification for an application.
-     * Update a generic notification for an application.  User must have APPLICATION_NOTIFICATION[UPDATE] permission to update a **generic** notification. 
+     * Update notifications for an application.
+     * Update notifications for an application.  User must have APPLICATION_NOTIFICATION[UPDATE] permission to update notifications. 
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateGenericApplicationNotification(requestParameters: UpdateGenericApplicationNotificationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<GenericNotificationConfig>;
-    public updateGenericApplicationNotification(requestParameters: UpdateGenericApplicationNotificationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GenericNotificationConfig>>;
-    public updateGenericApplicationNotification(requestParameters: UpdateGenericApplicationNotificationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GenericNotificationConfig>>;
-    public updateGenericApplicationNotification(requestParameters: UpdateGenericApplicationNotificationRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
-            throw new Error('Required parameter applicationId was null or undefined when calling updateGenericApplicationNotification.');
+            throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationNotifications.');
         }
-        const notificationId = requestParameters.notificationId;
-        if (notificationId === null || notificationId === undefined) {
-            throw new Error('Required parameter notificationId was null or undefined when calling updateGenericApplicationNotification.');
-        }
-        const GenericNotificationConfig = requestParameters.GenericNotificationConfig;
+        const NotificationInput = requestParameters.NotificationInput;
 
         let headers = this.defaultHeaders;
 
@@ -1381,62 +1292,8 @@ export class ApplicationService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.put<GenericNotificationConfig>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications/${encodeURIComponent(String(notificationId))}`,
-            GenericNotificationConfig,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Update a portal notification for an application.
-     * Update a portal notification for an application.  User must have APPLICATION_NOTIFICATION[READ] permission to update a **portal** notification. 
-     * @param requestParameters
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public updatePortalApplicationNotification(requestParameters: UpdatePortalApplicationNotificationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PortalNotificationConfig>;
-    public updatePortalApplicationNotification(requestParameters: UpdatePortalApplicationNotificationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PortalNotificationConfig>>;
-    public updatePortalApplicationNotification(requestParameters: UpdatePortalApplicationNotificationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PortalNotificationConfig>>;
-    public updatePortalApplicationNotification(requestParameters: UpdatePortalApplicationNotificationRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        const applicationId = requestParameters.applicationId;
-        if (applicationId === null || applicationId === undefined) {
-            throw new Error('Required parameter applicationId was null or undefined when calling updatePortalApplicationNotification.');
-        }
-        const PortalNotificationConfig = requestParameters.PortalNotificationConfig;
-
-        let headers = this.defaultHeaders;
-
-        // authentication (BasicAuth) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-        // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.put<PortalNotificationConfig>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`,
-            PortalNotificationConfig,
+        return this.httpClient.put<Array<string>>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`,
+            NotificationInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

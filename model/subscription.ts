@@ -34,6 +34,10 @@ export interface Subscription {
      */
     request?: string;
     /**
+     * Reason of the user when processing (accepting/rejecting) a subscription.
+     */
+    reason?: string;
+    /**
      * Creation date and time of the subscription.
      */
     created_at?: Date;
@@ -49,6 +53,18 @@ export interface Subscription {
      * Expiration date and time of the subscription.
      */
     end_at?: Date;
+    /**
+     * Paused date and time of the subscription.
+     */
+    paused_at?: Date;
+    /**
+     * Closed date and time of the subscription.
+     */
+    closed_at?: Date;
+    /**
+     * The user who subscribed.
+     */
+    subscribed_by?: string;
     /**
      * Status of the subscription.
      */

@@ -17,7 +17,8 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ConfigurationApplicationsResponse } from '../model/configurationApplicationsResponse';
+import { ConfigurationApplicationRolesResponse } from '../model/configurationApplicationRolesResponse';
+import { ConfigurationApplicationTypesResponse } from '../model/configurationApplicationTypesResponse';
 import { ConfigurationIdentitiesResponse } from '../model/configurationIdentitiesResponse';
 import { ConfigurationResponse } from '../model/configurationResponse';
 import { Dashboard } from '../model/dashboard';
@@ -150,6 +151,39 @@ export class PortalService {
     }
 
     /**
+     * Get the application roles list.
+     * Get application roles. 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getApplicationRoles(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationApplicationRolesResponse>;
+    public getApplicationRoles(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationApplicationRolesResponse>>;
+    public getApplicationRoles(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationApplicationRolesResponse>>;
+    public getApplicationRoles(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<ConfigurationApplicationRolesResponse>(`${this.configuration.basePath}/configuration/applications/roles`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get a Dashboards list
      * Get all dashboards of the platform. 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -188,9 +222,9 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEnabledApplicationTypes(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationApplicationsResponse>;
-    public getEnabledApplicationTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationApplicationsResponse>>;
-    public getEnabledApplicationTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationApplicationsResponse>>;
+    public getEnabledApplicationTypes(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationApplicationTypesResponse>;
+    public getEnabledApplicationTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationApplicationTypesResponse>>;
+    public getEnabledApplicationTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationApplicationTypesResponse>>;
     public getEnabledApplicationTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -205,7 +239,7 @@ export class PortalService {
         }
 
 
-        return this.httpClient.get<ConfigurationApplicationsResponse>(`${this.configuration.basePath}/configuration/applications`,
+        return this.httpClient.get<ConfigurationApplicationTypesResponse>(`${this.configuration.basePath}/configuration/applications/types`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

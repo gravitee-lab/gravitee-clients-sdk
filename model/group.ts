@@ -11,18 +11,14 @@
  */
 
 
-export interface TransferOwnershipInput { 
+export interface Group { 
     /**
-     * User identifier of the new Primary Owner of the application.
+     * Unique identifier of a group.
      */
-    new_primary_owner_id?: string;
+    id: string;
     /**
-     * User reference of the new Primary Owner of the application.
+     * Name of the group.
      */
-    new_primary_owner_reference?: string;
-    /**
-     * New role to be affected to the current PrimaryOwner.
-     */
-    primary_owner_newrole?: string;
+    name: string;
 }
 

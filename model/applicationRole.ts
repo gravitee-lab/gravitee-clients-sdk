@@ -9,13 +9,24 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ApplicationType } from './applicationType';
 
 
-export interface ConfigurationApplicationsResponse { 
+export interface ApplicationRole { 
     /**
-     * List of application types
+     * Unique identifier of an application role.
      */
-    data?: Array<ApplicationType>;
+    id?: string;
+    /**
+     * Name of an application role.
+     */
+    name?: string;
+    /**
+     * is default role ?
+     */
+    _default?: boolean;
+    /**
+     * is system role ?
+     */
+    system?: boolean;
 }
 

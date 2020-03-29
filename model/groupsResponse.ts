@@ -9,20 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Group } from './group';
+import { Links } from './links';
 
 
-export interface TransferOwnershipInput { 
+export interface GroupsResponse { 
     /**
-     * User identifier of the new Primary Owner of the application.
+     * List of groups.
      */
-    new_primary_owner_id?: string;
+    data?: Array<Group>;
     /**
-     * User reference of the new Primary Owner of the application.
+     * Map of Map of Object
      */
-    new_primary_owner_reference?: string;
-    /**
-     * New role to be affected to the current PrimaryOwner.
-     */
-    primary_owner_newrole?: string;
+    metadata?: { [key: string]: { [key: string]: object; }; };
+    links?: Links;
 }
 

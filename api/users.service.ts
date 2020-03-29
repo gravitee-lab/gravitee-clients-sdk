@@ -32,9 +32,14 @@ export interface FinalizeUserRegistrationRequestParams {
     FinalizeRegistrationInput?: FinalizeRegistrationInput;
 }
 
+export interface GetUserAvatarRequestParams {
+    userId: string;
+}
+
 export interface GetUsersRequestParams {
     page?: number;
     size?: number;
+    q?: string;
 }
 
 export interface RegisterNewUserRequestParams {
@@ -122,8 +127,53 @@ export class UsersService {
     }
 
     /**
+     * Retrieve a user\&#39;s avatar
+     * Retrieve a user\&#39;s avatar. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const userId = requestParameters.userId;
+        if (userId === null || userId === undefined) {
+            throw new Error('Required parameter userId was null or undefined when calling getUserAvatar.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'image/_*',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get(`${this.configuration.basePath}/users/${encodeURIComponent(String(userId))}/avatar`,
+            {
+                responseType: "blob",
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * List platform users.
-     * List platform users.  User must have the MANAGEMENT_USERS[READ] permission. 
+     * List platform users from identity providers.  User must have the MANAGEMENT_USERS[READ] permission. 
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -134,6 +184,7 @@ export class UsersService {
     public getUsers(requestParameters: GetUsersRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const page = requestParameters.page;
         const size = requestParameters.size;
+        const q = requestParameters.q;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -141,6 +192,9 @@ export class UsersService {
         }
         if (size !== undefined && size !== null) {
             queryParameters = queryParameters.set('size', <any>size);
+        }
+        if (q !== undefined && q !== null) {
+            queryParameters = queryParameters.set('q', <any>q);
         }
 
         let headers = this.defaultHeaders;
@@ -160,7 +214,8 @@ export class UsersService {
         }
 
 
-        return this.httpClient.get<UsersResponse>(`${this.configuration.basePath}/users`,
+        return this.httpClient.post<UsersResponse>(`${this.configuration.basePath}/users/_search`,
+            null,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

@@ -18,6 +18,10 @@ export interface User {
      * Unique identifier of a user.
      */
     id?: string;
+    /**
+     * Unique reference if user comes from external source. Use for search only.
+     */
+    reference?: string;
     first_name?: string;
     last_name?: string;
     display_name?: string;

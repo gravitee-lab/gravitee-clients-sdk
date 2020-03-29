@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { ApplicationSettings } from './applicationSettings';
+import { Group } from './group';
 import { User } from './user';
 import { ApplicationLinks } from './applicationLinks';
 
@@ -47,7 +48,7 @@ export interface Application {
     /**
      * Array of groups associated to the application.
      */
-    groups?: Array<string>;
+    groups?: Array<Group>;
     /**
      * Picture of the application. This attribute is only used to update a picture.\\ To get the application picture, use /application/{applicationId}/picture. 
      */

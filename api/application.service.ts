@@ -130,6 +130,7 @@ export interface GetSubscriberApisByApplicationIdRequestParams {
     applicationId: string;
     page?: number;
     size?: number;
+    statuses?: Array<'ACCEPTED' | 'CLOSED' | 'PAUSED' | 'PENDING' | 'REJECTED'>;
 }
 
 export interface RenewApplicationSecretRequestParams {
@@ -1007,6 +1008,7 @@ export class ApplicationService {
         }
         const page = requestParameters.page;
         const size = requestParameters.size;
+        const statuses = requestParameters.statuses;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -1014,6 +1016,11 @@ export class ApplicationService {
         }
         if (size !== undefined && size !== null) {
             queryParameters = queryParameters.set('size', <any>size);
+        }
+        if (statuses) {
+            statuses.forEach((element) => {
+                queryParameters = queryParameters.append('statuses', <any>element);
+            })
         }
 
         let headers = this.defaultHeaders;

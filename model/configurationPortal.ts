@@ -30,7 +30,6 @@ export interface ConfigurationPortal {
      */
     apikeyHeader?: string;
     support?: Enabled;
-    devMode?: Enabled;
     applicationCreation?: Enabled;
     userCreation?: Enabled;
     apis?: ConfigurationPortalApis;

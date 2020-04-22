@@ -993,7 +993,7 @@ export class ApplicationService {
 
     /**
      * List APIs that subscribed with an application
-     * If the current user is the owner of the API, all connected ACCEPTED, PAUSED &amp; PENDING applications will be returned. Else only APIs that current is allowed to access will.  This application has to be accessible by the current user, otherwise a 404 will be returned. 
+     * Lists API that current user is allowed to access. May be filtered by status. Ordered by nimber of hits.  This application has to be accessible by the current user, otherwise a 404 will be returned. 
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

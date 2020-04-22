@@ -13,10 +13,6 @@
 
 export interface ConfigurationScheduler { 
     /**
-     * Number of seconds for task scheduler.
-     */
-    tasksInSeconds?: number;
-    /**
      * Number of seconds for notification scheduler.
      */
     notificationsInSeconds?: number;

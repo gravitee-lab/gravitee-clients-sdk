@@ -124,6 +124,7 @@ export interface GetSubscriberApplicationsByApiIdRequestParams {
     apiId: string;
     page?: number;
     size?: number;
+    statuses?: Array<'ACCEPTED' | 'CLOSED' | 'PAUSED' | 'PENDING' | 'REJECTED'>;
 }
 
 export interface SearchApisRequestParams {
@@ -869,7 +870,7 @@ export class ApiService {
 
     /**
      * List applications that subscribred to an API
-     * If the current user is the owner of the API, all connected ACCEPTED, PAUSED &amp; PENDING applications will be returned. Else only applications that current is allowed to access will.  This API has to be accessible by the current user, otherwise a 404 will be returned. 
+     * If the current user is the owner of the API, all connected applications will be returned. Filtered by status. Ordered by number of hits. Else only applications that current is allowed to access will.  This API has to be accessible by the current user, otherwise a 404 will be returned. 
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -884,6 +885,7 @@ export class ApiService {
         }
         const page = requestParameters.page;
         const size = requestParameters.size;
+        const statuses = requestParameters.statuses;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -891,6 +893,11 @@ export class ApiService {
         }
         if (size !== undefined && size !== null) {
             queryParameters = queryParameters.set('size', <any>size);
+        }
+        if (statuses) {
+            statuses.forEach((element) => {
+                queryParameters = queryParameters.append('statuses', <any>element);
+            })
         }
 
         let headers = this.defaultHeaders;

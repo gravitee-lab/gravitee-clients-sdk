@@ -46,7 +46,7 @@ export interface GetApplicationAnalyticsRequestParams {
     interval?: number;
     query?: string;
     field?: string;
-    type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT';
+    type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT' | 'STATS';
     ranges?: string;
     aggs?: string;
     order?: string;

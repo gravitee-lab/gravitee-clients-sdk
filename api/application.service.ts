@@ -22,7 +22,6 @@ import { Application } from '../model/application';
 import { ApplicationInput } from '../model/applicationInput';
 import { ApplicationsResponse } from '../model/applicationsResponse';
 import { DateHistoAnalytics, GroupByAnalytics, CountAnalytics } from '../model/models';
-import { ErrorResponse } from '../model/errorResponse';
 import { Hook } from '../model/hook';
 import { Log } from '../model/log';
 import { LogsResponse } from '../model/logsResponse';
@@ -74,7 +73,7 @@ export interface GetApplicationAnalyticsRequestParams {
     interval?: number;
     query?: string;
     field?: string;
-    type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT';
+    type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT' | 'STATS';
     ranges?: string;
     aggs?: string;
     order?: string;

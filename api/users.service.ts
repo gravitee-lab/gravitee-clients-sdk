@@ -283,9 +283,9 @@ export class UsersService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'body', reportProgress?: boolean): Observable<User>;
-    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
-    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
     public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const ResetUserPasswordInput = requestParameters.ResetUserPasswordInput;
 
@@ -315,7 +315,7 @@ export class UsersService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post<User>(`${this.configuration.basePath}/users/_reset_password`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/users/_reset_password`,
             ResetUserPasswordInput,
             {
                 withCredentials: this.configuration.withCredentials,

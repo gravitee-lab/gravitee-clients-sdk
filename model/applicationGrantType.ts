@@ -13,10 +13,6 @@
 
 export interface ApplicationGrantType { 
     /**
-     * code of grant type
-     */
-    code?: string;
-    /**
      * type of grant type
      */
     type?: string;
@@ -24,9 +20,5 @@ export interface ApplicationGrantType {
      * name of grant type
      */
     name?: string;
-    /**
-     * List of response types
-     */
-    responses_types?: Array<string>;
 }
 

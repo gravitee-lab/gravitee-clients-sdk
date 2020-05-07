@@ -3,7 +3,7 @@
 ### Generating
 
 ```
-npm install @openapitools/openapi-generator-cli@4.2.1 -g
+npm install @openapitools/openapi-generator-cli@1.0.12-4.2.1 -g
 
 npx openapi-generator generate \
 -i ../gravitee-management-rest-api/gravitee-rest-api-portal/gravitee-rest-api-portal-rest/src/main/resources/openapi.yaml \

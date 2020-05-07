@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 import { ApisResponse } from '../model/apisResponse';
 import { Application } from '../model/application';
 import { ApplicationInput } from '../model/applicationInput';
+import { ApplicationType } from '../model/applicationType';
 import { ApplicationsResponse } from '../model/applicationsResponse';
 import { DateHistoAnalytics, GroupByAnalytics, CountAnalytics } from '../model/models';
 import { ErrorResponse } from '../model/errorResponse';
@@ -107,6 +108,10 @@ export interface GetApplicationMemberByApplicationIdAndMemberIdRequestParams {
 }
 
 export interface GetApplicationPictureByApplicationIdRequestParams {
+    applicationId: string;
+}
+
+export interface GetApplicationTypeRequestParams {
     applicationId: string;
 }
 
@@ -800,6 +805,44 @@ export class ApplicationService {
         return this.httpClient.get(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/picture`,
             {
                 responseType: "blob",
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the application type configuration.
+     * Get application type. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApplicationType>;
+    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApplicationType>>;
+    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApplicationType>>;
+    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
+        if (applicationId === null || applicationId === undefined) {
+            throw new Error('Required parameter applicationId was null or undefined when calling getApplicationType.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<ApplicationType>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/configuration`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

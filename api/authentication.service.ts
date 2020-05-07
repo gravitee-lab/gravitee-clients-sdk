@@ -31,6 +31,7 @@ export interface ExchangeAuthorizationCodeRequestParams {
     code?: string;
     grant_type?: string;
     code_verifier?: string;
+    state?: string;
 }
 
 export interface LoginRequestParams {
@@ -100,6 +101,7 @@ export class AuthenticationService {
         const code = requestParameters.code;
         const grant_type = requestParameters.grant_type;
         const code_verifier = requestParameters.code_verifier;
+        const state = requestParameters.state;
 
         let headers = this.defaultHeaders;
 
@@ -142,6 +144,9 @@ export class AuthenticationService {
         }
         if (code_verifier !== undefined) {
             formParams = formParams.append('code_verifier', <any>code_verifier) as any || formParams;
+        }
+        if (state !== undefined) {
+            formParams = formParams.append('state', <any>state) as any || formParams;
         }
 
         return this.httpClient.post<Token>(`${this.configuration.basePath}/auth/oauth2/${encodeURIComponent(String(identity))}`,

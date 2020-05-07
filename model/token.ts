@@ -14,6 +14,7 @@
 export interface Token { 
     token_type?: Token.TokenTypeEnum;
     token?: string;
+    state?: string;
 }
 export namespace Token {
     export type TokenTypeEnum = 'BEARER';

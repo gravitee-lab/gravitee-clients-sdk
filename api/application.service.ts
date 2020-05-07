@@ -22,6 +22,7 @@ import { Application } from '../model/application';
 import { ApplicationInput } from '../model/applicationInput';
 import { ApplicationsResponse } from '../model/applicationsResponse';
 import { DateHistoAnalytics, GroupByAnalytics, CountAnalytics } from '../model/models';
+import { ErrorResponse } from '../model/errorResponse';
 import { Hook } from '../model/hook';
 import { Log } from '../model/log';
 import { LogsResponse } from '../model/logsResponse';
@@ -113,6 +114,7 @@ export interface GetApplicationsRequestParams {
     page?: number;
     size?: number;
     forSubscription?: boolean;
+    order?: string;
 }
 
 export interface GetMembersByApplicationIdRequestParams {
@@ -807,7 +809,7 @@ export class ApplicationService {
     }
 
     /**
-     * List all the applications accessible to authenticated user.
+     * List all the applications accessible to authenticated user. Default order is by *name* ASC.
      * List all the applications accessible to authenticated user.  User must have MANAGEMENT_APPLICATION[READ] and PORTAL_APPLICATION[READ] permission. 
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -820,6 +822,7 @@ export class ApplicationService {
         const page = requestParameters.page;
         const size = requestParameters.size;
         const forSubscription = requestParameters.forSubscription;
+        const order = requestParameters.order;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -830,6 +833,9 @@ export class ApplicationService {
         }
         if (forSubscription !== undefined && forSubscription !== null) {
             queryParameters = queryParameters.set('forSubscription', <any>forSubscription);
+        }
+        if (order !== undefined && order !== null) {
+            queryParameters = queryParameters.set('order', <any>order);
         }
 
         let headers = this.defaultHeaders;

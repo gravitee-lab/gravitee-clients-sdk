@@ -17,5 +17,6 @@ export interface PayloadInput {
     code?: string;
     grant_type?: string;
     code_verifier?: string;
+    state?: string;
 }
 

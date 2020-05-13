@@ -19,7 +19,6 @@ export interface View {
     id?: string;
     name?: string;
     description?: string;
-    default_view?: boolean;
     order?: number;
     total_apis?: number;
     _links?: ViewLinks;

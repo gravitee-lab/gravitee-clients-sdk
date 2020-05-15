@@ -14,7 +14,7 @@ import { CategorizedLinks } from './categorizedLinks';
 
 export interface LinksResponse { 
     /**
-     * Map of CategorizedLinks. Keys of the map can be: * aside * header * footer * subfooter 
+     * Map of CategorizedLinks. Keys of the map can be: * aside * header * topfooter * footer 
      */
     slots?: { [key: string]: Array<CategorizedLinks>; };
 }

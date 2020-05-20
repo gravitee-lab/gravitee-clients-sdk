@@ -66,9 +66,5 @@ export interface IdentityProvider {
      * Scope list of the provider.
      */
     scopes?: Array<string>;
-    /**
-     * Icon name to display for this provider.
-     */
-    icon?: string;
 }
 

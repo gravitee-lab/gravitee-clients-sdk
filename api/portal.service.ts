@@ -17,6 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { ApiInformation } from '../model/apiInformation';
 import { ConfigurationApplicationRolesResponse } from '../model/configurationApplicationRolesResponse';
 import { ConfigurationApplicationTypesResponse } from '../model/configurationApplicationTypesResponse';
 import { ConfigurationIdentitiesResponse } from '../model/configurationIdentitiesResponse';
@@ -39,6 +40,10 @@ import { Configuration }                                     from '../configurat
 
 export interface CreateTicketRequestParams {
     TicketInput?: TicketInput;
+}
+
+export interface GetApiInformationsRequestParams {
+    apiId: string;
 }
 
 export interface GetPageByPageIdRequestParams {
@@ -141,6 +146,44 @@ export class PortalService {
 
         return this.httpClient.post<any>(`${this.configuration.basePath}/tickets`,
             TicketInput,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the api dynamic informations to display.
+     * Get api informations. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Array<ApiInformation>>;
+    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ApiInformation>>>;
+    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ApiInformation>>>;
+    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getApiInformations.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<Array<ApiInformation>>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/informations`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

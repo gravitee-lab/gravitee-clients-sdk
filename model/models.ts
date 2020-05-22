@@ -1,4 +1,5 @@
 export * from './api';
+export * from './apiInformation';
 export * from './apiLinks';
 export * from './apiMetrics';
 export * from './apisResponse';
@@ -33,6 +34,7 @@ export * from './configurationPortalApis';
 export * from './configurationPortalMedia';
 export * from './configurationPortalRating';
 export * from './configurationPortalRatingComment';
+export * from './configurationReCaptcha';
 export * from './configurationResponse';
 export * from './configurationScheduler';
 export * from './countAnalytics';

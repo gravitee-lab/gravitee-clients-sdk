@@ -13,6 +13,7 @@ import { ConfigurationPortal } from './configurationPortal';
 import { ConfigurationPlan } from './configurationPlan';
 import { ConfigurationAnalytics } from './configurationAnalytics';
 import { ConfigurationAuthentication } from './configurationAuthentication';
+import { ConfigurationReCaptcha } from './configurationReCaptcha';
 import { ConfigurationApplication } from './configurationApplication';
 import { Enabled } from './enabled';
 import { ConfigurationScheduler } from './configurationScheduler';
@@ -30,5 +31,6 @@ export interface ConfigurationResponse {
     apiReview?: Enabled;
     analytics?: ConfigurationAnalytics;
     application?: ConfigurationApplication;
+    recaptcha?: ConfigurationReCaptcha;
 }
 

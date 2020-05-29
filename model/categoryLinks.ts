@@ -9,13 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Enabled } from './enabled';
 
 
-export interface ConfigurationPortalApis { 
-    tilesMode?: Enabled;
-    categoryMode?: Enabled;
-    apiHeaderShowTags?: Enabled;
-    apiHeaderShowCategories?: Enabled;
+export interface CategoryLinks { 
+    self?: string;
+    highlighted_api?: string;
+    picture?: string;
 }
 

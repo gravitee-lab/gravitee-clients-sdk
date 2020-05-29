@@ -9,13 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Enabled } from './enabled';
 
 
-export interface ConfigurationPortalApis { 
-    tilesMode?: Enabled;
-    categoryMode?: Enabled;
-    apiHeaderShowTags?: Enabled;
-    apiHeaderShowCategories?: Enabled;
-}
+export type FilterApiQuery = 'FEATURED' | 'MINE' | 'STARRED' | 'TRENDINGS';
+
+export const FilterApiQuery = {
+    FEATURED: 'FEATURED' as FilterApiQuery,
+    MINE: 'MINE' as FilterApiQuery,
+    STARRED: 'STARRED' as FilterApiQuery,
+    TRENDINGS: 'TRENDINGS' as FilterApiQuery
+};
 

@@ -62,9 +62,9 @@ export interface Api {
      */
     updated_at?: Date;
     /**
-     * List of views this API belongs to.
+     * List of categories this API belongs to.
      */
-    views?: Array<string>;
+    categories?: Array<string>;
     rating_summary?: RatingSummary;
     _links?: ApiLinks;
     /**

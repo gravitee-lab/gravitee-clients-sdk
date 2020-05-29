@@ -18,6 +18,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { ApiInformation } from '../model/apiInformation';
+import { CategoriesResponse } from '../model/categoriesResponse';
+import { Category } from '../model/category';
 import { ConfigurationApplicationRolesResponse } from '../model/configurationApplicationRolesResponse';
 import { ConfigurationApplicationTypesResponse } from '../model/configurationApplicationTypesResponse';
 import { ConfigurationIdentitiesResponse } from '../model/configurationIdentitiesResponse';
@@ -31,8 +33,6 @@ import { Page } from '../model/page';
 import { PagesResponse } from '../model/pagesResponse';
 import { ThemeResponse } from '../model/themeResponse';
 import { TicketInput } from '../model/ticketInput';
-import { View } from '../model/view';
-import { ViewsResponse } from '../model/viewsResponse';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -44,6 +44,15 @@ export interface CreateTicketRequestParams {
 
 export interface GetApiInformationsRequestParams {
     apiId: string;
+}
+
+export interface GetCategoriesRequestParams {
+    page?: number;
+    size?: number;
+}
+
+export interface GetCategoryByCategoryIdRequestParams {
+    categoryId: string;
 }
 
 export interface GetPageByPageIdRequestParams {
@@ -62,21 +71,12 @@ export interface GetPagesRequestParams {
     parent?: string;
 }
 
-export interface GetPictureByViewIdRequestParams {
-    viewId: string;
+export interface GetPictureByCategoryIdRequestParams {
+    categoryId: string;
 }
 
 export interface GetPortalIdentityProviderRequestParams {
     identityProviderId: string;
-}
-
-export interface GetViewByViewIdRequestParams {
-    viewId: string;
-}
-
-export interface GetViewsRequestParams {
-    page?: number;
-    size?: number;
 }
 
 
@@ -217,6 +217,89 @@ export class PortalService {
 
 
         return this.httpClient.get<ConfigurationApplicationRolesResponse>(`${this.configuration.basePath}/configuration/applications/roles`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get a Category list
+     * Get all categories of the platform. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getCategories(requestParameters: GetCategoriesRequestParams, observe?: 'body', reportProgress?: boolean): Observable<CategoriesResponse>;
+    public getCategories(requestParameters: GetCategoriesRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoriesResponse>>;
+    public getCategories(requestParameters: GetCategoriesRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoriesResponse>>;
+    public getCategories(requestParameters: GetCategoriesRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (page !== undefined && page !== null) {
+            queryParameters = queryParameters.set('page', <any>page);
+        }
+        if (size !== undefined && size !== null) {
+            queryParameters = queryParameters.set('size', <any>size);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<CategoriesResponse>(`${this.configuration.basePath}/categories`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get a Category
+     * Get a specific category. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Category>;
+    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Category>>;
+    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Category>>;
+    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const categoryId = requestParameters.categoryId;
+        if (categoryId === null || categoryId === undefined) {
+            throw new Error('Required parameter categoryId was null or undefined when calling getCategoryByCategoryId.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<Category>(`${this.configuration.basePath}/categories/${encodeURIComponent(String(categoryId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -432,19 +515,19 @@ export class PortalService {
     }
 
     /**
-     * Get picture of a View
-     * Get the picture of a view. 
+     * Get picture of a Category
+     * Get the picture of a category. 
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPictureByViewId(requestParameters: GetPictureByViewIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
-    public getPictureByViewId(requestParameters: GetPictureByViewIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
-    public getPictureByViewId(requestParameters: GetPictureByViewIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
-    public getPictureByViewId(requestParameters: GetPictureByViewIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        const viewId = requestParameters.viewId;
-        if (viewId === null || viewId === undefined) {
-            throw new Error('Required parameter viewId was null or undefined when calling getPictureByViewId.');
+    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const categoryId = requestParameters.categoryId;
+        if (categoryId === null || categoryId === undefined) {
+            throw new Error('Required parameter categoryId was null or undefined when calling getPictureByCategoryId.');
         }
 
         let headers = this.defaultHeaders;
@@ -460,7 +543,7 @@ export class PortalService {
         }
 
 
-        return this.httpClient.get(`${this.configuration.basePath}/views/${encodeURIComponent(String(viewId))}/picture`,
+        return this.httpClient.get(`${this.configuration.basePath}/categories/${encodeURIComponent(String(categoryId))}/picture`,
             {
                 responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
@@ -666,89 +749,6 @@ export class PortalService {
 
         return this.httpClient.get<ThemeResponse>(`${this.configuration.basePath}/theme`,
             {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get a View
-     * Get a specific view. 
-     * @param requestParameters
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getViewByViewId(requestParameters: GetViewByViewIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<View>;
-    public getViewByViewId(requestParameters: GetViewByViewIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<View>>;
-    public getViewByViewId(requestParameters: GetViewByViewIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<View>>;
-    public getViewByViewId(requestParameters: GetViewByViewIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        const viewId = requestParameters.viewId;
-        if (viewId === null || viewId === undefined) {
-            throw new Error('Required parameter viewId was null or undefined when calling getViewByViewId.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        return this.httpClient.get<View>(`${this.configuration.basePath}/views/${encodeURIComponent(String(viewId))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get a View list
-     * Get all views of the platform. 
-     * @param requestParameters
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getViews(requestParameters: GetViewsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ViewsResponse>;
-    public getViews(requestParameters: GetViewsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ViewsResponse>>;
-    public getViews(requestParameters: GetViewsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ViewsResponse>>;
-    public getViews(requestParameters: GetViewsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        const page = requestParameters.page;
-        const size = requestParameters.size;
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', <any>page);
-        }
-        if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', <any>size);
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        return this.httpClient.get<ViewsResponse>(`${this.configuration.basePath}/views`,
-            {
-                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

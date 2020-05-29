@@ -21,8 +21,8 @@ import { Api } from '../model/api';
 import { ApiMetrics } from '../model/apiMetrics';
 import { ApisResponse } from '../model/apisResponse';
 import { ApplicationsResponse } from '../model/applicationsResponse';
-import { CategoryApiQuery } from '../model/categoryApiQuery';
 import { ErrorResponse } from '../model/errorResponse';
+import { FilterApiQuery } from '../model/filterApiQuery';
 import { LinksResponse } from '../model/linksResponse';
 import { Page } from '../model/page';
 import { PagesResponse } from '../model/pagesResponse';
@@ -92,9 +92,9 @@ export interface GetApisRequestParams {
     label?: string;
     version?: string;
     name?: string;
-    view?: string;
-    cat?: CategoryApiQuery;
-    _cat?: CategoryApiQuery;
+    category?: string;
+    filter?: FilterApiQuery;
+    _filter?: FilterApiQuery;
 }
 
 export interface GetPageByApiIdAndPageIdRequestParams {
@@ -606,7 +606,7 @@ export class ApiService {
 
     /**
      * List APIs
-     * List public APIs for anonymous requests. List all the APIs the current user is allowed to view for authenticated requests.  The list can be filtered according to query parameters.  By default the list is sorted by alphabetic order. If a **cat** query param is sent, a specific sorting can be applied. Please refer to **cat** description for detail. 
+     * List public APIs for anonymous requests. List all the APIs the current user is allowed to category for authenticated requests.  The list can be filtered according to query parameters.  By default the list is sorted by alphabetic order. If a **cat** query param is sent, a specific sorting can be applied. Please refer to **cat** description for detail. 
      * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -621,9 +621,9 @@ export class ApiService {
         const label = requestParameters.label;
         const version = requestParameters.version;
         const name = requestParameters.name;
-        const view = requestParameters.view;
-        const cat = requestParameters.cat;
-        const _cat = requestParameters._cat;
+        const category = requestParameters.category;
+        const filter = requestParameters.filter;
+        const _filter = requestParameters._filter;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -644,14 +644,14 @@ export class ApiService {
         if (name !== undefined && name !== null) {
             queryParameters = queryParameters.set('name', <any>name);
         }
-        if (view !== undefined && view !== null) {
-            queryParameters = queryParameters.set('view', <any>view);
+        if (category !== undefined && category !== null) {
+            queryParameters = queryParameters.set('category', <any>category);
         }
-        if (cat !== undefined && cat !== null) {
-            queryParameters = queryParameters.set('cat', <any>cat);
+        if (filter !== undefined && filter !== null) {
+            queryParameters = queryParameters.set('filter', <any>filter);
         }
-        if (_cat !== undefined && _cat !== null) {
-            queryParameters = queryParameters.set('-cat', <any>_cat);
+        if (_filter !== undefined && _filter !== null) {
+            queryParameters = queryParameters.set('-filter', <any>_filter);
         }
 
         let headers = this.defaultHeaders;

@@ -17,7 +17,7 @@ export interface Link {
      */
     name?: string;
     /**
-     * target of the link. Can be either a URL id resourceType is \'external\' or a UUID if resourceType is \'page\' or \'view\'.
+     * target of the link. Can be either a URL id resourceType is \'external\' or a UUID if resourceType is \'page\' or \'category\'.
      */
     resourceRef?: string;
     /**
@@ -30,11 +30,11 @@ export interface Link {
     folder?: boolean;
 }
 export namespace Link {
-    export type ResourceTypeEnum = 'external' | 'page' | 'view';
+    export type ResourceTypeEnum = 'external' | 'page' | 'category';
     export const ResourceTypeEnum = {
         External: 'external' as ResourceTypeEnum,
         Page: 'page' as ResourceTypeEnum,
-        View: 'view' as ResourceTypeEnum
+        Category: 'category' as ResourceTypeEnum
     };
 }
 

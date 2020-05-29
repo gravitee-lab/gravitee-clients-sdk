@@ -9,13 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Enabled } from './enabled';
+import { CategoryLinks } from './categoryLinks';
 
 
-export interface ConfigurationPortalApis { 
-    tilesMode?: Enabled;
-    categoryMode?: Enabled;
-    apiHeaderShowTags?: Enabled;
-    apiHeaderShowCategories?: Enabled;
+export interface Category { 
+    /**
+     * Unique identifier of a category.
+     */
+    id?: string;
+    name?: string;
+    description?: string;
+    order?: number;
+    total_apis?: number;
+    _links?: CategoryLinks;
 }
 

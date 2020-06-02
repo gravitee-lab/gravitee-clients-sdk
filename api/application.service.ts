@@ -23,7 +23,6 @@ import { ApplicationInput } from '../model/applicationInput';
 import { ApplicationType } from '../model/applicationType';
 import { ApplicationsResponse } from '../model/applicationsResponse';
 import { DateHistoAnalytics, GroupByAnalytics, CountAnalytics } from '../model/models';
-import { ErrorResponse } from '../model/errorResponse';
 import { Hook } from '../model/hook';
 import { Log } from '../model/log';
 import { LogsResponse } from '../model/logsResponse';
@@ -38,130 +37,194 @@ import { Configuration }                                     from '../configurat
 
 
 export interface CreateApplicationRequestParams {
-    ApplicationInput?: ApplicationInput;
+    /** Use to create an application. */
+    applicationInput?: ApplicationInput;
 }
 
 export interface CreateApplicationMemberRequestParams {
+    /** Id of an application. */
     applicationId: string;
-    MemberInput?: MemberInput;
+    /** Use to create a member. */
+    memberInput?: MemberInput;
 }
 
 export interface DeleteApplicationByApplicationIdRequestParams {
+    /** Id of an application. */
     applicationId: string;
 }
 
 export interface DeleteApplicationMemberRequestParams {
+    /** Id of an application. */
     applicationId: string;
+    /** Id of a member. */
     memberId: string;
 }
 
 export interface ExportApplicationLogsByApplicationIdRequestParams {
+    /** Id of an application. */
     applicationId: string;
+    /** The page number for pagination. */
     page?: number;
+    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
+    /** Lower bound of timestamp for filtering. */
     from?: number;
+    /** Upper bound of timestamp for filtering. Must be greater than *from* query param. */
     to?: number;
+    /** Query used for filtering. */
     query?: string;
+    /** Field used for filtering. **required** when type is **GROUP_BY**. */
     field?: string;
+    /** Order used to sort the result list. */
     order?: 'ASC' | 'DESC';
 }
 
 export interface GetApplicationAnalyticsRequestParams {
+    /** Id of an application. */
     applicationId: string;
+    /** The page number for pagination. */
     page?: number;
+    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
+    /** Lower bound of timestamp for filtering. */
     from?: number;
+    /** Upper bound of timestamp for filtering. Must be greater than *from* query param. */
     to?: number;
+    /** Interval for time search. Must be &gt;&#x3D; 1 000 and &lt;&#x3D; 1 000 000 000. */
     interval?: number;
+    /** Query used for filtering. */
     query?: string;
+    /** Field used for filtering. **required** when type is **GROUP_BY**. */
     field?: string;
+    /** Type of analytics that is expected :   - GROUP_BY :       Used to group total hits by a specific field (Application, Status, Path, ...).\\       Query params :       - from       - to       - interval       - query       - field       - order       - ranges   - DATE_HISTO :       Used to retrieve total hits per range of time, on a specific time interval.\\       Query params :       - from       - to       - interval       - query       - aggs   - COUNT :       Used to retrieve total hits, on a specific time interval.\\       Query params :       - from       - to       - interval       - query   - STATS :       Used to retrieve stats data, on a specific time interval.\\       Query params :       - from       - to       - query  */
     type?: 'GROUP_BY' | 'DATE_HISTO' | 'COUNT' | 'STATS';
+    /** Used with GROUP_BY type only.  A semicolon separated list of \&quot;from:to\&quot; elements. **_/!\\\\ Different from *from* and *to* query params**  */
     ranges?: string;
+    /** Used with DATE_HISTO type only.  A semicolon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ Type can be **FIELD**, **AVG**, **MIN**, **MAX**  */
     aggs?: string;
+    /** Used with GROUP_BY type only.  A colon separated list of \&quot;type:field\&quot; elements. **_/!\\\\ Different from *type* and *field* query params**\\ By default, sort is ASC. If *type* starts with \&#39;-\&#39;, the order sort is DESC.\\ Currently, only **AVG** is supported.  */
     order?: string;
 }
 
 export interface GetApplicationByApplicationIdRequestParams {
+    /** Id of an application. */
     applicationId: string;
 }
 
 export interface GetApplicationLogByApplicationIdAndLogIdRequestParams {
+    /** Id of an application. */
     applicationId: string;
+    /** Id of a log. */
     logId: string;
+    /** Used to select the right index */
     timestamp?: number;
 }
 
 export interface GetApplicationLogsRequestParams {
+    /** Id of an application. */
     applicationId: string;
+    /** The page number for pagination. */
     page?: number;
+    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
+    /** Lower bound of timestamp for filtering. */
     from?: number;
+    /** Upper bound of timestamp for filtering. Must be greater than *from* query param. */
     to?: number;
+    /** Query used for filtering. */
     query?: string;
+    /** Field used for filtering. **required** when type is **GROUP_BY**. */
     field?: string;
+    /** Order used to sort the result list. */
     order?: 'ASC' | 'DESC';
 }
 
 export interface GetApplicationMemberByApplicationIdAndMemberIdRequestParams {
+    /** Id of an application. */
     applicationId: string;
+    /** Id of a member. */
     memberId: string;
 }
 
 export interface GetApplicationPictureByApplicationIdRequestParams {
+    /** Id of an application. */
     applicationId: string;
 }
 
 export interface GetApplicationTypeRequestParams {
+    /** Id of an application. */
     applicationId: string;
 }
 
 export interface GetApplicationsRequestParams {
+    /** The page number for pagination. */
     page?: number;
+    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
+    /** If true, only return applications with APPLICATION_SUBSCRIPTION[CREATE] permission. */
     forSubscription?: boolean;
+    /** A  list of \&quot;field\&quot; elements or *nbSubscriptions*. By default, sort is ASC. If *field* starts with \&#39;-\&#39;, the order sort is DESC.\\ Currently, only **name** and **nbSubscriptions** are supported.  */
     order?: string;
 }
 
 export interface GetMembersByApplicationIdRequestParams {
+    /** Id of an application. */
     applicationId: string;
+    /** The page number for pagination. */
     page?: number;
+    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
 }
 
 export interface GetNotificationsByApplicationIdRequestParams {
+    /** Id of an application. */
     applicationId: string;
 }
 
 export interface GetSubscriberApisByApplicationIdRequestParams {
+    /** Id of an application. */
     applicationId: string;
+    /** The page number for pagination. */
     page?: number;
+    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
+    /** status of subscription. */
     statuses?: Array<'ACCEPTED' | 'CLOSED' | 'PAUSED' | 'PENDING' | 'REJECTED'>;
 }
 
 export interface RenewApplicationSecretRequestParams {
+    /** Id of an application. */
     applicationId: string;
 }
 
 export interface TransferMemberOwnershipRequestParams {
+    /** Id of an application. */
     applicationId: string;
-    TransferOwnershipInput?: TransferOwnershipInput;
+    /** Use to transfer ownership of an application. */
+    transferOwnershipInput?: TransferOwnershipInput;
 }
 
 export interface UpdateApplicationByApplicationIdRequestParams {
+    /** Id of an application. */
     applicationId: string;
-    Application?: Application;
+    /** Use to update an application. */
+    application?: Application;
 }
 
 export interface UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams {
+    /** Id of an application. */
     applicationId: string;
+    /** Id of a member. */
     memberId: string;
-    MemberInput?: MemberInput;
+    /** Use to update a member. */
+    memberInput?: MemberInput;
 }
 
 export interface UpdateApplicationNotificationsRequestParams {
+    /** Id of an application. */
     applicationId: string;
-    NotificationInput?: NotificationInput;
+    /** Use to update application notifications. */
+    notificationInput?: NotificationInput;
 }
 
 
@@ -190,6 +253,42 @@ export class ApplicationService {
 
 
 
+    private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
+        if (typeof value === "object" && value instanceof Date === false) {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value);
+        } else {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
+        }
+        return httpParams;
+    }
+
+    private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
+        if (value == null) {
+            return httpParams;
+        }
+
+        if (typeof value === "object") {
+            if (Array.isArray(value)) {
+                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
+            } else if (value instanceof Date) {
+                if (key != null) {
+                    httpParams = httpParams.append(key,
+                        (value as Date).toISOString().substr(0, 10));
+                } else {
+                   throw Error("key may not be null if value is Date");
+                }
+            } else {
+                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
+                    httpParams, value[k], key != null ? `${key}.${k}` : k));
+            }
+        } else if (key != null) {
+            httpParams = httpParams.append(key, value);
+        } else {
+            throw Error("key may not be null if value is not object or array");
+        }
+        return httpParams;
+    }
+
     /**
      * Create an application
      * Create an application.  User must have MANAGEMENT_APPLICATION[CREATE] permission. 
@@ -197,11 +296,11 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    public createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    public createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
-    public createApplication(requestParameters: CreateApplicationRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        const ApplicationInput = requestParameters.ApplicationInput;
+    public createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Application>;
+    public createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Application>>;
+    public createApplication(requestParameters: CreateApplicationRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Application>>;
+    public createApplication(requestParameters: CreateApplicationRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        const applicationInput = requestParameters.applicationInput;
 
         let headers = this.defaultHeaders;
 
@@ -210,11 +309,20 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -229,9 +337,15 @@ export class ApplicationService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.post<Application>(`${this.configuration.basePath}/applications`,
-            ApplicationInput,
+            applicationInput,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -247,15 +361,15 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Member>;
-    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
-    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
-    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Member>;
+    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Member>>;
+    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Member>>;
+    public createApplicationMember(requestParameters: CreateApplicationMemberRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling createApplicationMember.');
         }
-        const MemberInput = requestParameters.MemberInput;
+        const memberInput = requestParameters.memberInput;
 
         let headers = this.defaultHeaders;
 
@@ -264,11 +378,20 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -283,9 +406,15 @@ export class ApplicationService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.post<Member>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members`,
-            MemberInput,
+            memberInput,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -301,10 +430,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public deleteApplicationByApplicationId(requestParameters: DeleteApplicationByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationByApplicationId.');
@@ -317,18 +446,33 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.delete<any>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -344,10 +488,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public deleteApplicationMember(requestParameters: DeleteApplicationMemberRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationMember.');
@@ -364,18 +508,33 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.delete<any>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/${encodeURIComponent(String(memberId))}`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -391,10 +550,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<string>;
-    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
-    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
-    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<string>;
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<HttpResponse<string>>;
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<HttpEvent<string>>;
+    public exportApplicationLogsByApplicationId(requestParameters: ExportApplicationLogsByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling exportApplicationLogsByApplicationId.');
@@ -409,25 +568,32 @@ export class ApplicationService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', <any>page);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>page, 'page');
         }
         if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', <any>size);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>size, 'size');
         }
         if (from !== undefined && from !== null) {
-            queryParameters = queryParameters.set('from', <any>from);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>from, 'from');
         }
         if (to !== undefined && to !== null) {
-            queryParameters = queryParameters.set('to', <any>to);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>to, 'to');
         }
         if (query !== undefined && query !== null) {
-            queryParameters = queryParameters.set('query', <any>query);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>query, 'query');
         }
         if (field !== undefined && field !== null) {
-            queryParameters = queryParameters.set('field', <any>field);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>field, 'field');
         }
         if (order !== undefined && order !== null) {
-            queryParameters = queryParameters.set('order', <any>order);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>order, 'order');
         }
 
         let headers = this.defaultHeaders;
@@ -437,21 +603,36 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.post<string>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/logs/_export`,
             null,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -467,10 +648,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>;
-    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
-    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
-    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>;
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>>;
+    public getApplicationAnalytics(requestParameters: GetApplicationAnalyticsRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationAnalytics.');
@@ -489,37 +670,48 @@ export class ApplicationService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', <any>page);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>page, 'page');
         }
         if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', <any>size);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>size, 'size');
         }
         if (from !== undefined && from !== null) {
-            queryParameters = queryParameters.set('from', <any>from);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>from, 'from');
         }
         if (to !== undefined && to !== null) {
-            queryParameters = queryParameters.set('to', <any>to);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>to, 'to');
         }
         if (interval !== undefined && interval !== null) {
-            queryParameters = queryParameters.set('interval', <any>interval);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>interval, 'interval');
         }
         if (query !== undefined && query !== null) {
-            queryParameters = queryParameters.set('query', <any>query);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>query, 'query');
         }
         if (field !== undefined && field !== null) {
-            queryParameters = queryParameters.set('field', <any>field);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>field, 'field');
         }
         if (type !== undefined && type !== null) {
-            queryParameters = queryParameters.set('type', <any>type);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>type, 'type');
         }
         if (ranges !== undefined && ranges !== null) {
-            queryParameters = queryParameters.set('ranges', <any>ranges);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>ranges, 'ranges');
         }
         if (aggs !== undefined && aggs !== null) {
-            queryParameters = queryParameters.set('aggs', <any>aggs);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>aggs, 'aggs');
         }
         if (order !== undefined && order !== null) {
-            queryParameters = queryParameters.set('order', <any>order);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>order, 'order');
         }
 
         let headers = this.defaultHeaders;
@@ -529,19 +721,34 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/analytics`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -557,10 +764,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
-    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Application>;
+    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Application>>;
+    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Application>>;
+    public getApplicationByApplicationId(requestParameters: GetApplicationByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationByApplicationId.');
@@ -573,18 +780,33 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Application>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -600,10 +822,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Log>;
-    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Log>>;
-    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Log>>;
-    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Log>;
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Log>>;
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Log>>;
+    public getApplicationLogByApplicationIdAndLogId(requestParameters: GetApplicationLogByApplicationIdAndLogIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogByApplicationIdAndLogId.');
@@ -616,7 +838,8 @@ export class ApplicationService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (timestamp !== undefined && timestamp !== null) {
-            queryParameters = queryParameters.set('timestamp', <any>timestamp);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>timestamp, 'timestamp');
         }
 
         let headers = this.defaultHeaders;
@@ -626,19 +849,34 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Log>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/logs/${encodeURIComponent(String(logId))}`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -654,10 +892,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<LogsResponse>;
-    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LogsResponse>>;
-    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LogsResponse>>;
-    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<LogsResponse>;
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<LogsResponse>>;
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<LogsResponse>>;
+    public getApplicationLogs(requestParameters: GetApplicationLogsRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationLogs.');
@@ -672,25 +910,32 @@ export class ApplicationService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', <any>page);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>page, 'page');
         }
         if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', <any>size);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>size, 'size');
         }
         if (from !== undefined && from !== null) {
-            queryParameters = queryParameters.set('from', <any>from);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>from, 'from');
         }
         if (to !== undefined && to !== null) {
-            queryParameters = queryParameters.set('to', <any>to);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>to, 'to');
         }
         if (query !== undefined && query !== null) {
-            queryParameters = queryParameters.set('query', <any>query);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>query, 'query');
         }
         if (field !== undefined && field !== null) {
-            queryParameters = queryParameters.set('field', <any>field);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>field, 'field');
         }
         if (order !== undefined && order !== null) {
-            queryParameters = queryParameters.set('order', <any>order);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>order, 'order');
         }
 
         let headers = this.defaultHeaders;
@@ -700,19 +945,34 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<LogsResponse>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/logs`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -728,10 +988,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Member>;
-    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
-    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
-    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Member>;
+    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Member>>;
+    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Member>>;
+    public getApplicationMemberByApplicationIdAndMemberId(requestParameters: GetApplicationMemberByApplicationIdAndMemberIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationMemberByApplicationIdAndMemberId.');
@@ -748,18 +1008,33 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Member>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/${encodeURIComponent(String(memberId))}`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -775,10 +1050,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
-    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
-    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
-    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<Blob>;
+    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<HttpResponse<Blob>>;
+    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<HttpEvent<Blob>>;
+    public getApplicationPictureByApplicationId(requestParameters: GetApplicationPictureByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationPictureByApplicationId.');
@@ -791,12 +1066,21 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'image/_*',
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'image/_*',
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -820,10 +1104,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApplicationType>;
-    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApplicationType>>;
-    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApplicationType>>;
-    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApplicationType>;
+    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApplicationType>>;
+    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApplicationType>>;
+    public getApplicationType(requestParameters: GetApplicationTypeRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getApplicationType.');
@@ -831,18 +1115,27 @@ export class ApplicationService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<ApplicationType>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/configuration`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -858,10 +1151,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApplicationsResponse>;
-    public getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApplicationsResponse>>;
-    public getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApplicationsResponse>>;
-    public getApplications(requestParameters: GetApplicationsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApplicationsResponse>;
+    public getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApplicationsResponse>>;
+    public getApplications(requestParameters: GetApplicationsRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApplicationsResponse>>;
+    public getApplications(requestParameters: GetApplicationsRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const page = requestParameters.page;
         const size = requestParameters.size;
         const forSubscription = requestParameters.forSubscription;
@@ -869,16 +1162,20 @@ export class ApplicationService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', <any>page);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>page, 'page');
         }
         if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', <any>size);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>size, 'size');
         }
         if (forSubscription !== undefined && forSubscription !== null) {
-            queryParameters = queryParameters.set('forSubscription', <any>forSubscription);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>forSubscription, 'forSubscription');
         }
         if (order !== undefined && order !== null) {
-            queryParameters = queryParameters.set('order', <any>order);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>order, 'order');
         }
 
         let headers = this.defaultHeaders;
@@ -888,19 +1185,34 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<ApplicationsResponse>(`${this.configuration.basePath}/applications`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -915,25 +1227,34 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getHooks(observe?: 'body', reportProgress?: boolean): Observable<Array<Hook>>;
-    public getHooks(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Hook>>>;
-    public getHooks(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Hook>>>;
-    public getHooks(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getHooks(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<Hook>>;
+    public getHooks(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<Hook>>>;
+    public getHooks(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<Hook>>>;
+    public getHooks(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Array<Hook>>(`${this.configuration.basePath}/applications/hooks`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -949,10 +1270,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<MembersResponse>;
-    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<MembersResponse>>;
-    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<MembersResponse>>;
-    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<MembersResponse>;
+    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<MembersResponse>>;
+    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<MembersResponse>>;
+    public getMembersByApplicationId(requestParameters: GetMembersByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getMembersByApplicationId.');
@@ -962,10 +1283,12 @@ export class ApplicationService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', <any>page);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>page, 'page');
         }
         if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', <any>size);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>size, 'size');
         }
 
         let headers = this.defaultHeaders;
@@ -975,19 +1298,34 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<MembersResponse>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -1003,10 +1341,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
-    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
-    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
-    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<string>>;
+    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<string>>>;
+    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<string>>>;
+    public getNotificationsByApplicationId(requestParameters: GetNotificationsByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getNotificationsByApplicationId.');
@@ -1019,18 +1357,33 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Array<string>>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -1046,10 +1399,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApisResponse>;
-    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApisResponse>>;
-    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApisResponse>>;
-    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApisResponse>;
+    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApisResponse>>;
+    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApisResponse>>;
+    public getSubscriberApisByApplicationId(requestParameters: GetSubscriberApisByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling getSubscriberApisByApplicationId.');
@@ -1060,32 +1413,44 @@ export class ApplicationService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', <any>page);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>page, 'page');
         }
         if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', <any>size);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>size, 'size');
         }
         if (statuses) {
             statuses.forEach((element) => {
-                queryParameters = queryParameters.append('statuses', <any>element);
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'statuses');
             })
         }
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<ApisResponse>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/subscribers`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -1101,10 +1466,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
-    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Application>;
+    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Application>>;
+    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Application>>;
+    public renewApplicationSecret(requestParameters: RenewApplicationSecretRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling renewApplicationSecret.');
@@ -1117,19 +1482,34 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.post<Application>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/_renew_secret`,
             null,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -1145,15 +1525,15 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public transferMemberOwnership(requestParameters: TransferMemberOwnershipRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling transferMemberOwnership.');
         }
-        const TransferOwnershipInput = requestParameters.TransferOwnershipInput;
+        const transferOwnershipInput = requestParameters.transferOwnershipInput;
 
         let headers = this.defaultHeaders;
 
@@ -1162,11 +1542,20 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -1181,9 +1570,15 @@ export class ApplicationService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.post<any>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/_transfer_ownership`,
-            TransferOwnershipInput,
+            transferOwnershipInput,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -1199,15 +1594,15 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Application>;
-    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Application>>;
-    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Application>>;
-    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Application>;
+    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Application>>;
+    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Application>>;
+    public updateApplicationByApplicationId(requestParameters: UpdateApplicationByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationByApplicationId.');
         }
-        const Application = requestParameters.Application;
+        const application = requestParameters.application;
 
         let headers = this.defaultHeaders;
 
@@ -1216,11 +1611,20 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -1235,9 +1639,15 @@ export class ApplicationService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.put<Application>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}`,
-            Application,
+            application,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -1253,10 +1663,10 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Member>;
-    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Member>>;
-    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Member>>;
-    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Member>;
+    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Member>>;
+    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Member>>;
+    public updateApplicationMemberByApplicationIdAndMemberId(requestParameters: UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationMemberByApplicationIdAndMemberId.');
@@ -1265,7 +1675,7 @@ export class ApplicationService {
         if (memberId === null || memberId === undefined) {
             throw new Error('Required parameter memberId was null or undefined when calling updateApplicationMemberByApplicationIdAndMemberId.');
         }
-        const MemberInput = requestParameters.MemberInput;
+        const memberInput = requestParameters.memberInput;
 
         let headers = this.defaultHeaders;
 
@@ -1274,11 +1684,20 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -1293,9 +1712,15 @@ export class ApplicationService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.put<Member>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/${encodeURIComponent(String(memberId))}`,
-            MemberInput,
+            memberInput,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -1311,15 +1736,15 @@ export class ApplicationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
-    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
-    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
-    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<string>>;
+    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<string>>>;
+    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<string>>>;
+    public updateApplicationNotifications(requestParameters: UpdateApplicationNotificationsRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const applicationId = requestParameters.applicationId;
         if (applicationId === null || applicationId === undefined) {
             throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationNotifications.');
         }
-        const NotificationInput = requestParameters.NotificationInput;
+        const notificationInput = requestParameters.notificationInput;
 
         let headers = this.defaultHeaders;
 
@@ -1328,11 +1753,20 @@ export class ApplicationService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -1347,9 +1781,15 @@ export class ApplicationService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.put<Array<string>>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/notifications`,
-            NotificationInput,
+            notificationInput,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

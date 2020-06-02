@@ -17,65 +17,79 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ApiInformation } from '../model/apiInformation';
-import { CategoriesResponse } from '../model/categoriesResponse';
-import { Category } from '../model/category';
-import { ConfigurationApplicationRolesResponse } from '../model/configurationApplicationRolesResponse';
-import { ConfigurationApplicationTypesResponse } from '../model/configurationApplicationTypesResponse';
-import { ConfigurationIdentitiesResponse } from '../model/configurationIdentitiesResponse';
-import { ConfigurationResponse } from '../model/configurationResponse';
-import { Dashboard } from '../model/dashboard';
-import { ErrorResponse } from '../model/errorResponse';
-import { IdentityProvider } from '../model/identityProvider';
-import { Info } from '../model/info';
-import { LinksResponse } from '../model/linksResponse';
-import { Page } from '../model/page';
-import { PagesResponse } from '../model/pagesResponse';
-import { ThemeResponse } from '../model/themeResponse';
-import { TicketInput } from '../model/ticketInput';
+import { ApiInformation } from '../model/models';
+import { CategoriesResponse } from '../model/models';
+import { Category } from '../model/models';
+import { ConfigurationApplicationRolesResponse } from '../model/models';
+import { ConfigurationApplicationTypesResponse } from '../model/models';
+import { ConfigurationIdentitiesResponse } from '../model/models';
+import { ConfigurationResponse } from '../model/models';
+import { Dashboard } from '../model/models';
+import { ErrorResponse } from '../model/models';
+import { IdentityProvider } from '../model/models';
+import { Info } from '../model/models';
+import { LinksResponse } from '../model/models';
+import { Page } from '../model/models';
+import { PagesResponse } from '../model/models';
+import { ThemeResponse } from '../model/models';
+import { TicketInput } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 export interface CreateTicketRequestParams {
-    TicketInput?: TicketInput;
+    /** a new ticket to create */
+    ticketInput?: TicketInput;
 }
 
 export interface GetApiInformationsRequestParams {
+    /** Id of an API. */
     apiId: string;
 }
 
 export interface GetCategoriesRequestParams {
+    /** The page number for pagination. */
     page?: number;
+    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
 }
 
 export interface GetCategoryByCategoryIdRequestParams {
+    /** Id of a Category. */
     categoryId: string;
 }
 
 export interface GetPageByPageIdRequestParams {
+    /** Id of a documentation page. */
     pageId: string;
+    /** Comma-separated list of related objects to include in the response. */
     include?: Array<'content'>;
 }
 
 export interface GetPageContentByPageIdRequestParams {
+    /** Id of a documentation page. */
     pageId: string;
 }
 
 export interface GetPagesRequestParams {
+    /** The page number for pagination. */
     page?: number;
+    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
+    /** If true, only the documentation homepage of the portal is returned. */
     homepage?: boolean;
+    /** The name of the parent documentation page. If not null, only this page and its children are returned. */
     parent?: string;
 }
 
 export interface GetPictureByCategoryIdRequestParams {
+    /** Id of a Category. */
     categoryId: string;
 }
 
 export interface GetPortalIdentityProviderRequestParams {
+    /** Id of an identity provider. */
     identityProviderId: string;
 }
 
@@ -105,6 +119,42 @@ export class PortalService {
 
 
 
+    private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
+        if (typeof value === "object" && value instanceof Date === false) {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value);
+        } else {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
+        }
+        return httpParams;
+    }
+
+    private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
+        if (value == null) {
+            return httpParams;
+        }
+
+        if (typeof value === "object") {
+            if (Array.isArray(value)) {
+                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
+            } else if (value instanceof Date) {
+                if (key != null) {
+                    httpParams = httpParams.append(key,
+                        (value as Date).toISOString().substr(0, 10));
+                } else {
+                   throw Error("key may not be null if value is Date");
+                }
+            } else {
+                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
+                    httpParams, value[k], key != null ? `${key}.${k}` : k));
+            }
+        } else if (key != null) {
+            httpParams = httpParams.append(key, value);
+        } else {
+            throw Error("key may not be null if value is not object or array");
+        }
+        return httpParams;
+    }
+
     /**
      * Create a ticket.
      * Create a ticket. This ticket can aim :   * a specific application   * a specific API   * the gravitee portal  User must be authenticated to use this service. 
@@ -112,11 +162,11 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createTicket(requestParameters: CreateTicketRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public createTicket(requestParameters: CreateTicketRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public createTicket(requestParameters: CreateTicketRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public createTicket(requestParameters: CreateTicketRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        const TicketInput = requestParameters.TicketInput;
+    public createTicket(requestParameters: CreateTicketRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public createTicket(requestParameters: CreateTicketRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public createTicket(requestParameters: CreateTicketRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public createTicket(requestParameters: CreateTicketRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        const ticketInput = requestParameters.ticketInput;
 
         let headers = this.defaultHeaders;
 
@@ -125,11 +175,20 @@ export class PortalService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (this.configuration.apiKeys) {
+            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
+            if (key) {
+            }
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -144,9 +203,15 @@ export class PortalService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.post<any>(`${this.configuration.basePath}/tickets`,
-            TicketInput,
+            ticketInput,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -162,10 +227,10 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Array<ApiInformation>>;
-    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ApiInformation>>>;
-    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ApiInformation>>>;
-    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<ApiInformation>>;
+    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<ApiInformation>>>;
+    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<ApiInformation>>>;
+    public getApiInformations(requestParameters: GetApiInformationsRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getApiInformations.');
@@ -173,18 +238,27 @@ export class PortalService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Array<ApiInformation>>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/informations`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -199,25 +273,34 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApplicationRoles(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationApplicationRolesResponse>;
-    public getApplicationRoles(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationApplicationRolesResponse>>;
-    public getApplicationRoles(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationApplicationRolesResponse>>;
-    public getApplicationRoles(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getApplicationRoles(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ConfigurationApplicationRolesResponse>;
+    public getApplicationRoles(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ConfigurationApplicationRolesResponse>>;
+    public getApplicationRoles(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ConfigurationApplicationRolesResponse>>;
+    public getApplicationRoles(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<ConfigurationApplicationRolesResponse>(`${this.configuration.basePath}/configuration/applications/roles`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -233,36 +316,47 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getCategories(requestParameters: GetCategoriesRequestParams, observe?: 'body', reportProgress?: boolean): Observable<CategoriesResponse>;
-    public getCategories(requestParameters: GetCategoriesRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoriesResponse>>;
-    public getCategories(requestParameters: GetCategoriesRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoriesResponse>>;
-    public getCategories(requestParameters: GetCategoriesRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getCategories(requestParameters: GetCategoriesRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<CategoriesResponse>;
+    public getCategories(requestParameters: GetCategoriesRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<CategoriesResponse>>;
+    public getCategories(requestParameters: GetCategoriesRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<CategoriesResponse>>;
+    public getCategories(requestParameters: GetCategoriesRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const page = requestParameters.page;
         const size = requestParameters.size;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', <any>page);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>page, 'page');
         }
         if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', <any>size);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>size, 'size');
         }
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<CategoriesResponse>(`${this.configuration.basePath}/categories`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -278,10 +372,10 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Category>;
-    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Category>>;
-    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Category>>;
-    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Category>;
+    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Category>>;
+    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Category>>;
+    public getCategoryByCategoryId(requestParameters: GetCategoryByCategoryIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const categoryId = requestParameters.categoryId;
         if (categoryId === null || categoryId === undefined) {
             throw new Error('Required parameter categoryId was null or undefined when calling getCategoryByCategoryId.');
@@ -289,18 +383,27 @@ export class PortalService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Category>(`${this.configuration.basePath}/categories/${encodeURIComponent(String(categoryId))}`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -315,25 +418,34 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getDashboards(observe?: 'body', reportProgress?: boolean): Observable<Array<Dashboard>>;
-    public getDashboards(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Dashboard>>>;
-    public getDashboards(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Dashboard>>>;
-    public getDashboards(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getDashboards(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<Dashboard>>;
+    public getDashboards(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<Dashboard>>>;
+    public getDashboards(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<Dashboard>>>;
+    public getDashboards(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Array<Dashboard>>(`${this.configuration.basePath}/dashboards`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -348,25 +460,34 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getEnabledApplicationTypes(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationApplicationTypesResponse>;
-    public getEnabledApplicationTypes(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationApplicationTypesResponse>>;
-    public getEnabledApplicationTypes(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationApplicationTypesResponse>>;
-    public getEnabledApplicationTypes(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getEnabledApplicationTypes(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ConfigurationApplicationTypesResponse>;
+    public getEnabledApplicationTypes(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ConfigurationApplicationTypesResponse>>;
+    public getEnabledApplicationTypes(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ConfigurationApplicationTypesResponse>>;
+    public getEnabledApplicationTypes(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<ConfigurationApplicationTypesResponse>(`${this.configuration.basePath}/configuration/applications/types`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -382,10 +503,10 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Page>;
-    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
-    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
-    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Page>;
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Page>>;
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Page>>;
+    public getPageByPageId(requestParameters: GetPageByPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const pageId = requestParameters.pageId;
         if (pageId === null || pageId === undefined) {
             throw new Error('Required parameter pageId was null or undefined when calling getPageByPageId.');
@@ -395,25 +516,35 @@ export class PortalService {
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (include) {
             include.forEach((element) => {
-                queryParameters = queryParameters.append('include', <any>element);
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'include');
             })
         }
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Page>(`${this.configuration.basePath}/pages/${encodeURIComponent(String(pageId))}`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -429,10 +560,10 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<string>;
-    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
-    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
-    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<string>;
+    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<HttpResponse<string>>;
+    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<HttpEvent<string>>;
+    public getPageContentByPageId(requestParameters: GetPageContentByPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<any> {
         const pageId = requestParameters.pageId;
         if (pageId === null || pageId === undefined) {
             throw new Error('Required parameter pageId was null or undefined when calling getPageContentByPageId.');
@@ -440,19 +571,28 @@ export class PortalService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<string>(`${this.configuration.basePath}/pages/${encodeURIComponent(String(pageId))}/content`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -468,10 +608,10 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPages(requestParameters: GetPagesRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
-    public getPages(requestParameters: GetPagesRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
-    public getPages(requestParameters: GetPagesRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
-    public getPages(requestParameters: GetPagesRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPages(requestParameters: GetPagesRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<PagesResponse>;
+    public getPages(requestParameters: GetPagesRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<PagesResponse>>;
+    public getPages(requestParameters: GetPagesRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<PagesResponse>>;
+    public getPages(requestParameters: GetPagesRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const page = requestParameters.page;
         const size = requestParameters.size;
         const homepage = requestParameters.homepage;
@@ -479,33 +619,46 @@ export class PortalService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-            queryParameters = queryParameters.set('page', <any>page);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>page, 'page');
         }
         if (size !== undefined && size !== null) {
-            queryParameters = queryParameters.set('size', <any>size);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>size, 'size');
         }
         if (homepage !== undefined && homepage !== null) {
-            queryParameters = queryParameters.set('homepage', <any>homepage);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>homepage, 'homepage');
         }
         if (parent !== undefined && parent !== null) {
-            queryParameters = queryParameters.set('parent', <any>parent);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>parent, 'parent');
         }
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<PagesResponse>(`${this.configuration.basePath}/pages`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -521,10 +674,10 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
-    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
-    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
-    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<Blob>;
+    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<HttpResponse<Blob>>;
+    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<HttpEvent<Blob>>;
+    public getPictureByCategoryId(requestParameters: GetPictureByCategoryIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<any> {
         const categoryId = requestParameters.categoryId;
         if (categoryId === null || categoryId === undefined) {
             throw new Error('Required parameter categoryId was null or undefined when calling getPictureByCategoryId.');
@@ -532,12 +685,15 @@ export class PortalService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'image/_*',
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'image/_*',
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -560,25 +716,34 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPortalConfiguration(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationResponse>;
-    public getPortalConfiguration(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationResponse>>;
-    public getPortalConfiguration(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationResponse>>;
-    public getPortalConfiguration(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPortalConfiguration(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ConfigurationResponse>;
+    public getPortalConfiguration(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ConfigurationResponse>>;
+    public getPortalConfiguration(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ConfigurationResponse>>;
+    public getPortalConfiguration(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<ConfigurationResponse>(`${this.configuration.basePath}/configuration`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -594,10 +759,10 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe?: 'body', reportProgress?: boolean): Observable<IdentityProvider>;
-    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<IdentityProvider>>;
-    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<IdentityProvider>>;
-    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<IdentityProvider>;
+    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<IdentityProvider>>;
+    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<IdentityProvider>>;
+    public getPortalIdentityProvider(requestParameters: GetPortalIdentityProviderRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         const identityProviderId = requestParameters.identityProviderId;
         if (identityProviderId === null || identityProviderId === undefined) {
             throw new Error('Required parameter identityProviderId was null or undefined when calling getPortalIdentityProvider.');
@@ -605,18 +770,27 @@ export class PortalService {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<IdentityProvider>(`${this.configuration.basePath}/configuration/identities/${encodeURIComponent(String(identityProviderId))}`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -631,25 +805,34 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPortalIdentityProviders(observe?: 'body', reportProgress?: boolean): Observable<ConfigurationIdentitiesResponse>;
-    public getPortalIdentityProviders(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ConfigurationIdentitiesResponse>>;
-    public getPortalIdentityProviders(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ConfigurationIdentitiesResponse>>;
-    public getPortalIdentityProviders(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPortalIdentityProviders(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ConfigurationIdentitiesResponse>;
+    public getPortalIdentityProviders(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ConfigurationIdentitiesResponse>>;
+    public getPortalIdentityProviders(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ConfigurationIdentitiesResponse>>;
+    public getPortalIdentityProviders(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<ConfigurationIdentitiesResponse>(`${this.configuration.basePath}/configuration/identities`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -664,25 +847,34 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPortalInformation(observe?: 'body', reportProgress?: boolean): Observable<Info>;
-    public getPortalInformation(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Info>>;
-    public getPortalInformation(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Info>>;
-    public getPortalInformation(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPortalInformation(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Info>;
+    public getPortalInformation(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Info>>;
+    public getPortalInformation(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Info>>;
+    public getPortalInformation(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Info>(`${this.configuration.basePath}/info`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -697,25 +889,34 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPortalLinks(observe?: 'body', reportProgress?: boolean): Observable<LinksResponse>;
-    public getPortalLinks(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LinksResponse>>;
-    public getPortalLinks(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LinksResponse>>;
-    public getPortalLinks(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPortalLinks(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<LinksResponse>;
+    public getPortalLinks(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<LinksResponse>>;
+    public getPortalLinks(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<LinksResponse>>;
+    public getPortalLinks(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<LinksResponse>(`${this.configuration.basePath}/configuration/links`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -730,25 +931,34 @@ export class PortalService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPortalTheme(observe?: 'body', reportProgress?: boolean): Observable<ThemeResponse>;
-    public getPortalTheme(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ThemeResponse>>;
-    public getPortalTheme(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ThemeResponse>>;
-    public getPortalTheme(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getPortalTheme(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ThemeResponse>;
+    public getPortalTheme(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ThemeResponse>>;
+    public getPortalTheme(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ThemeResponse>>;
+    public getPortalTheme(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<ThemeResponse>(`${this.configuration.basePath}/theme`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

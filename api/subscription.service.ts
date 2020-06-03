@@ -17,55 +17,43 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ErrorResponse } from '../model/models';
-import { Key } from '../model/models';
-import { Subscription } from '../model/models';
-import { SubscriptionInput } from '../model/models';
-import { SubscriptionsResponse } from '../model/models';
+import { ErrorResponse } from '../model/errorResponse';
+import { Key } from '../model/key';
+import { Subscription } from '../model/subscription';
+import { SubscriptionInput } from '../model/subscriptionInput';
+import { SubscriptionsResponse } from '../model/subscriptionsResponse';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 export interface CloseSubscriptionRequestParams {
-    /** Id of a subscription. */
     subscriptionId: string;
 }
 
 export interface CreateSubscriptionRequestParams {
-    /** Use to create a subscription. */
-    subscriptionInput?: SubscriptionInput;
+    SubscriptionInput?: SubscriptionInput;
 }
 
 export interface GetSubscriptionByIdRequestParams {
-    /** Id of a subscription. */
     subscriptionId: string;
-    /** Comma-separated list of related objects to include in the response. */
     include?: Array<'keys'>;
 }
 
 export interface GetSubscriptionsRequestParams {
-    /** Id of an api. */
     apiId?: string;
-    /** Id of an application. */
     applicationId?: string;
-    /** status of subscription. */
     statuses?: Array<'ACCEPTED' | 'CLOSED' | 'PAUSED' | 'PENDING' | 'REJECTED'>;
-    /** The page number for pagination. */
     page?: number;
-    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
 }
 
 export interface RenewKeySubscriptionRequestParams {
-    /** Id of a subscription. */
     subscriptionId: string;
-    /** Use to renew keys of a subscription. */
-    requestBody?: Array<string>;
+    request_body?: Array<string>;
 }
 
 export interface RevokeKeySubscriptionRequestParams {
-    /** Id of a subscription. */
     subscriptionId: string;
     keyId: string;
 }
@@ -96,42 +84,6 @@ export class SubscriptionService {
 
 
 
-    private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
-        if (typeof value === "object" && value instanceof Date === false) {
-            httpParams = this.addToHttpParamsRecursive(httpParams, value);
-        } else {
-            httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
-        }
-        return httpParams;
-    }
-
-    private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
-        if (value == null) {
-            return httpParams;
-        }
-
-        if (typeof value === "object") {
-            if (Array.isArray(value)) {
-                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
-            } else if (value instanceof Date) {
-                if (key != null) {
-                    httpParams = httpParams.append(key,
-                        (value as Date).toISOString().substr(0, 10));
-                } else {
-                   throw Error("key may not be null if value is Date");
-                }
-            } else {
-                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
-                    httpParams, value[k], key != null ? `${key}.${k}` : k));
-            }
-        } else if (key != null) {
-            httpParams = httpParams.append(key, value);
-        } else {
-            throw Error("key may not be null if value is not object or array");
-        }
-        return httpParams;
-    }
-
     /**
      * Close a subscription
      * Close a subscription.  User must have APPLICATION_SUBSCRIPTION[DELETE] permission. 
@@ -139,10 +91,10 @@ export class SubscriptionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
-    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
-    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
-    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public closeSubscription(requestParameters: CloseSubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling closeSubscription.');
@@ -155,34 +107,19 @@ export class SubscriptionService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.post<any>(`${this.configuration.basePath}/subscriptions/${encodeURIComponent(String(subscriptionId))}/_close`,
             null,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -198,11 +135,11 @@ export class SubscriptionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Subscription>;
-    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Subscription>>;
-    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Subscription>>;
-    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        const subscriptionInput = requestParameters.subscriptionInput;
+    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
+    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
+    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
+    public createSubscription(requestParameters: CreateSubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const SubscriptionInput = requestParameters.SubscriptionInput;
 
         let headers = this.defaultHeaders;
 
@@ -211,20 +148,11 @@ export class SubscriptionService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -239,15 +167,9 @@ export class SubscriptionService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.post<Subscription>(`${this.configuration.basePath}/subscriptions`,
-            subscriptionInput,
+            SubscriptionInput,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -263,10 +185,10 @@ export class SubscriptionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Subscription>;
-    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Subscription>>;
-    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Subscription>>;
-    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Subscription>;
+    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Subscription>>;
+    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Subscription>>;
+    public getSubscriptionById(requestParameters: GetSubscriptionByIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling getSubscriptionById.');
@@ -276,8 +198,7 @@ export class SubscriptionService {
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (include) {
             include.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'include');
+                queryParameters = queryParameters.append('include', <any>element);
             })
         }
 
@@ -288,34 +209,19 @@ export class SubscriptionService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<Subscription>(`${this.configuration.basePath}/subscriptions/${encodeURIComponent(String(subscriptionId))}`,
             {
                 params: queryParameters,
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -330,10 +236,10 @@ export class SubscriptionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<SubscriptionsResponse>;
-    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<SubscriptionsResponse>>;
-    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<SubscriptionsResponse>>;
-    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe?: 'body', reportProgress?: boolean): Observable<SubscriptionsResponse>;
+    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SubscriptionsResponse>>;
+    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SubscriptionsResponse>>;
+    public getSubscriptions(requestParameters: GetSubscriptionsRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         const applicationId = requestParameters.applicationId;
         const statuses = requestParameters.statuses;
@@ -342,26 +248,21 @@ export class SubscriptionService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (apiId !== undefined && apiId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>apiId, 'apiId');
+            queryParameters = queryParameters.set('apiId', <any>apiId);
         }
         if (applicationId !== undefined && applicationId !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>applicationId, 'applicationId');
+            queryParameters = queryParameters.set('applicationId', <any>applicationId);
         }
         if (statuses) {
             statuses.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'statuses');
+                queryParameters = queryParameters.append('statuses', <any>element);
             })
         }
         if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
+            queryParameters = queryParameters.set('page', <any>page);
         }
         if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
+            queryParameters = queryParameters.set('size', <any>size);
         }
 
         let headers = this.defaultHeaders;
@@ -371,34 +272,19 @@ export class SubscriptionService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<SubscriptionsResponse>(`${this.configuration.basePath}/subscriptions`,
             {
                 params: queryParameters,
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -414,15 +300,15 @@ export class SubscriptionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Key>;
-    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Key>>;
-    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Key>>;
-    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Key>;
+    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Key>>;
+    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Key>>;
+    public renewKeySubscription(requestParameters: RenewKeySubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling renewKeySubscription.');
         }
-        const requestBody = requestParameters.requestBody;
+        const request_body = requestParameters.request_body;
 
         let headers = this.defaultHeaders;
 
@@ -431,20 +317,11 @@ export class SubscriptionService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -459,15 +336,9 @@ export class SubscriptionService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.post<Key>(`${this.configuration.basePath}/subscriptions/${encodeURIComponent(String(subscriptionId))}/keys/_renew`,
-            requestBody,
+            request_body,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -483,10 +354,10 @@ export class SubscriptionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
-    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
-    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
-    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public revokeKeySubscription(requestParameters: RevokeKeySubscriptionRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const subscriptionId = requestParameters.subscriptionId;
         if (subscriptionId === null || subscriptionId === undefined) {
             throw new Error('Required parameter subscriptionId was null or undefined when calling revokeKeySubscription.');
@@ -503,34 +374,19 @@ export class SubscriptionService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.post<any>(`${this.configuration.basePath}/subscriptions/${encodeURIComponent(String(subscriptionId))}/keys/${encodeURIComponent(String(keyId))}/_revoke`,
             null,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

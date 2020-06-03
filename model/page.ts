@@ -38,7 +38,7 @@ export interface Page {
     /**
      * Last update date and time.
      */
-    updated_at?: string;
+    updated_at?: Date;
     configuration?: PageConfiguration;
     /**
      * Array of metadata about the page. This array is filled when the page has been fetched from a distant source (GitHub, GitLab, etc...).

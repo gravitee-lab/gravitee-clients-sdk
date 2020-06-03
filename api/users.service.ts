@@ -17,44 +17,37 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ErrorResponse } from '../model/models';
-import { FinalizeRegistrationInput } from '../model/models';
-import { RegisterUserInput } from '../model/models';
-import { ResetUserPasswordInput } from '../model/models';
-import { User } from '../model/models';
-import { UsersResponse } from '../model/models';
+import { ErrorResponse } from '../model/errorResponse';
+import { FinalizeRegistrationInput } from '../model/finalizeRegistrationInput';
+import { RegisterUserInput } from '../model/registerUserInput';
+import { ResetUserPasswordInput } from '../model/resetUserPasswordInput';
+import { User } from '../model/user';
+import { UsersResponse } from '../model/usersResponse';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 export interface FinalizeUserRegistrationRequestParams {
-    /** Used to finalize a user registration. */
-    finalizeRegistrationInput?: FinalizeRegistrationInput;
+    FinalizeRegistrationInput?: FinalizeRegistrationInput;
 }
 
 export interface GetUserAvatarRequestParams {
-    /** Id of a user */
     userId: string;
 }
 
 export interface GetUsersRequestParams {
-    /** The page number for pagination. */
     page?: number;
-    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
-    /** query string to be used in the search engine */
     q?: string;
 }
 
 export interface RegisterNewUserRequestParams {
-    /** Used to register a new User. */
-    registerUserInput?: RegisterUserInput;
+    RegisterUserInput?: RegisterUserInput;
 }
 
 export interface ResetUserPasswordRequestParams {
-    /** Use to reset a user\&#39;s password. */
-    resetUserPasswordInput?: ResetUserPasswordInput;
+    ResetUserPasswordInput?: ResetUserPasswordInput;
 }
 
 
@@ -83,42 +76,6 @@ export class UsersService {
 
 
 
-    private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
-        if (typeof value === "object" && value instanceof Date === false) {
-            httpParams = this.addToHttpParamsRecursive(httpParams, value);
-        } else {
-            httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
-        }
-        return httpParams;
-    }
-
-    private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
-        if (value == null) {
-            return httpParams;
-        }
-
-        if (typeof value === "object") {
-            if (Array.isArray(value)) {
-                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
-            } else if (value instanceof Date) {
-                if (key != null) {
-                    httpParams = httpParams.append(key,
-                        (value as Date).toISOString().substr(0, 10));
-                } else {
-                   throw Error("key may not be null if value is Date");
-                }
-            } else {
-                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
-                    httpParams, value[k], key != null ? `${key}.${k}` : k));
-            }
-        } else if (key != null) {
-            httpParams = httpParams.append(key, value);
-        } else {
-            throw Error("key may not be null if value is not object or array");
-        }
-        return httpParams;
-    }
-
     /**
      * Finalize user registration.
      * Create a new user for the portal.  User registration must be enabled. 
@@ -126,11 +83,11 @@ export class UsersService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<User>;
-    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<User>>;
-    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<User>>;
-    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        const finalizeRegistrationInput = requestParameters.finalizeRegistrationInput;
+    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public finalizeUserRegistration(requestParameters: FinalizeUserRegistrationRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const FinalizeRegistrationInput = requestParameters.FinalizeRegistrationInput;
 
         let headers = this.defaultHeaders;
 
@@ -139,20 +96,11 @@ export class UsersService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -167,15 +115,9 @@ export class UsersService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.post<User>(`${this.configuration.basePath}/users/registration/_finalize`,
-            finalizeRegistrationInput,
+            FinalizeRegistrationInput,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -191,10 +133,10 @@ export class UsersService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<Blob>;
-    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<HttpResponse<Blob>>;
-    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<HttpEvent<Blob>>;
-    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<any> {
+    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getUserAvatar(requestParameters: GetUserAvatarRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const userId = requestParameters.userId;
         if (userId === null || userId === undefined) {
             throw new Error('Required parameter userId was null or undefined when calling getUserAvatar.');
@@ -207,21 +149,12 @@ export class UsersService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'image/_*',
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'image/_*',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -245,26 +178,23 @@ export class UsersService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUsers(requestParameters: GetUsersRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<UsersResponse>;
-    public getUsers(requestParameters: GetUsersRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<UsersResponse>>;
-    public getUsers(requestParameters: GetUsersRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<UsersResponse>>;
-    public getUsers(requestParameters: GetUsersRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getUsers(requestParameters: GetUsersRequestParams, observe?: 'body', reportProgress?: boolean): Observable<UsersResponse>;
+    public getUsers(requestParameters: GetUsersRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UsersResponse>>;
+    public getUsers(requestParameters: GetUsersRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UsersResponse>>;
+    public getUsers(requestParameters: GetUsersRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const page = requestParameters.page;
         const size = requestParameters.size;
         const q = requestParameters.q;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
+            queryParameters = queryParameters.set('page', <any>page);
         }
         if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
+            queryParameters = queryParameters.set('size', <any>size);
         }
         if (q !== undefined && q !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>q, 'q');
+            queryParameters = queryParameters.set('q', <any>q);
         }
 
         let headers = this.defaultHeaders;
@@ -274,35 +204,20 @@ export class UsersService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.post<UsersResponse>(`${this.configuration.basePath}/users/_search`,
             null,
             {
                 params: queryParameters,
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -318,11 +233,11 @@ export class UsersService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<User>;
-    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<User>>;
-    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<User>>;
-    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        const registerUserInput = requestParameters.registerUserInput;
+    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public registerNewUser(requestParameters: RegisterNewUserRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const RegisterUserInput = requestParameters.RegisterUserInput;
 
         let headers = this.defaultHeaders;
 
@@ -331,20 +246,11 @@ export class UsersService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -359,15 +265,9 @@ export class UsersService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.post<User>(`${this.configuration.basePath}/users/registration`,
-            registerUserInput,
+            RegisterUserInput,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -383,11 +283,11 @@ export class UsersService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
-    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
-    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
-    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        const resetUserPasswordInput = requestParameters.resetUserPasswordInput;
+    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public resetUserPassword(requestParameters: ResetUserPasswordRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const ResetUserPasswordInput = requestParameters.ResetUserPasswordInput;
 
         let headers = this.defaultHeaders;
 
@@ -396,20 +296,11 @@ export class UsersService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -424,15 +315,9 @@ export class UsersService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.post<any>(`${this.configuration.basePath}/users/_reset_password`,
-            resetUserPasswordInput,
+            ResetUserPasswordInput,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

@@ -17,178 +17,126 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { Api } from '../model/models';
-import { ApiMetrics } from '../model/models';
-import { ApisResponse } from '../model/models';
-import { ApplicationsResponse } from '../model/models';
-import { ErrorResponse } from '../model/models';
-import { FilterApiQuery } from '../model/models';
-import { LinksResponse } from '../model/models';
-import { Page } from '../model/models';
-import { PagesResponse } from '../model/models';
-import { PlansResponse } from '../model/models';
-import { Rating } from '../model/models';
-import { RatingAnswerInput } from '../model/models';
-import { RatingInput } from '../model/models';
-import { RatingsResponse } from '../model/models';
+import { Api } from '../model/api';
+import { ApiMetrics } from '../model/apiMetrics';
+import { ApisResponse } from '../model/apisResponse';
+import { ApplicationsResponse } from '../model/applicationsResponse';
+import { ErrorResponse } from '../model/errorResponse';
+import { FilterApiQuery } from '../model/filterApiQuery';
+import { LinksResponse } from '../model/linksResponse';
+import { Page } from '../model/page';
+import { PagesResponse } from '../model/pagesResponse';
+import { PlansResponse } from '../model/plansResponse';
+import { Rating } from '../model/rating';
+import { RatingAnswerInput } from '../model/ratingAnswerInput';
+import { RatingInput } from '../model/ratingInput';
+import { RatingsResponse } from '../model/ratingsResponse';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
 export interface CreateApiRatingRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** Use to add a rating to an api */
-    ratingInput?: RatingInput;
+    RatingInput?: RatingInput;
 }
 
 export interface CreateApiRatingAnswerRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** Id of an rating */
     ratingId: string;
-    /** Use to create an answer */
-    ratingAnswerInput?: RatingAnswerInput;
+    RatingAnswerInput?: RatingAnswerInput;
 }
 
 export interface DeleteApiRatingRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** Id of an rating */
     ratingId: string;
 }
 
 export interface DeleteApiRatingAnswerRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** Id of an rating */
     ratingId: string;
-    /** Id of an rating answer */
     answerId: string;
 }
 
 export interface GetApiByApiIdRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** Comma-separated list of related objects to include in the response. */
     include?: Array<'pages' | 'plans'>;
 }
 
 export interface GetApiLinksRequestParams {
-    /** Id of an API. */
     apiId: string;
 }
 
 export interface GetApiMetricsByApiIdRequestParams {
-    /** Id of an API. */
     apiId: string;
 }
 
 export interface GetApiPlansByApiIdRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** The page number for pagination. */
     page?: number;
-    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
 }
 
 export interface GetApiRatingsByApiIdRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** The page number for pagination. */
     page?: number;
-    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
-    /** If true, returns only connected user data. */
     mine?: boolean;
-    /** A  list of \&quot;field\&quot; elements. By default, sort is ASC. If *field* starts with \&#39;-\&#39;, the order sort is DESC.\\ Currently, only **value**, **date** and **answers** are supported.  */
     order?: string;
 }
 
 export interface GetApisRequestParams {
-    /** The page number for pagination. */
     page?: number;
-    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
-    /** The context-path of an API. */
-    contextPath?: string;
-    /** One of the labels of an API. */
+    context_path?: string;
     label?: string;
-    /** The version of an API. */
     version?: string;
-    /** The name of an API. */
     name?: string;
-    /** One of the category linked with an API. */
     category?: string;
-    /** Name of a FILTER. A filter is used to pre-select some APIs. It can be combined with others query params.   - FEATURED : top APIs. Sorted by specific order.   - MINE : APIs subscribed by the current user. Sorted by alphabetical order.   - STARRED: Rated APIs. Sorted by Ratings DESC, nb of ratings DESC, alphabetic order.   - TRENDINGS: Subscribed APIs. Sorted by number of subscriptions DESC, alphabetic order.  */
     filter?: FilterApiQuery;
-    /** Name of a FILTER to exclude. Excluded filter has priority over filter. A filter is used to pre-select some APIs. It can be combined with others query params.   - FEATURED : not in top APIs. Sorted by specific order.   - MINE : APIs not subscribed by the current user. Sorted by alphabetical order.   - STARRED: not rated APIs. Sorted by Ratings DESC, nb of ratings DESC, alphabetic order.   - TRENDINGS: not subscribed APIs. Sorted by number of subscriptions DESC, alphabetic order.  */
-    filter2?: FilterApiQuery;
+    _filter?: FilterApiQuery;
 }
 
 export interface GetPageByApiIdAndPageIdRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** Id of a documentation page. */
     pageId: string;
-    /** Comma-separated list of related objects to include in the response. */
     include?: Array<'content'>;
 }
 
 export interface GetPageContentByApiIdAndPageIdRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** Id of a documentation page. */
     pageId: string;
 }
 
 export interface GetPagesByApiIdRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** The page number for pagination. */
     page?: number;
-    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
-    /** If true, only the documentation homepage of the portal is returned. */
     homepage?: boolean;
-    /** The name of the parent documentation page. If not null, only this page and its children are returned. */
     parent?: string;
 }
 
 export interface GetPictureByApiIdRequestParams {
-    /** Id of an API. */
     apiId: string;
 }
 
 export interface GetSubscriberApplicationsByApiIdRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** The page number for pagination. */
     page?: number;
-    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
-    /** status of subscription. */
     statuses?: Array<'ACCEPTED' | 'CLOSED' | 'PAUSED' | 'PENDING' | 'REJECTED'>;
 }
 
 export interface SearchApisRequestParams {
-    /** query string to be used in the search engine */
     q: string;
-    /** The page number for pagination. */
     page?: number;
-    /** The number of items per page for pagination. If the size is 0, the response contains only metadata and returns the values as for a non-paged resource. If the size is -1, the response contains all datas.  */
     size?: number;
 }
 
 export interface UpdateApiRatingRequestParams {
-    /** Id of an API. */
     apiId: string;
-    /** Id of an rating */
     ratingId: string;
-    /** Use to update a rating to an api */
-    ratingInput?: RatingInput;
+    RatingInput?: RatingInput;
 }
 
 
@@ -217,42 +165,6 @@ export class ApiService {
 
 
 
-    private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
-        if (typeof value === "object" && value instanceof Date === false) {
-            httpParams = this.addToHttpParamsRecursive(httpParams, value);
-        } else {
-            httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
-        }
-        return httpParams;
-    }
-
-    private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
-        if (value == null) {
-            return httpParams;
-        }
-
-        if (typeof value === "object") {
-            if (Array.isArray(value)) {
-                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
-            } else if (value instanceof Date) {
-                if (key != null) {
-                    httpParams = httpParams.append(key,
-                        (value as Date).toISOString().substr(0, 10));
-                } else {
-                   throw Error("key may not be null if value is Date");
-                }
-            } else {
-                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
-                    httpParams, value[k], key != null ? `${key}.${k}` : k));
-            }
-        } else if (key != null) {
-            httpParams = httpParams.append(key, value);
-        } else {
-            throw Error("key may not be null if value is not object or array");
-        }
-        return httpParams;
-    }
-
     /**
      * Create a rating for an API
      * Create a rating for an API.  This API has to be accessible by the current user, otherwise a 404 will be returned.  The current must have API_RATING[CREATE] permission to create a rating. 
@@ -260,15 +172,15 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Rating>;
-    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Rating>>;
-    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Rating>>;
-    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Rating>;
+    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Rating>>;
+    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Rating>>;
+    public createApiRating(requestParameters: CreateApiRatingRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling createApiRating.');
         }
-        const ratingInput = requestParameters.ratingInput;
+        const RatingInput = requestParameters.RatingInput;
 
         let headers = this.defaultHeaders;
 
@@ -277,20 +189,11 @@ export class ApiService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -305,15 +208,9 @@ export class ApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.post<Rating>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings`,
-            ratingInput,
+            RatingInput,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -329,10 +226,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Rating>;
-    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Rating>>;
-    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Rating>>;
-    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Rating>;
+    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Rating>>;
+    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Rating>>;
+    public createApiRatingAnswer(requestParameters: CreateApiRatingAnswerRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling createApiRatingAnswer.');
@@ -341,7 +238,7 @@ export class ApiService {
         if (ratingId === null || ratingId === undefined) {
             throw new Error('Required parameter ratingId was null or undefined when calling createApiRatingAnswer.');
         }
-        const ratingAnswerInput = requestParameters.ratingAnswerInput;
+        const RatingAnswerInput = requestParameters.RatingAnswerInput;
 
         let headers = this.defaultHeaders;
 
@@ -350,20 +247,11 @@ export class ApiService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -378,15 +266,9 @@ export class ApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.post<Rating>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings/${encodeURIComponent(String(ratingId))}/answers`,
-            ratingAnswerInput,
+            RatingAnswerInput,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -402,10 +284,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
-    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
-    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
-    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteApiRating(requestParameters: DeleteApiRatingRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling deleteApiRating.');
@@ -422,33 +304,18 @@ export class ApiService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.delete<any>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings/${encodeURIComponent(String(ratingId))}`,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -464,10 +331,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
-    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
-    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
-    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteApiRatingAnswer(requestParameters: DeleteApiRatingAnswerRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling deleteApiRatingAnswer.');
@@ -488,33 +355,18 @@ export class ApiService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.delete<any>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings/${encodeURIComponent(String(ratingId))}/answers/${encodeURIComponent(String(answerId))}`,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -530,10 +382,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApiByApiId(requestParameters: GetApiByApiIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Api>;
-    public getApiByApiId(requestParameters: GetApiByApiIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Api>>;
-    public getApiByApiId(requestParameters: GetApiByApiIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Api>>;
-    public getApiByApiId(requestParameters: GetApiByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getApiByApiId(requestParameters: GetApiByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Api>;
+    public getApiByApiId(requestParameters: GetApiByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Api>>;
+    public getApiByApiId(requestParameters: GetApiByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Api>>;
+    public getApiByApiId(requestParameters: GetApiByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getApiByApiId.');
@@ -543,35 +395,25 @@ export class ApiService {
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (include) {
             include.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'include');
+                queryParameters = queryParameters.append('include', <any>element);
             })
         }
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<Api>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}`,
             {
                 params: queryParameters,
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -587,10 +429,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<LinksResponse>;
-    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<LinksResponse>>;
-    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<LinksResponse>>;
-    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe?: 'body', reportProgress?: boolean): Observable<LinksResponse>;
+    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LinksResponse>>;
+    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LinksResponse>>;
+    public getApiLinks(requestParameters: GetApiLinksRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getApiLinks.');
@@ -598,27 +440,18 @@ export class ApiService {
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<LinksResponse>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/links`,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -634,10 +467,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApiMetrics>;
-    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApiMetrics>>;
-    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApiMetrics>>;
-    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApiMetrics>;
+    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiMetrics>>;
+    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiMetrics>>;
+    public getApiMetricsByApiId(requestParameters: GetApiMetricsByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getApiMetricsByApiId.');
@@ -645,27 +478,18 @@ export class ApiService {
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<ApiMetrics>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/metrics`,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -681,10 +505,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApiPlansByApiId(requestParameters: GetApiPlansByApiIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<PlansResponse>;
-    public getApiPlansByApiId(requestParameters: GetApiPlansByApiIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<PlansResponse>>;
-    public getApiPlansByApiId(requestParameters: GetApiPlansByApiIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<PlansResponse>>;
-    public getApiPlansByApiId(requestParameters: GetApiPlansByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getApiPlansByApiId(requestParameters: GetApiPlansByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PlansResponse>;
+    public getApiPlansByApiId(requestParameters: GetApiPlansByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PlansResponse>>;
+    public getApiPlansByApiId(requestParameters: GetApiPlansByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PlansResponse>>;
+    public getApiPlansByApiId(requestParameters: GetApiPlansByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getApiPlansByApiId.');
@@ -694,38 +518,27 @@ export class ApiService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
+            queryParameters = queryParameters.set('page', <any>page);
         }
         if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
+            queryParameters = queryParameters.set('size', <any>size);
         }
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<PlansResponse>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/plans`,
             {
                 params: queryParameters,
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -741,10 +554,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApiRatingsByApiId(requestParameters: GetApiRatingsByApiIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<RatingsResponse>;
-    public getApiRatingsByApiId(requestParameters: GetApiRatingsByApiIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<RatingsResponse>>;
-    public getApiRatingsByApiId(requestParameters: GetApiRatingsByApiIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<RatingsResponse>>;
-    public getApiRatingsByApiId(requestParameters: GetApiRatingsByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getApiRatingsByApiId(requestParameters: GetApiRatingsByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<RatingsResponse>;
+    public getApiRatingsByApiId(requestParameters: GetApiRatingsByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RatingsResponse>>;
+    public getApiRatingsByApiId(requestParameters: GetApiRatingsByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RatingsResponse>>;
+    public getApiRatingsByApiId(requestParameters: GetApiRatingsByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getApiRatingsByApiId.');
@@ -756,46 +569,33 @@ export class ApiService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
+            queryParameters = queryParameters.set('page', <any>page);
         }
         if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
+            queryParameters = queryParameters.set('size', <any>size);
         }
         if (mine !== undefined && mine !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>mine, 'mine');
+            queryParameters = queryParameters.set('mine', <any>mine);
         }
         if (order !== undefined && order !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>order, 'order');
+            queryParameters = queryParameters.set('order', <any>order);
         }
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<RatingsResponse>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings`,
             {
                 params: queryParameters,
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -811,82 +611,64 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getApis(requestParameters: GetApisRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApisResponse>;
-    public getApis(requestParameters: GetApisRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApisResponse>>;
-    public getApis(requestParameters: GetApisRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApisResponse>>;
-    public getApis(requestParameters: GetApisRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getApis(requestParameters: GetApisRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApisResponse>;
+    public getApis(requestParameters: GetApisRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApisResponse>>;
+    public getApis(requestParameters: GetApisRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApisResponse>>;
+    public getApis(requestParameters: GetApisRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const page = requestParameters.page;
         const size = requestParameters.size;
-        const contextPath = requestParameters.contextPath;
+        const context_path = requestParameters.context_path;
         const label = requestParameters.label;
         const version = requestParameters.version;
         const name = requestParameters.name;
         const category = requestParameters.category;
         const filter = requestParameters.filter;
-        const filter2 = requestParameters.filter2;
+        const _filter = requestParameters._filter;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
+            queryParameters = queryParameters.set('page', <any>page);
         }
         if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
+            queryParameters = queryParameters.set('size', <any>size);
         }
-        if (contextPath !== undefined && contextPath !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>contextPath, 'context-path');
+        if (context_path !== undefined && context_path !== null) {
+            queryParameters = queryParameters.set('context-path', <any>context_path);
         }
         if (label !== undefined && label !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>label, 'label');
+            queryParameters = queryParameters.set('label', <any>label);
         }
         if (version !== undefined && version !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>version, 'version');
+            queryParameters = queryParameters.set('version', <any>version);
         }
         if (name !== undefined && name !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>name, 'name');
+            queryParameters = queryParameters.set('name', <any>name);
         }
         if (category !== undefined && category !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>category, 'category');
+            queryParameters = queryParameters.set('category', <any>category);
         }
         if (filter !== undefined && filter !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>filter, 'filter');
+            queryParameters = queryParameters.set('filter', <any>filter);
         }
-        if (filter2 !== undefined && filter2 !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>filter2, '-filter');
+        if (_filter !== undefined && _filter !== null) {
+            queryParameters = queryParameters.set('-filter', <any>_filter);
         }
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<ApisResponse>(`${this.configuration.basePath}/apis`,
             {
                 params: queryParameters,
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -902,10 +684,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Page>;
-    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Page>>;
-    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Page>>;
-    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Page>;
+    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Page>>;
+    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Page>>;
+    public getPageByApiIdAndPageId(requestParameters: GetPageByApiIdAndPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getPageByApiIdAndPageId.');
@@ -919,35 +701,25 @@ export class ApiService {
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (include) {
             include.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'include');
+                queryParameters = queryParameters.append('include', <any>element);
             })
         }
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<Page>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/pages/${encodeURIComponent(String(pageId))}`,
             {
                 params: queryParameters,
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -963,10 +735,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<string>;
-    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<HttpResponse<string>>;
-    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<HttpEvent<string>>;
-    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json'}): Observable<any> {
+    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public getPageContentByApiIdAndPageId(requestParameters: GetPageContentByApiIdAndPageIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getPageContentByApiIdAndPageId.');
@@ -978,28 +750,19 @@ export class ApiService {
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<string>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/pages/${encodeURIComponent(String(pageId))}/content`,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -1015,10 +778,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<PagesResponse>;
-    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<PagesResponse>>;
-    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<PagesResponse>>;
-    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<PagesResponse>;
+    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagesResponse>>;
+    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagesResponse>>;
+    public getPagesByApiId(requestParameters: GetPagesByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getPagesByApiId.');
@@ -1030,46 +793,33 @@ export class ApiService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
+            queryParameters = queryParameters.set('page', <any>page);
         }
         if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
+            queryParameters = queryParameters.set('size', <any>size);
         }
         if (homepage !== undefined && homepage !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>homepage, 'homepage');
+            queryParameters = queryParameters.set('homepage', <any>homepage);
         }
         if (parent !== undefined && parent !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>parent, 'parent');
+            queryParameters = queryParameters.set('parent', <any>parent);
         }
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<PagesResponse>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/pages`,
             {
                 params: queryParameters,
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -1085,10 +835,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPictureByApiId(requestParameters: GetPictureByApiIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<Blob>;
-    public getPictureByApiId(requestParameters: GetPictureByApiIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<HttpResponse<Blob>>;
-    public getPictureByApiId(requestParameters: GetPictureByApiIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<HttpEvent<Blob>>;
-    public getPictureByApiId(requestParameters: GetPictureByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'image/_*' | 'application/json'}): Observable<any> {
+    public getPictureByApiId(requestParameters: GetPictureByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getPictureByApiId(requestParameters: GetPictureByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getPictureByApiId(requestParameters: GetPictureByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getPictureByApiId(requestParameters: GetPictureByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getPictureByApiId.');
@@ -1096,15 +846,12 @@ export class ApiService {
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'image/_*',
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'image/_*',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -1128,10 +875,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApplicationsResponse>;
-    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApplicationsResponse>>;
-    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApplicationsResponse>>;
-    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApplicationsResponse>;
+    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApplicationsResponse>>;
+    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApplicationsResponse>>;
+    public getSubscriberApplicationsByApiId(requestParameters: GetSubscriberApplicationsByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling getSubscriberApplicationsByApiId.');
@@ -1142,44 +889,32 @@ export class ApiService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
+            queryParameters = queryParameters.set('page', <any>page);
         }
         if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
+            queryParameters = queryParameters.set('size', <any>size);
         }
         if (statuses) {
             statuses.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'statuses');
+                queryParameters = queryParameters.append('statuses', <any>element);
             })
         }
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.get<ApplicationsResponse>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/subscribers`,
             {
                 params: queryParameters,
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -1195,10 +930,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public searchApis(requestParameters: SearchApisRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<ApisResponse>;
-    public searchApis(requestParameters: SearchApisRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<ApisResponse>>;
-    public searchApis(requestParameters: SearchApisRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<ApisResponse>>;
-    public searchApis(requestParameters: SearchApisRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public searchApis(requestParameters: SearchApisRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ApisResponse>;
+    public searchApis(requestParameters: SearchApisRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApisResponse>>;
+    public searchApis(requestParameters: SearchApisRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApisResponse>>;
+    public searchApis(requestParameters: SearchApisRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const q = requestParameters.q;
         if (q === null || q === undefined) {
             throw new Error('Required parameter q was null or undefined when calling searchApis.');
@@ -1208,43 +943,31 @@ export class ApiService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
+            queryParameters = queryParameters.set('page', <any>page);
         }
         if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
+            queryParameters = queryParameters.set('size', <any>size);
         }
         if (q !== undefined && q !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>q, 'q');
+            queryParameters = queryParameters.set('q', <any>q);
         }
 
         let headers = this.defaultHeaders;
 
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.post<ApisResponse>(`${this.configuration.basePath}/apis/_search`,
             null,
             {
                 params: queryParameters,
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -1260,10 +983,10 @@ export class ApiService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Rating>;
-    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Rating>>;
-    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Rating>>;
-    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Rating>;
+    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Rating>>;
+    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Rating>>;
+    public updateApiRating(requestParameters: UpdateApiRatingRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         const apiId = requestParameters.apiId;
         if (apiId === null || apiId === undefined) {
             throw new Error('Required parameter apiId was null or undefined when calling updateApiRating.');
@@ -1272,7 +995,7 @@ export class ApiService {
         if (ratingId === null || ratingId === undefined) {
             throw new Error('Required parameter ratingId was null or undefined when calling updateApiRating.');
         }
-        const ratingInput = requestParameters.ratingInput;
+        const RatingInput = requestParameters.RatingInput;
 
         let headers = this.defaultHeaders;
 
@@ -1281,20 +1004,11 @@ export class ApiService {
             headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
         // authentication (CookieAuth) required
-        if (this.configuration.apiKeys) {
-            const key: string | undefined = this.configuration.apiKeys["CookieAuth"] || this.configuration.apiKeys["Auth-Graviteeio-APIM"];
-            if (key) {
-            }
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -1309,15 +1023,9 @@ export class ApiService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
         return this.httpClient.put<Rating>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/ratings/${encodeURIComponent(String(ratingId))}`,
-            ratingInput,
+            RatingInput,
             {
-                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

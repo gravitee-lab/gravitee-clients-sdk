@@ -12,7 +12,7 @@ npx openapi-generator generate \
 
 Fix generation [BUG](https://github.com/OpenAPITools/openapi-generator/issues/2154) for files
  - `api/analytics.service.ts`
- - `api/applications.service.ts`
+ - `api/application.service.ts`
  - `api/api.ts`
  
 ### Building

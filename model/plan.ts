@@ -41,10 +41,6 @@ export interface Plan {
      */
     order: number;
     /**
-     * True if at least one application linked to the current user has subscribed to this plan.
-     */
-    subscribed?: boolean;
-    /**
      * True if a comment is required when a subscription is created.
      */
     comment_required: boolean;

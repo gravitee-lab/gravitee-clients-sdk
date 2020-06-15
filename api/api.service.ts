@@ -95,6 +95,7 @@ export interface GetApisRequestParams {
     category?: string;
     filter?: FilterApiQuery;
     _filter?: FilterApiQuery;
+    promoted?: boolean;
 }
 
 export interface GetPageByApiIdAndPageIdRequestParams {
@@ -624,6 +625,7 @@ export class ApiService {
         const category = requestParameters.category;
         const filter = requestParameters.filter;
         const _filter = requestParameters._filter;
+        const promoted = requestParameters.promoted;
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (page !== undefined && page !== null) {
@@ -652,6 +654,9 @@ export class ApiService {
         }
         if (_filter !== undefined && _filter !== null) {
             queryParameters = queryParameters.set('-filter', <any>_filter);
+        }
+        if (promoted !== undefined && promoted !== null) {
+            queryParameters = queryParameters.set('promoted', <any>promoted);
         }
 
         let headers = this.defaultHeaders;

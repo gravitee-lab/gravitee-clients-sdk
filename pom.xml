@@ -34,7 +34,7 @@
 
   <groupId>io.gravitee.portal</groupId>
   <artifactId>gravitee-clients-sdk</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Gravitee.io APIM - webclient</name>
 

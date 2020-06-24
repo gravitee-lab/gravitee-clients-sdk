@@ -146,7 +146,7 @@ export interface UpdateApiRatingRequestParams {
 })
 export class ApiService {
 
-    protected basePath = 'http://demo.gravitee.io/portal/DEFAULT';
+    protected basePath = 'http://localhost:8083/portal/environments/DEFAULT';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;

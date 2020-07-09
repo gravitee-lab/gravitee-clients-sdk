@@ -98,6 +98,10 @@ export interface GetApisRequestParams {
     promoted?: boolean;
 }
 
+export interface GetBackgroundByApiIdRequestParams {
+    apiId: string;
+}
+
 export interface GetPageByApiIdAndPageIdRequestParams {
     apiId: string;
     pageId: string;
@@ -674,6 +678,46 @@ export class ApiService {
         return this.httpClient.get<ApisResponse>(`${this.configuration.basePath}/apis`,
             {
                 params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the API\&#39;s background
+     * Get the API\&#39;s background.  This API has to be accessible by the current user, otherwise a 404 will be returned. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getBackgroundByApiId(requestParameters: GetBackgroundByApiIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getBackgroundByApiId(requestParameters: GetBackgroundByApiIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getBackgroundByApiId(requestParameters: GetBackgroundByApiIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getBackgroundByApiId(requestParameters: GetBackgroundByApiIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getBackgroundByApiId.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'image/_*',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/background`,
+            {
+                responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

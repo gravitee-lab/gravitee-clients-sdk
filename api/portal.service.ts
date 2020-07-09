@@ -46,6 +46,10 @@ export interface GetApiInformationsRequestParams {
     apiId: string;
 }
 
+export interface GetBackgroundByCategoryIdRequestParams {
+    categoryId: string;
+}
+
 export interface GetCategoriesRequestParams {
     page?: number;
     size?: number;
@@ -218,6 +222,46 @@ export class PortalService {
 
         return this.httpClient.get<ConfigurationApplicationRolesResponse>(`${this.configuration.basePath}/configuration/applications/roles`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get background of a Category
+     * Get the background of a category. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getBackgroundByCategoryId(requestParameters: GetBackgroundByCategoryIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getBackgroundByCategoryId(requestParameters: GetBackgroundByCategoryIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getBackgroundByCategoryId(requestParameters: GetBackgroundByCategoryIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getBackgroundByCategoryId(requestParameters: GetBackgroundByCategoryIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const categoryId = requestParameters.categoryId;
+        if (categoryId === null || categoryId === undefined) {
+            throw new Error('Required parameter categoryId was null or undefined when calling getBackgroundByCategoryId.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'image/_*',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get(`${this.configuration.basePath}/categories/${encodeURIComponent(String(categoryId))}/background`,
+            {
+                responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

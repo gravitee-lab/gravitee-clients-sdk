@@ -80,6 +80,10 @@ export interface GetApplicationAnalyticsRequestParams {
     order?: string;
 }
 
+export interface GetApplicationBackgroundByApplicationIdRequestParams {
+    applicationId: string;
+}
+
 export interface GetApplicationByApplicationIdRequestParams {
     applicationId: string;
 }
@@ -541,6 +545,51 @@ export class ApplicationService {
         return this.httpClient.get<DateHistoAnalytics | GroupByAnalytics | CountAnalytics>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/analytics`,
             {
                 params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the application\&#39;s background
+     * Get the application\&#39;s background.  User must have APPLICATION_DEFINITION[READ] permission. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getApplicationBackgroundByApplicationId(requestParameters: GetApplicationBackgroundByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getApplicationBackgroundByApplicationId(requestParameters: GetApplicationBackgroundByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getApplicationBackgroundByApplicationId(requestParameters: GetApplicationBackgroundByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getApplicationBackgroundByApplicationId(requestParameters: GetApplicationBackgroundByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
+        if (applicationId === null || applicationId === undefined) {
+            throw new Error('Required parameter applicationId was null or undefined when calling getApplicationBackgroundByApplicationId.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'image/_*',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/background`,
+            {
+                responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

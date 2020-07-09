@@ -18,5 +18,6 @@ export interface ApplicationInput {
     picture?: string;
     groups?: Array<string>;
     settings?: ApplicationSettings;
+    background?: string;
 }
 

@@ -17,6 +17,7 @@ export interface ApiLinks {
     metrics?: string;
     pages?: string;
     picture?: string;
+    background?: string;
     plans?: string;
     ratings?: string;
 }

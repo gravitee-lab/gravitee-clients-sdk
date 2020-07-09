@@ -15,5 +15,6 @@ export interface CategoryLinks {
     self?: string;
     highlighted_api?: string;
     picture?: string;
+    background?: string;
 }
 

@@ -16,5 +16,6 @@ export interface ApplicationLinks {
     members?: string;
     notifications?: string;
     picture?: string;
+    background?: string;
 }
 

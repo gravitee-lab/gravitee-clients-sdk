@@ -53,6 +53,10 @@ export interface Application {
      * Picture of the application. This attribute is only used to update a picture.\\ To get the application picture, use /application/{applicationId}/picture. 
      */
     picture?: string;
+    /**
+     * Background of the application. This attribute is only used to update a picture.\\ To get the application picture, use /application/{applicationId}/background. 
+     */
+    background?: string;
     settings?: ApplicationSettings;
     _links?: ApplicationLinks;
 }

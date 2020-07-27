@@ -30,6 +30,9 @@ import { Member } from '../model/member';
 import { MemberInput } from '../model/memberInput';
 import { MembersResponse } from '../model/membersResponse';
 import { NotificationInput } from '../model/notificationInput';
+import { ReferenceMetadata } from '../model/referenceMetadata';
+import { ReferenceMetadataInput } from '../model/referenceMetadataInput';
+import { ReferenceMetadataResponse } from '../model/referenceMetadataResponse';
 import { TransferOwnershipInput } from '../model/transferOwnershipInput';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -45,6 +48,11 @@ export interface CreateApplicationMemberRequestParams {
     MemberInput?: MemberInput;
 }
 
+export interface CreateApplicationMetadataRequestParams {
+    applicationId: string;
+    ReferenceMetadataInput?: ReferenceMetadataInput;
+}
+
 export interface DeleteApplicationByApplicationIdRequestParams {
     applicationId: string;
 }
@@ -52,6 +60,11 @@ export interface DeleteApplicationByApplicationIdRequestParams {
 export interface DeleteApplicationMemberRequestParams {
     applicationId: string;
     memberId: string;
+}
+
+export interface DeleteApplicationMetadataRequestParams {
+    applicationId: string;
+    metadataId: string;
 }
 
 export interface ExportApplicationLogsByApplicationIdRequestParams {
@@ -110,6 +123,11 @@ export interface GetApplicationMemberByApplicationIdAndMemberIdRequestParams {
     memberId: string;
 }
 
+export interface GetApplicationMetadataByApplicationIdAndMetadataIdRequestParams {
+    applicationId: string;
+    metadataId: string;
+}
+
 export interface GetApplicationPictureByApplicationIdRequestParams {
     applicationId: string;
 }
@@ -126,6 +144,12 @@ export interface GetApplicationsRequestParams {
 }
 
 export interface GetMembersByApplicationIdRequestParams {
+    applicationId: string;
+    page?: number;
+    size?: number;
+}
+
+export interface GetMetadataByApplicationIdRequestParams {
     applicationId: string;
     page?: number;
     size?: number;
@@ -160,6 +184,12 @@ export interface UpdateApplicationMemberByApplicationIdAndMemberIdRequestParams 
     applicationId: string;
     memberId: string;
     MemberInput?: MemberInput;
+}
+
+export interface UpdateApplicationMetadataByApplicationIdAndMetadataIdRequestParams {
+    applicationId: string;
+    metadataId: string;
+    ReferenceMetadataInput?: ReferenceMetadataInput;
 }
 
 export interface UpdateApplicationNotificationsRequestParams {
@@ -298,6 +328,60 @@ export class ApplicationService {
     }
 
     /**
+     * Create an application metadata
+     * Create an application metadata.  User must have the APPLICATION_METADATA[CREATE] permission. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public createApplicationMetadata(requestParameters: CreateApplicationMetadataRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ReferenceMetadata>;
+    public createApplicationMetadata(requestParameters: CreateApplicationMetadataRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReferenceMetadata>>;
+    public createApplicationMetadata(requestParameters: CreateApplicationMetadataRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReferenceMetadata>>;
+    public createApplicationMetadata(requestParameters: CreateApplicationMetadataRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
+        if (applicationId === null || applicationId === undefined) {
+            throw new Error('Required parameter applicationId was null or undefined when calling createApplicationMetadata.');
+        }
+        const ReferenceMetadataInput = requestParameters.ReferenceMetadataInput;
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.post<ReferenceMetadata>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/metadata`,
+            ReferenceMetadataInput,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Delete an application
      * Delete an application.  User must have the APPLICATION_DEFINITION[DELETE] permission. 
      * @param requestParameters
@@ -378,6 +462,53 @@ export class ApplicationService {
 
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/${encodeURIComponent(String(memberId))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Remove an application metadata
+     * Remove an application metadata.  User must have the APPLICATION_METADATA[DELETE] permission. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public deleteApplicationMetadata(requestParameters: DeleteApplicationMetadataRequestParams, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public deleteApplicationMetadata(requestParameters: DeleteApplicationMetadataRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public deleteApplicationMetadata(requestParameters: DeleteApplicationMetadataRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public deleteApplicationMetadata(requestParameters: DeleteApplicationMetadataRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
+        if (applicationId === null || applicationId === undefined) {
+            throw new Error('Required parameter applicationId was null or undefined when calling deleteApplicationMetadata.');
+        }
+        const metadataId = requestParameters.metadataId;
+        if (metadataId === null || metadataId === undefined) {
+            throw new Error('Required parameter metadataId was null or undefined when calling deleteApplicationMetadata.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.delete<any>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/metadata/${encodeURIComponent(String(metadataId))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -817,6 +948,53 @@ export class ApplicationService {
     }
 
     /**
+     * Get an application metadata
+     * Get an application metadata.  User must have the APPLICATION_METADATA[READ] permission. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getApplicationMetadataByApplicationIdAndMetadataId(requestParameters: GetApplicationMetadataByApplicationIdAndMetadataIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ReferenceMetadata>;
+    public getApplicationMetadataByApplicationIdAndMetadataId(requestParameters: GetApplicationMetadataByApplicationIdAndMetadataIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReferenceMetadata>>;
+    public getApplicationMetadataByApplicationIdAndMetadataId(requestParameters: GetApplicationMetadataByApplicationIdAndMetadataIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReferenceMetadata>>;
+    public getApplicationMetadataByApplicationIdAndMetadataId(requestParameters: GetApplicationMetadataByApplicationIdAndMetadataIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
+        if (applicationId === null || applicationId === undefined) {
+            throw new Error('Required parameter applicationId was null or undefined when calling getApplicationMetadataByApplicationIdAndMetadataId.');
+        }
+        const metadataId = requestParameters.metadataId;
+        if (metadataId === null || metadataId === undefined) {
+            throw new Error('Required parameter metadataId was null or undefined when calling getApplicationMetadataByApplicationIdAndMetadataId.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<ReferenceMetadata>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/metadata/${encodeURIComponent(String(metadataId))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get the application\&#39;s picture
      * Get the application\&#39;s picture.  User must have APPLICATION_DEFINITION[READ] permission. 
      * @param requestParameters
@@ -1034,6 +1212,60 @@ export class ApplicationService {
 
 
         return this.httpClient.get<MembersResponse>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * List application metadata
+     * List application metadata.  User must have the APPLICATION_METADATA[READ] permission. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getMetadataByApplicationId(requestParameters: GetMetadataByApplicationIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ReferenceMetadataResponse>;
+    public getMetadataByApplicationId(requestParameters: GetMetadataByApplicationIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReferenceMetadataResponse>>;
+    public getMetadataByApplicationId(requestParameters: GetMetadataByApplicationIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReferenceMetadataResponse>>;
+    public getMetadataByApplicationId(requestParameters: GetMetadataByApplicationIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
+        if (applicationId === null || applicationId === undefined) {
+            throw new Error('Required parameter applicationId was null or undefined when calling getMetadataByApplicationId.');
+        }
+        const page = requestParameters.page;
+        const size = requestParameters.size;
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (page !== undefined && page !== null) {
+            queryParameters = queryParameters.set('page', <any>page);
+        }
+        if (size !== undefined && size !== null) {
+            queryParameters = queryParameters.set('size', <any>size);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<ReferenceMetadataResponse>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/metadata`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -1343,6 +1575,64 @@ export class ApplicationService {
 
         return this.httpClient.put<Member>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/members/${encodeURIComponent(String(memberId))}`,
             MemberInput,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Update an application metadata.
+     * Update an application metadata.  User must have the APPLICATION_METADATA[UPDATE] permission. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateApplicationMetadataByApplicationIdAndMetadataId(requestParameters: UpdateApplicationMetadataByApplicationIdAndMetadataIdRequestParams, observe?: 'body', reportProgress?: boolean): Observable<ReferenceMetadata>;
+    public updateApplicationMetadataByApplicationIdAndMetadataId(requestParameters: UpdateApplicationMetadataByApplicationIdAndMetadataIdRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReferenceMetadata>>;
+    public updateApplicationMetadataByApplicationIdAndMetadataId(requestParameters: UpdateApplicationMetadataByApplicationIdAndMetadataIdRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReferenceMetadata>>;
+    public updateApplicationMetadataByApplicationIdAndMetadataId(requestParameters: UpdateApplicationMetadataByApplicationIdAndMetadataIdRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const applicationId = requestParameters.applicationId;
+        if (applicationId === null || applicationId === undefined) {
+            throw new Error('Required parameter applicationId was null or undefined when calling updateApplicationMetadataByApplicationIdAndMetadataId.');
+        }
+        const metadataId = requestParameters.metadataId;
+        if (metadataId === null || metadataId === undefined) {
+            throw new Error('Required parameter metadataId was null or undefined when calling updateApplicationMetadataByApplicationIdAndMetadataId.');
+        }
+        const ReferenceMetadataInput = requestParameters.ReferenceMetadataInput;
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.put<ReferenceMetadata>(`${this.configuration.basePath}/applications/${encodeURIComponent(String(applicationId))}/metadata/${encodeURIComponent(String(metadataId))}`,
+            ReferenceMetadataInput,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

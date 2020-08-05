@@ -48,6 +48,10 @@ export interface Plan {
      * Content of the message sent to a user creating a subscription.
      */
     comment_question?: string;
+    /**
+     * The  page reference with general conditions of use for the API.
+     */
+    general_conditions?: string;
 }
 export namespace Plan {
     export type SecurityEnum = 'API_KEY' | 'KEY_LESS' | 'JWT' | 'OAUTH2';

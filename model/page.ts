@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { PageConfiguration } from './pageConfiguration';
+import { PageRevisionId } from './pageRevisionId';
 import { Metadata } from './metadata';
 import { PageLinks } from './pageLinks';
 
@@ -49,6 +50,7 @@ export interface Page {
      * Only returned with *_/apis/{apiId}/pages/{pageId}* and *_/pages/{pageId}*. Need *include* query param to contain \'content\'.  The content of the page. 
      */
     content?: string;
+    contentRevisionId?: PageRevisionId;
 }
 export namespace Page {
     export type TypeEnum = 'SWAGGER' | 'MARKDOWN' | 'FOLDER' | 'ROOT' | 'LINK';

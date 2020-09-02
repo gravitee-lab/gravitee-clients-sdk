@@ -20,6 +20,10 @@ export interface Category {
     name?: string;
     description?: string;
     order?: number;
+    /**
+     * id of the page used for category documentation.
+     */
+    page?: string;
     total_apis?: number;
     _links?: CategoryLinks;
 }

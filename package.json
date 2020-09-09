@@ -1,6 +1,6 @@
 {
   "name": "@gravitee/ng-portal-webclient",
-  "version": "1.0.7-SNAPSHOT.202009091106",
+  "version": "1.0.0-SNAPSHOT.202009092025",
   "description": "OpenAPI client for @gravitee/ng-portal-webclient",
   "author": "OpenAPI-Generator Contributors",
   "keywords": [
@@ -31,5 +31,4 @@
     "tsickle": "^0.35.0",
     "typescript": ">=3.4.0 <3.6.0",
     "zone.js": "^0.9.1"
-  }
-}
+  }}

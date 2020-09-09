@@ -71,6 +71,7 @@ export * from './oAuthClientSettings';
 export * from './page';
 export * from './pageConfiguration';
 export * from './pageLinks';
+export * from './pageMedia';
 export * from './pageRevisionId';
 export * from './pagesResponse';
 export * from './payloadInput';

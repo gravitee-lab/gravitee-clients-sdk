@@ -67,6 +67,11 @@ export interface GetApiLinksRequestParams {
     apiId: string;
 }
 
+export interface GetApiMediaRequestParams {
+    apiId: string;
+    mediaHash: string;
+}
+
 export interface GetApiMetricsByApiIdRequestParams {
     apiId: string;
 }
@@ -457,6 +462,50 @@ export class ApiService {
 
         return this.httpClient.get<LinksResponse>(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/links`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the api media.
+     * Get api media. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getApiMedia(requestParameters: GetApiMediaRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getApiMedia(requestParameters: GetApiMediaRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getApiMedia(requestParameters: GetApiMediaRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getApiMedia(requestParameters: GetApiMediaRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const apiId = requestParameters.apiId;
+        if (apiId === null || apiId === undefined) {
+            throw new Error('Required parameter apiId was null or undefined when calling getApiMedia.');
+        }
+        const mediaHash = requestParameters.mediaHash;
+        if (mediaHash === null || mediaHash === undefined) {
+            throw new Error('Required parameter mediaHash was null or undefined when calling getApiMedia.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            '*',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get(`${this.configuration.basePath}/apis/${encodeURIComponent(String(apiId))}/media/${encodeURIComponent(String(mediaHash))}`,
+            {
+                responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

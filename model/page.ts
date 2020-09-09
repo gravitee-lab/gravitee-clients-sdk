@@ -12,6 +12,7 @@
 import { PageConfiguration } from './pageConfiguration';
 import { PageRevisionId } from './pageRevisionId';
 import { Metadata } from './metadata';
+import { PageMedia } from './pageMedia';
 import { PageLinks } from './pageLinks';
 
 
@@ -41,6 +42,10 @@ export interface Page {
      */
     updated_at?: Date;
     configuration?: PageConfiguration;
+    /**
+     * list of media hash, attached to this page
+     */
+    media?: Array<PageMedia>;
     /**
      * Array of metadata about the page. This array is filled when the page has been fetched from a distant source (GitHub, GitLab, etc...).
      */

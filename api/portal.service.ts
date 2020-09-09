@@ -83,6 +83,10 @@ export interface GetPortalIdentityProviderRequestParams {
     identityProviderId: string;
 }
 
+export interface GetPortalMediaRequestParams {
+    mediaHash: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -760,6 +764,46 @@ export class PortalService {
 
         return this.httpClient.get<LinksResponse>(`${this.configuration.basePath}/configuration/links`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get the media of the portal.
+     * Get portal media. 
+     * @param requestParameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPortalMedia(requestParameters: GetPortalMediaRequestParams, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public getPortalMedia(requestParameters: GetPortalMediaRequestParams, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public getPortalMedia(requestParameters: GetPortalMediaRequestParams, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
+    public getPortalMedia(requestParameters: GetPortalMediaRequestParams, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        const mediaHash = requestParameters.mediaHash;
+        if (mediaHash === null || mediaHash === undefined) {
+            throw new Error('Required parameter mediaHash was null or undefined when calling getPortalMedia.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            '*',
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get(`${this.configuration.basePath}/media/${encodeURIComponent(String(mediaHash))}`,
+            {
+                responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

@@ -12,9 +12,11 @@ node {
                   sh "npm install"
                   sh "npm run build"
                   sh "npm publish dist"
-              } finally {
-                  sh 'rm .npmrc'
-              }
+                } catch (Exception e) {
+                    echo "Package not published"
+                } finally {
+                    sh 'rm .npmrc'
+                }
           }
       }
     }

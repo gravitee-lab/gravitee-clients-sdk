@@ -26,6 +26,10 @@ export interface User {
     last_name?: string;
     display_name?: string;
     email?: string;
+    /**
+     * Values for CustomUserFields
+     */
+    customFields?: { [key: string]: object; };
     config?: UserConfig;
     _links?: UserLinks;
 }

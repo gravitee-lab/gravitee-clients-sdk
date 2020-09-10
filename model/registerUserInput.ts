@@ -28,5 +28,9 @@ export interface RegisterUserInput {
      * URL of the confirmation page to be used in the \'User Registration\' email.
      */
     confirmation_page_url?: string;
+    /**
+     * Values for CustomUserFields
+     */
+    customFields?: { [key: string]: object; };
 }
 

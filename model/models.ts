@@ -40,6 +40,7 @@ export * from './configurationReCaptcha';
 export * from './configurationResponse';
 export * from './configurationScheduler';
 export * from './countAnalytics';
+export * from './customUserFields';
 export * from './dashboard';
 export * from './dateHistoAnalytics';
 export * from './enabled';

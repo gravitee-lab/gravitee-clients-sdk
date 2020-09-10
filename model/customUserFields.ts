@@ -11,18 +11,25 @@
  */
 
 
-export interface UserInput { 
+/**
+ * Definition of addition user registration fields
+ */
+export interface CustomUserFields { 
     /**
-     * Unique identifier of a user.
+     * The field identifier.
      */
-    id: string;
+    key?: string;
     /**
-     * Avatar of the user.
+     * The default field label.
      */
-    avatar?: string;
+    label?: string;
     /**
-     * Values for CustomUserFields
+     * The field is mandatory
      */
-    customFields?: { [key: string]: object; };
+    required?: boolean;
+    /**
+     * List of authorized values for the field
+     */
+    values?: Array<string>;
 }
 

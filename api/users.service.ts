@@ -17,6 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { CustomUserFields } from '../model/customUserFields';
 import { ErrorResponse } from '../model/errorResponse';
 import { FinalizeRegistrationInput } from '../model/finalizeRegistrationInput';
 import { RegisterUserInput } from '../model/registerUserInput';
@@ -218,6 +219,44 @@ export class UsersService {
             null,
             {
                 params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * List all the Custom User Fields.
+     * Provide the list of custom user fields asked to the new users. 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public listCustomUserFields(observe?: 'body', reportProgress?: boolean): Observable<Array<CustomUserFields>>;
+    public listCustomUserFields(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CustomUserFields>>>;
+    public listCustomUserFields(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CustomUserFields>>>;
+    public listCustomUserFields(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // authentication (BasicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // authentication (CookieAuth) required
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        return this.httpClient.get<Array<CustomUserFields>>(`${this.configuration.basePath}/configuration/users/custom-fields`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
